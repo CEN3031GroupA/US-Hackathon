@@ -1,3 +1,6 @@
+body {
+  background-color: #ccc;
+}
 .content {
   margin-top: 50px;
 }
@@ -34,4 +37,38 @@ a:hover .header-profile-image {
 }
 .has-error .help-inline.error-text {
   display: inline;
+}
+
+#top-menu {
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
+  font-size: 24px;
+}
+
+#side-menu {
+  height: 100%;
+  width: 200px;
+  background-color: white;
+  position: fixed !important;
+  z-index: 1;
+  overflow: auto;
+  left: -200px;
+  top: 50px;
+
+  transition: left 0.25s;
+}
+
+#side-menu a {
+  display: block;
+  width: 100%;
+  color: black;
+  text-decoration: none;
+
+  padding: 15px 10px;
+
+  border-bottom: 1px solid grey;
 }
