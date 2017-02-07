@@ -7,7 +7,7 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.authentication = Authentication;
 
     // Get the topbar menu
-    $scope.menu = document.getElementById("side-menu");
+    $scope.menu = document.getElementById('side-menu');
 
     // Toggle the menu items
     $scope.isCollapsed = false;
@@ -21,15 +21,15 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     });
 
     $scope.toggleMenu = function() {
-        if ($scope.menu.style.left === "-200px") {
-            $scope.menu.style.left = "0px";
-        } else {
-            $scope.menu.style.left = "-200px";
-        }
+      if ($scope.menu.style.left === '-200px') {
+        $scope.menu.style.left = '0px';
+      } else {
+        $scope.menu.style.left = '-200px';
+      }
     };
 
     $scope.closeMenu = function() {
-      $scope.menu.style.left = "-200px";
-    }
+      $scope.menu.style.left = '-200px';
+    };
   }
 ]);
