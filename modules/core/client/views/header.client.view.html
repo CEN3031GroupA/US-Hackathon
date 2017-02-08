@@ -1,7 +1,8 @@
 <div ng-controller="HeaderController">
     <nav style="width:200px" id="side-menu">
         <a href="#" ng-click="closeMenu()">Close &times;</a>
-        <a href="#">Projects</a>
+        <a ui-sref="home()">Home</a>
+        <a ui-sref="projects.list()">Projects</a>
     </nav>
 
     <div id="top-menu" ng-click="toggleMenu()">
