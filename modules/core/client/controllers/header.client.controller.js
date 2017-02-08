@@ -15,9 +15,9 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       $scope.isCollapsed = forceClose || !$scope.isCollapsed;
 
       if (!$scope.isCollapsed) {
-          $scope.menu.style.left = '0px';
+        $scope.menu.style.left = '0px';
       } else {
-          $scope.menu.style.left = '-200px';
+        $scope.menu.style.left = '-200px';
       }
     };
 
