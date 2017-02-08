@@ -10,26 +10,24 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
     $scope.menu = document.getElementById('side-menu');
 
     // Toggle the menu items
-    $scope.isCollapsed = false;
-    $scope.toggleCollapsibleMenu = function () {
-      $scope.isCollapsed = !$scope.isCollapsed;
+    $scope.isCollapsed = true;
+    $scope.toggleCollapsibleMenu = function (forceClose) {
+      $scope.isCollapsed = forceClose || !$scope.isCollapsed;
+
+      if (!$scope.isCollapsed) {
+          $scope.menu.style.left = '0px';
+      } else {
+          $scope.menu.style.left = '-200px';
+      }
     };
 
     // Collapsing the menu after navigation
     $scope.$on('$stateChangeSuccess', function () {
-      $scope.isCollapsed = false;
+      $scope.closeMenu();
     });
 
-    $scope.toggleMenu = function() {
-      if ($scope.menu.style.left === '-200px') {
-        $scope.menu.style.left = '0px';
-      } else {
-        $scope.menu.style.left = '-200px';
-      }
-    };
-
     $scope.closeMenu = function() {
-      $scope.menu.style.left = '-200px';
+      $scope.toggleCollapsibleMenu(true);
     };
   }
 ]);
