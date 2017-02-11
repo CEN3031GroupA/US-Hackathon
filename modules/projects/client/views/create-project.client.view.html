@@ -1,8 +1,14 @@
 <section ng-controller="ProjectsController">
-  <div class="page-header">
-    <h1>New Project</h1>
-  </div>
   <div class="col-md-12">
-
+  <form ui-sref="projects.category()" id="projectForm">
+    <div class="form-group">
+      <section>
+        <input type="text" class="form-control" id="title" placeholder="Title">
+        <textarea rows="5" class="form-control" id="details" placeholder="Decribe your project, make it simple and cool..."></textarea>
+      </section>
+    </div>
+    <button type="submit" class="btn btn-success btn-lg btn-block">Next></button>
+    <p id="progress" class="form-text text-center">1/3</p>
+  </form>
   </div>
 </section>
