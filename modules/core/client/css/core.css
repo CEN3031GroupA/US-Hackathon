@@ -1,5 +1,5 @@
 body {
-  background-color: #ccc;
+  background-color: #63666A;
 }
 .content {
   margin-top: 50px;
@@ -40,7 +40,7 @@ a:hover .header-profile-image {
 }
 
 #top-menu {
-  background-color: green;
+  background-color: #509E2F;
   color: white;
   cursor: pointer;
   height: 50px;
