@@ -1,14 +1,22 @@
 <section ng-controller="ProjectsController">
   <div class="col-md-12">
-  <form ui-sref="projects.category()" id="projectForm">
-    <div class="form-group">
-      <section>
-        <input type="text" class="form-control" id="title" placeholder="Title">
-        <textarea rows="5" class="form-control" id="details" placeholder="Decribe your project, make it simple and cool..."></textarea>
-      </section>
+  <form name="projectForm" class="form-vertical" ng-submit="create(projectForm.$valid)">
+    <fieldset>
+    <div class="form-group" show-errors>
+      <input type="text" name="title" class="form-control" ng-model="title" placeholder="Title" required>
+      <div ng-messages="projectForm.title.$error" role="alert">
+        <p class="help-block error-text" ng-message="required">Project title is required</p>
+      </div>
     </div>
-    <button type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>
+    <div class="form-group" show-errors>
+      <textarea name="details" rows="5" class="form-control" ng-model="details" placeholder="Decribe your project, make it simple and cool..." required></textarea>
+      <div ng-messages="projectForm.details.$error" role="alert">
+        <p class="help-block error-text" ng-message="required">Project details are required</p>
+      </div>
+    </div>
+    <button type="submit" ui-sref="projects.category()"color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>
     <p id="progress" class="form-text text-center">1/3</p>
+    </fieldset>
   </form>
   </div>
 </section>

@@ -9,6 +9,10 @@ angular.module('projects').factory('Projects', ['$resource',
       update: {
         method: 'PUT'
       }
+    }, {
+      create: {
+        method: 'POST'
+      }
     });
   }
 ]);

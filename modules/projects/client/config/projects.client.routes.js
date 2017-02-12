@@ -18,6 +18,10 @@ angular.module('projects').config(['$stateProvider',
         url: '/create',
         templateUrl: 'modules/projects/client/views/create-project.client.view.html',
       })
+      .state('projects.category', {
+        url: '/category',
+        templateUrl: 'modules/projects/client/views/create-project-pick-category.client.view.html',
+      })
       .state('projects.view', {
         url: '/:projectId',
         templateUrl: 'modules/projects/client/views/view-project.client.view.html'

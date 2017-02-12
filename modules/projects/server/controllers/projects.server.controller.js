@@ -10,3 +10,8 @@ var path = require('path'),
 
 
 // Reference modules/articles/server for examples on what can go here
+exports.create = function(req, res) {
+  var project = new Projects(req.body);
+
+
+};
