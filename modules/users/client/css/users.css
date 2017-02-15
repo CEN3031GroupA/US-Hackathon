@@ -34,3 +34,82 @@
   min-height: 150px;
   max-height: 150px;
 }
+#wrapper {
+  margin: 0 auto;
+}
+
+#fields {
+  color: #63666a;
+  font-weight: 500;
+  font-size: small;
+}
+#subtext {
+  color: #63666a;
+  font-weight: 300;
+  font-size: small;
+  margin-top: 10px;
+}
+#container1 {
+  text-align: center;
+  margin-top:50px;
+  margin-bottom: 50px;
+}
+
+.btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+
+.btn-primary {
+    background: #509e2f;
+    color: #ffffff;
+    display:inline;
+}
+.round {
+  border-radius: 8px;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #509e2f;
+}
+
+.btn-primary:active, .btn-primary.active {
+    background: #007299;
+    box-shadow: none;
+}
+.btn.outline {
+    background: none;
+    padding: 12px 22px;
+}
+.btn-primary.outline {
+    margin-top:15px;
+    border: 2px solid #509e2f;
+    color: #509e2f
+}
+
+ul {
+  text-align: center;
+}
+a {
+  color: #63666a;
+  font-weight: 500;
+  font-family: 'Helvetica';
+}
+h2 {
+  color: #63666a;
+  font-family: 'Helvetica';
+  font-size: 32px;
+  font-weight: 600;
+}
+h3 {
+  color: #63666a;
+  font-family: 'Helvetica';
+  font-size: 32px;
+  font-weight: 600;
+}

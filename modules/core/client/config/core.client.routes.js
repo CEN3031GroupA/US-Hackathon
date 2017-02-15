@@ -15,7 +15,19 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: 'modules/core/client/views/home.client.view.html'
+      templateUrl: 'modules/users/client/views/authentication/welcome.client.view.html'
+    })
+    .state('1', {
+      url: '/1',
+      templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
+    })
+    .state('2', {
+      url: '/2',
+      templateUrl: 'modules/users/client/views/authentication/welcome2.client.view.html'
+    })
+    .state('3', {
+      url: '/3',
+      templateUrl: 'modules/users/client/views/authentication/welcome3.client.view.html'
     })
     .state('not-found', {
       url: '/not-found',
