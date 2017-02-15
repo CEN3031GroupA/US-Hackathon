@@ -22,6 +22,10 @@ angular.module('projects').config(['$stateProvider',
         url: '/category',
         templateUrl: 'modules/projects/client/views/create-project-pick-category.client.view.html',
       })
+      .state('projects.team', {
+        url: '/team',
+        templateUrl: 'modules/projects/client/views/create-project-pick-team.client.view.html',
+      })
       .state('projects.view', {
         url: '/:projectId',
         templateUrl: 'modules/projects/client/views/view-project.client.view.html'

@@ -1,27 +1,27 @@
 <section ng-controller="ProjectsController">
   <div class="col-md-12">
-    <!--<header>Team members-->
-    <!--</header>-->
-    <!---->
-    <!--<div ng-show="error" class="text-danger">-->
-      <!--<strong ng-bind="error"></strong>-->
-    <!--</div>-->
-    <!--<div ng-show="success" class="text-success">-->
-      <!--<strong ng-bind="success"></strong>-->
-    <!--</div>-->
-    <!--<div class="input-group" id="searchBar">-->
-      <!--<span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>-->
-      <!--<input type="text" class="form-control" placeholder="Search" ng-model="query">-->
-    <!--</div>-->
-    <!--<div class="tableWrapper">-->
-      <!--<table class="table table-striped table-hover">-->
-        <!--<tr ng-repeat="user in users | filter: query" ui-sref="addteammember">-->
-          <!--<td>{{user.icon}}</td>-->
-          <!--<td>{{user.name}}</td>-->
-        <!--</tr>-->
-      <!--</table>-->
-    <!--</div>-->
-    <!--<button type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>-->
-    <!--<p id="progress" class="form-text text-center">3/3</p>-->
+    <header>Team members
+    </header>
+
+    <div ng-show="error" class="text-danger">
+      <strong ng-bind="error"></strong>
+    </div>
+    <div ng-show="success" class="text-success">
+      <strong ng-bind="success"></strong>
+    </div>
+    <div class="input-group" id="searchBar">
+      <span class="input-group-addon" id="sizing-addon1"><span class="glyphicon glyphicon-search"></span></span>
+      <input type="text" class="form-control" placeholder="Search" ng-model="query">
+    </div>
+    <div class="tableWrapper">
+      <table class="table table-striped table-hover">
+        <tr ng-repeat="user in users | filter: query" ui-sref="addteammember">
+          <td>{{user.icon}}</td>
+          <td>{{user.name}}</td>
+        </tr>
+      </table>
+    </div>
+    <button type="submit" ui-sref ="projects.team()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>
+    <p id="progress" class="form-text text-center">3/3</p>
   </div>
 </section>
