@@ -10,10 +10,8 @@ var mongoose = require('mongoose'),
  * Project Schema
  */
 var ProjectSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
-  },
+  created_at: Date,
+  updated_at: Date,
   title: {
     type: String,
     default: '',
@@ -33,4 +31,18 @@ var ProjectSchema = new Schema({
   }
 });
 
+/* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
+ProjectSchema.pre('save', function(next) {
+    var currentDate = new Date();
+
+    this.updated_at = currentDate;
+
+    if (!this.created_at)
+        this.created_at = currentDate;
+
+    next();
+});
+
 var Project = mongoose.model('Project', ProjectSchema);
+module.exports = Project;
+

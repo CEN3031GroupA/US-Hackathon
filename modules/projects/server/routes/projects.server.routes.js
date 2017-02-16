@@ -15,6 +15,5 @@ module.exports = function(app) {
     .get(projects.read)
     .put(projects.update);
 
-  //
-  // app.param('projectId', projects.projectById);
+  app.param('projectId', projects.projectById);
 };

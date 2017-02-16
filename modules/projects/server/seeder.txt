@@ -1,0 +1,11 @@
+/* seeder that was used in project.server.model.js to seed database with projectlistings.json file */
+
+var projects = require('../projectlistings.json').projects;
+for (var i = 0; i < projects.length; i++) {
+    var item = Project(projects[i]);
+    item.save(function (err) {
+        if (err) throw err;
+
+        console.log("Listing saved!");
+    });
+}
