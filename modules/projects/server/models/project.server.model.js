@@ -20,10 +20,12 @@ var ProjectSchema = new Schema({
     trim: true,
     required: 'Title cannot be blank'
   },
+  category: {
+    type: String
+  },
   description: {
-    type: String,
-    default: '',
-    trim: true
+    short: String,
+    long: String
   },
   user: {
     type: Schema.ObjectId,
@@ -31,4 +33,4 @@ var ProjectSchema = new Schema({
   }
 });
 
-mongoose.model('Project', ProjectSchema);
+var Project = mongoose.model('Project', ProjectSchema);
