@@ -16,12 +16,12 @@ exports.create = function(req, res, next) {
   });
 };
 exports.list = function(req, res) {
-  Project.find({}, function(err, projects) {
+  Project.find({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }
     else {
-      res.json(projects);
+      res.json(data);
     }
   });
 };
