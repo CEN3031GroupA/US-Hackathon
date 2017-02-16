@@ -83,7 +83,6 @@ exports.category = function (req, res) {
     } else {
       res.json(project);
     }
-        });
-    };
+    });
 
-]};
+};

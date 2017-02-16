@@ -35,7 +35,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
               title: $scope.title,
               details: $scope.details,
               category: null
-              //    TODO does null work?
           };
 
           /* Save the project using the Projects factory  */
@@ -47,7 +46,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
                   //otherwise display the error
                   $scope.error = 'Unable to create project!\n' + error;
               });
-
 
       };
       $scope.category = function (isValid) {
