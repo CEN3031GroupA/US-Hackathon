@@ -28,4 +28,21 @@ exports.create = function(req, res) {
             }
         });
     };
+exports.category = function (req, res) {
+  var project = req.project;
+
+  // project.title = req.body.title;
+  // project.details = req.body.details;
+  project.category = req.body.category;
+
+  project.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(project);
+    }
+        });
+    };
 };
