@@ -10,20 +10,20 @@ var mongoose = require('mongoose'),
  * Project Schema
  */
 var ProjectSchema = new Schema({
-  created: {
-    type: Date,
-    default: Date.now
-  },
+  created_at: Date,
+  updated_at: Date,
   title: {
     type: String,
     default: '',
     trim: true,
     required: 'Title cannot be blank'
   },
+  category: {
+    type: String
+  },
   description: {
-    type: String,
-    default: '',
-    trim: true
+    short: String,
+    long: String
   },
   user: {
     type: Schema.ObjectId,
@@ -31,4 +31,18 @@ var ProjectSchema = new Schema({
   }
 });
 
-mongoose.model('Project', ProjectSchema);
+/* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
+ProjectSchema.pre('save', function(next) {
+    var currentDate = new Date();
+
+    this.updated_at = currentDate;
+
+    if (!this.created_at)
+        this.created_at = currentDate;
+
+    next();
+});
+
+var Project = mongoose.model('Project', ProjectSchema);
+module.exports = Project;
+
