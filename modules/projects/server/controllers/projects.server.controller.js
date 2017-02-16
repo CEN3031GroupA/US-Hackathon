@@ -2,8 +2,8 @@
 
 var path = require('path'),
   mongoose = require('mongoose'),
-  Project = require('mongoose').model('Project');
-
+  Project = require('mongoose').model('Project'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 exports.create = function(req, res, next) {
   var project = new Project(req.body);
   project.save(function (err) {
@@ -44,27 +44,27 @@ exports.read = function(req, res) {
 
 exports.projectById = function(req, res, next, id) {
   Project.findOne({
-      _id: id
-    },
-    function(err, project) {
-      if (err) {
-        return next(err);
-      }
-      else {
-        req.project = project;
-        next();
-      }
+    _id: id
+  },
+  function(err, project) {
+    if (err) {
+      return next(err);
     }
+    else {
+      req.project = project;
+      next();
+    }
+  }
   );
 };
 exports.update = function (req, res) {
-  project.save(function (err) {
+  req.project.save(function (err) {
     if (err) {
-        return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-        });
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     } else {
-        res.json(project);
+      res.json(req.project);
     }
   });
 };
@@ -83,6 +83,6 @@ exports.category = function (req, res) {
     } else {
       res.json(project);
     }
-    });
+  });
 
 };

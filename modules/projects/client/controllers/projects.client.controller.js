@@ -18,51 +18,49 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       //       $scope.error = 'Unable to retrieve listings!\n' + error;
       //   });
       // };
-      $scope.create = function (isValid) {
-          $scope.error = null;
+    $scope.create = function (isValid) {
+      $scope.error = null;
 
           /*
            Check that the form is valid. (https://github.com/paulyoder/angular-bootstrap-show-errors)
            */
-          if (!isValid) {
-              $scope.$broadcast('show-errors-check-validity', 'projectForm');
-
-              return false;
-          }
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'projectForm');
+        return false;
+      }
 
           /* Create the listing object */
-          var project = {
-              title: $scope.title,
-              details: $scope.details,
-              category: null
-          };
+      var project = {
+        title: $scope.title,
+        details: $scope.details,
+        category: null
+      };
 
           /* Save the project using the Projects factory  */
-          Projects.create(project)
-              .then(function (response) {
+      Projects.create(project)
+          .then(function (response) {
                   //if the object is successfully saved redirect back to the list page
-                  $state.go('projects.category', {successMessage: 'Project succesfully created!'});
-              }, function (error) {
+            $state.go('projects.category', { successMessage: 'Project succesfully created!' });
+          }, function (error) {
                   //otherwise display the error
-                  $scope.error = 'Unable to create project!\n' + error;
-              });
+            $scope.error = 'Unable to create project!\n' + error;
+          });
 
-      };
-      $scope.category = function (isValid) {
-          $scope.error = null;
-          if (!isValid) {
-              $scope.$broadcast('show-errors-check-validity', 'projectForm');
+    };
+    $scope.category = function (isValid) {
+      $scope.error = null;
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'projectForm');
+        return false;
+      }
+      Projects.category($scope.project.title, $scope.project)
+        .then(function (response) {
+          $state.go('projects.team', { successMessage: 'Project category set' });
+        }, function (error) {
+          $scope.error = 'Unable to add category\n' + error;
+        });
 
-              return false;
-          }
-          Projects.category($scope.project.title, $scope.project)
-              .then(function (response) {
-                  $state.go('projects.team', {successMessage: 'Project category set'});
-              }, function (error) {
-                  $scope.error = 'Unable to add category\n' + error;
-              });
-
-      };
+    };
 
     // Remove existing Project
     $scope.remove = function (project) {
