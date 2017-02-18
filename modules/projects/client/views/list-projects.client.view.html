@@ -6,14 +6,13 @@
 </head>
 <body>
 
-<section ng-controller="ProjectsController">
+<section ng-controller="ProjectsController" ng-init="find()">
   <div class="container">
-    <div class="list-group">
+    <div class="list-group" ng-repeat="project in projects">
       <a href="#" class="list-group-item">
-        <p><b>Project Name</b><br>
-          Category<br>
-          Short Description<br>
-        </p>
+        {{project.title}}<br>
+        {{project.category}}<br>
+        {{project.description.short}}
       </a>
     </div>
   </div>
