@@ -1,3 +1,29 @@
-<section ng-controller="ProjectsController">
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>view-project</title>
+    <link rel="stylesheet" href="../css/projects.css">
+  </head>
+  <section ng-controller="ProjectsControllers">
+    <header class="view-title" ng-options="project in projects">
+      <h1>{{ project.title }}</h1>
+    </header>
+    <div class="view-media" ng-model-options="project in projects">
+      <video width="320" height="240" controls>
+        {{project.video}}
+      </video>
+    </div>
+    <div>
+      <p>
+        {{project.description}}
+      </p>
+    </div>
+    <div>
+      <button type="submit" ui-sref ="projects.vote()" class="btn btn-success btn-md btn-block">Vote</button>
+    </div>
 
-</section>
+  </section>
+
+</html>
+

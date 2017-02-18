@@ -1,0 +1,33 @@
+/*
+ * projects-list
+ */
+.list-group {
+  margin: auto;
+  width: 500px;
+  padding: 10px;
+}
+
+.list-group p {
+  padding: 10px;
+}
+
+/*
+ * projects-view
+ */
+.view-title {
+  margin: auto;
+  width: 500px;
+  padding: 10px;
+}
+
+.view-media {
+  margin: auto;
+  width: 500px;
+  padding: 10px;
+}
+
+.view-desc {
+  margin: auto;
+  width: 500px;
+  padding: 10px;
+}
