@@ -114,4 +114,17 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       });
     };
 
+    // Fake data for now
+    $scope.users = [
+      {
+        name: "Jim"
+      },
+      {
+        name: "Jimbo"
+      },
+      {
+        name: "Dabo"
+      }
+    ]
+
   }]);

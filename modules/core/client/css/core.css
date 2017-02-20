@@ -72,21 +72,3 @@ a:hover .header-profile-image {
 
   border-bottom: 1px solid grey;
 }
-
-.add-project {
-  background-color: #509e2f;
-  width: 100%;
-  padding: 10px;
-  color: white;
-  cursor: pointer;
-}
-
-.add-project h3 {
-  margin-top: 5px;
-  margin-bottom: 0px;
-}
-
-.add-project .sub-title {
-  text-transform: uppercase;
-  margin-top: 10px;
-}
