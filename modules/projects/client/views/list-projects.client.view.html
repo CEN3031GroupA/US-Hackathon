@@ -7,14 +7,12 @@
 <body>
 
 <section ng-controller="ProjectsController" ng-init="find()">
-  <div class="container">
-    <div class="list-group" ng-repeat="project in projects|orderBy:random">
-      <a href="#" class="list-group-item">
-        <h4 class="list-group-item-heading">{{project.title}}</h4>
-        <h6 class="list-group-item-heading">{{project.category}}</h6>
-        <p class="list-group-item-text">{{project.description.short}}</p>
-      </a>
-    </div>
+  <div class="list-group" ng-repeat="project in projects|orderBy:random">
+    <a href="#" class="list-group-item">
+      <h4 class="list-group-item-heading">{{project.title}}</h4>
+      <h6 class="list-group-item-heading">{{project.category}}</h6>
+      <p class="list-group-item-text">{{project.description.short}}</p>
+    </a>
   </div>
 </section>
 </body>

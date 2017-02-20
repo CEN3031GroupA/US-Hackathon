@@ -37,11 +37,15 @@
 
 <body class="ng-cloak">
   <header ng-include="'/modules/core/client/views/header.client.view.html'" class="main-menu"></header>
-  <section class="content">
-    <section class="container">
-      {% block content %}{% endblock %}
-    </section>
-  </section>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+        <section class="content">
+          {% block content %}{% endblock %}
+        </section>
+      </div>
+    </div>
+  </div>
 
   <!--Embedding The User Object-->
   <script type="text/javascript">

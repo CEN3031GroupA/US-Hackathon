@@ -125,6 +125,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       {
         name: "Dabo"
       }
-    ]
+    ];
 
   }]);
