@@ -100,11 +100,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find a list of Projects
     $scope.find = function () {
-      $scope.projects = Projects.query();
-      //Randomize list of projects
-      $scope.random = function () {
-        return 0.5 - Math.random();
-      };
+      $scope.projects = Projects.query(function(projects) {
+        shuffle(projects);
+
+        $scope.projects = projects;
+      });
+
     };
 
     // Find existing Project
@@ -126,5 +127,24 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
         name: "Dabo"
       }
     ];
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
 
   }]);
