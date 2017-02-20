@@ -7,9 +7,11 @@
   padding: 10px;
 }
 
-.list-group p {
-  padding: 10px;
+.list-group-item {
+  font-family: "Times New Roman", Times, serif;
+  padding: 20px;
 }
+
 
 /*
  * projects-view
