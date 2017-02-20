@@ -101,6 +101,10 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     // Find a list of Projects
     $scope.find = function () {
       $scope.projects = Projects.query();
+      //Randomize list of projects
+      $scope.random = function () {
+        return 0.5 - Math.random();
+      };
     };
 
     // Find existing Project

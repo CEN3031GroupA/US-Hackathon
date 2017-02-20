@@ -8,7 +8,7 @@
 
 <section ng-controller="ProjectsController" ng-init="find()">
   <div class="container">
-    <div class="list-group" ng-repeat="project in projects">
+    <div class="list-group" ng-repeat="project in projects|orderBy:random">
       <a href="#" class="list-group-item">
         {{project.title}}<br>
         {{project.category}}<br>
