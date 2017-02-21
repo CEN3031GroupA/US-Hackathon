@@ -1,8 +1,38 @@
-<div ng-controller="AuthenticationController" style="position: relative;">
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>welcome</title>
+    <link rel="stylesheet" href="modules/users/client/css/users.css">
+  </head>
+
+
+<section ng-controller="AuthenticationController">
+
+      <header style="
+      width:200%;
+      height: 100vh;
+      position:absolute;
+      top:0;
+      left:-50vh;
+      background-image: url(modules/users/client/img/pexels-photo.jpg);
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;">
+      <label id="container3">
+          <img src='modules/users/client/img/logo.svg'  width="405" />
+        </label>
+      </header>
 
 
 
-<div id="container1">
+
+<label id="container1">
 
           <div style="margin-bottom:10vh">
             <h3 class="text-left">Welcome to the hackathon</h3>
@@ -12,9 +42,6 @@
                  Phasellus ultrices nulla quis nibh. Quisque a lectus. Donec consectetuer ligula vulputate sem tristique cursus. Nam nulla quam, gravida non, commodo a, sodales sit amet, nisi.</li>
                  Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut, elementum vulputate, nunc.</li>
               </p>
-          </div>
-          <div id="container2">
-            <img src = 'modules/users/client/img/logo.svg' width="400"/>
           </div>
 
           <div style="margin-bottom:10vh">
@@ -32,6 +59,6 @@
             <a href="/1" class="btn btn-primary outline"> Sign-in</a>
             </div>
           </div>
-</div>
-
-</div>﻿
+</label>
+</section>﻿
+</html>
