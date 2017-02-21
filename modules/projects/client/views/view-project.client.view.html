@@ -7,6 +7,7 @@
   </head>
   <section ng-controller="ProjectsController" ng-init="findOne()">
     <h1 ng-bind="project.title"></h1>
+    <p><small>Category:</small> <strong ng-bind="project.category"></strong></p>
     <div class="pull-right">
       <a class="btn btn-primary" ui-sref="projects.edit({projectId: project._id})">
         <i class="glyphicon glyphicon-edit"></i>
