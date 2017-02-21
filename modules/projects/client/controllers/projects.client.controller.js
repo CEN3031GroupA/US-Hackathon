@@ -1,65 +1,42 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects',
-  function ($scope, $state, $stateParams, $location, Projects) {
-      //TODO $scope.findTeamMembers
-      //   $scope.find = function() {
-      //   /* set loader*/
-      //   $scope.loading = true;
-      //
-      //   /* Get all the Users, then bind it to the scope */
-      //   Users.getAll().then(function(response) {
-      //       $scope.loading = false; //remove loader
-      //       // TODO is projects working?
-      //       $scope.projects = response.data;
-      //   }, function(error) {
-      //       $scope.loading = false;
-      //       $scope.error = 'Unable to retrieve listings!\n' + error;
-      //   });
-      // };
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', '$rootScope',
+  function ($scope, $state, $stateParams, $location, Projects, $rootScope) {
+    if (!$rootScope.activeProject) {
+      $rootScope.activeProject = {
+        description: {}
+      };
+    }
+
+    $scope.saveProjectInfo = function () {
+      $rootScope.activeProject.title = this.title;
+      $rootScope.activeProject.description.long = this.details;
+
+      $location.path('projects/category');
+    };
+
+    $scope.saveProjectCategory = function() {
+      $rootScope.activeProject.category = "Selected Category"; // TODO: Give ability to select
+
+      $location.path('projects/team');
+    };
+
     $scope.create = function (isValid) {
       $scope.error = null;
 
-          /*
-           Check that the form is valid. (https://github.com/paulyoder/angular-bootstrap-show-errors)
-           */
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'projectForm');
-        return false;
-      }
+      // Create new Project object
+      var project = new Projects($rootScope.activeProject);
 
-          /* Create the listing object */
-      var project = {
-        title: $scope.title,
-        details: $scope.details,
-        category: null
-      };
+      // Redirect after save
+      project.$save(function (response) {
+        $location.path('projects/' + response._id);
 
-          /* Save the project using the Projects factory  */
-      Projects.create(project)
-          .then(function (response) {
-                  //if the object is successfully saved redirect back to the list page
-            $state.go('projects.category', { successMessage: 'Project succesfully created!' });
-          }, function (error) {
-                  //otherwise display the error
-            $scope.error = 'Unable to create project!\n' + error;
-          });
-
-    };
-    $scope.category = function (isValid) {
-      $scope.error = null;
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'projectForm');
-        return false;
-      }
-      Projects.category($scope.project.title, $scope.project)
-        .then(function (response) {
-          $state.go('projects.team', { successMessage: 'Project category set' });
-        }, function (error) {
-          $scope.error = 'Unable to add category\n' + error;
-        });
-
+        // Clear form fields
+        $rootScope.activeProject = null;
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
     };
 
     // Remove existing Project

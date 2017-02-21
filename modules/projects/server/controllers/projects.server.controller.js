@@ -7,6 +7,8 @@ var path = require('path'),
 exports.create = function(req, res, next) {
   var project = new Project(req.body);
   project.save(function (err) {
+    console.log(req.body);
+    console.log(err);
     if (err) {
       return next(err);
     }
@@ -67,22 +69,4 @@ exports.update = function (req, res) {
       res.json(req.project);
     }
   });
-};
-exports.category = function (req, res) {
-  var project = req.project;
-
-  // project.title = req.body.title;
-  // project.details = req.body.details;
-  project.category = req.body.category;
-
-  project.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(project);
-    }
-  });
-
 };
