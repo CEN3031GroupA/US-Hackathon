@@ -91,10 +91,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
         return false;
       }
 
-      var project = $scope.project;
-
-      project.$update(function () {
-        $location.path('projects/' + project._id);
+      $scope.project.$update(function () {
+        $location.path('projects/' + $scope.project._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });

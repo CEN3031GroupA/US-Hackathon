@@ -7,8 +7,6 @@ var path = require('path'),
 exports.create = function(req, res, next) {
   var project = new Project(req.body);
   project.save(function (err) {
-    console.log(req.body);
-    console.log(err);
     if (err) {
       return next(err);
     }
@@ -59,14 +57,20 @@ exports.projectById = function(req, res, next, id) {
   }
   );
 };
+
 exports.update = function (req, res) {
-  req.project.save(function (err) {
+  var project = req.project;
+
+  project.title = req.body.title;
+  project.description.long = req.body.description.long;
+
+  project.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(req.project);
+      res.json(project);
     }
   });
 };

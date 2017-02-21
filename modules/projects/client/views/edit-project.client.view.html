@@ -1,8 +1,22 @@
-<section ng-controller="ProjectsController">
-  <div class="page-header">
-    <h1>Edit Project</h1>
-  </div>
-  <div class="col-md-12">
-    Edit project contents...
+<section ng-controller="ProjectsController" ng-init="findOne()">
+  <div class="col-xs-12">
+    <h2>Edit project</small></h2>
+    <form name="projectForm" class="form-vertical" ng-submit="update(projectForm.$valid)">
+      <fieldset>
+        <div class="form-group" show-errors>
+          <input type="text" ng-model="project.title" name="title" class="form-control" ng-model="title" placeholder="Title" required>
+          <div ng-messages="projectForm.title.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Project title is required</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <textarea name="details" rows="5" ng-model="project.description.long" class="form-control" ng-model="details" placeholder="Decribe your project, make it simple and cool..." required></textarea>
+          <div ng-messages="projectForm.details.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Project details are required</p>
+          </div>
+        </div>
+        <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" value="Save" />
+      </fieldset>
+    </form>
   </div>
 </section>
