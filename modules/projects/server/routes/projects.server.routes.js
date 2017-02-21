@@ -13,7 +13,8 @@ module.exports = function(app) {
 
   app.route('/api/projects/:projectId')
     .get(projects.read)
-    .put(projects.update);
+    .put(projects.update)
+    .delete(projects.delete);
 
   app.param('projectId', projects.projectById);
 };

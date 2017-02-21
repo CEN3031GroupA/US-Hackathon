@@ -7,8 +7,8 @@
 <body>
 
 <section ng-controller="ProjectsController" ng-init="find()">
-  <div class="list-group" ng-repeat="project in projects|orderBy:random">
-    <a href="#" class="list-group-item">
+  <div class="list-group" ui-sref="projects.view({projectId: project._id})" ng-repeat="project in projects|orderBy:random">
+    <a  class="list-group-item">
       <h4 class="list-group-item-heading">{{project.title}}</h4>
       <h6 class="list-group-item-heading">{{project.category}}</h6>
       <p class="list-group-item-text">{{project.description.short}}</p>

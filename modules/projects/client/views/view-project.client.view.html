@@ -5,20 +5,18 @@
     <title>view-project</title>
     <link rel="stylesheet" href="../css/projects.css">
   </head>
-  <section ng-controller="ProjectsController">
-    <header class="view-title" ng-options="project in projects">
-      <h1>{{ project.title }}</h1>
-    </header>
-    <div class="view-media" ng-model-options="project in projects">
-      <video width="320" height="240" controls>
-        {{project.video}}
-      </video>
+  <section ng-controller="ProjectsController" ng-init="findOne()">
+    <h1 ng-bind="project.title"></h1>
+    <div class="pull-right">
+      <a class="btn btn-primary" ui-sref="projects.edit({projectId: project._id})">
+        <i class="glyphicon glyphicon-edit"></i>
+      </a>
+      <a class="btn btn-primary" ng-click="remove();">
+        <i class="glyphicon glyphicon-trash"></i>
+      </a>
     </div>
-    <div>
-      <p>
-        {{project.description}}
-      </p>
-    </div>
+
+    <div class="project-content" ng-bind="project.description.long"></div>
     <div>
       <button type="submit" ui-sref ="projects.vote()" class="btn btn-success btn-md btn-block">Vote</button>
     </div>

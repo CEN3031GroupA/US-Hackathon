@@ -74,3 +74,8 @@ ul.team-list li {
 .progress-bar {
   background-color: #115e67;
 }
+
+.project-content {
+  clear: both;
+  margin: 15px 0 25px 0;
+}
