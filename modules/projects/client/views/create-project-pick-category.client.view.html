@@ -1,34 +1,38 @@
 <section ng-controller="ProjectsController">
   <div class="col-md-12">
-  <form name="projectFormCategories" class="form-verical" ng-submit="projects.category(projectFormCategories.$valid)">
-    <header>Pick a Category
-    </header>
-    <div class="form-group">
-      <section>
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#Themed">Themed</a></li>
-          <li><a data-toggle="tab" href="#BestValue">Best Value</a></li>
-          <li><a data-toggle="tab" href="#Categories">Categories</a></li>
-        </ul>
-
-        <div class="tab-content">
-          <div id="Themed" class="tab-pane fade in active">
-            <p>For this category you'll have to address the following problems.</p>
-            <p>1. Buisness problem/need</p>
-            <p>2. Challenges/users</p>
-            <p>3. Remember that...</p>
-          </div>
-          <div id="BestValue" class="tab-pane fade">
-            <p>Best value content</p>
-          </div>
-          <div id="Categories" class="tab-pane fade">
-            <p>Some content in categories tab.</p>
-          </div>
-        </div>
-      </section>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100" style="width: 66%;">
+        <span class="sr-only">66% Complete</span>
+      </div>
     </div>
-    <button type="submit" ui-sref ="projects.team()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>
-    <p id="progress" class="form-text text-center">2/3</p>
-  </form>
+    <form name="projectFormCategories" class="form-verical" ng-submit="projects.category(projectFormCategories.$valid)">
+      <h2>Pick a category</h2>
+      <div class="form-group">
+        <section>
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#Themed">Themed</a></li>
+            <li><a data-toggle="tab" href="#BestValue">Best Value</a></li>
+            <li><a data-toggle="tab" href="#Categories">Categories</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div id="Themed" class="tab-pane fade in active">
+              <p>For this category you'll have to address the following problems.</p>
+              <p>1. Buisness problem/need</p>
+              <p>2. Challenges/users</p>
+              <p>3. Remember that...</p>
+            </div>
+            <div id="BestValue" class="tab-pane fade">
+              <p>Best value content</p>
+            </div>
+            <div id="Categories" class="tab-pane fade">
+              <p>Some content in categories tab.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <button type="submit" ui-sref ="projects.team()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>
+      <p class="form-text text-center">Step 2/3</p>
+    </form>
   </div>
 </section>
