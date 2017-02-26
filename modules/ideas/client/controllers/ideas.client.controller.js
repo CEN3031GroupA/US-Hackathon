@@ -32,6 +32,22 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       });
     };
 
+    $scope.remove = function (idea) {
+      if (idea) {
+        idea.$remove();
+
+        for (var i in $scope.ideas) {
+          if ($scope.ideas[i] === idea) {
+            $scope.ideas.splice(i,1);
+          }
+        }
+      } else {
+        $scope.idea.$remove(function () {
+          $location.path('ideas');
+        });
+      }
+    };
+
     $scope.find = function () {
       $scope.ideas = Ideas.query(function(ideas) {
         shuffle(ideas);

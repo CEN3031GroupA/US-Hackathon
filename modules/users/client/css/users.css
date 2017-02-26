@@ -76,9 +76,9 @@
 .btn {
     padding: 14px 24px;
     border: 0 none;
-    font-weight: 700;
+    font-weight: 400;
     letter-spacing: 1px;
-    text-transform: uppercase;
+    width:50%;
 }
 
 .btn:focus, .btn:active:focus, .btn.active:focus {

@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>view-idea</title>
+    <link rel="stylesheet" href="../css/ideas.css">
+  </head>
+  <section ng-controller="IdeasController" ng-init="findOne()">
+    <h1 class = "frontscreen" ng-bind="idea.title"></h1>
+
+    <div class="idea-content" ng-bind="idea.description.long"></div>
+    <div>
+      <button type="success" ui-sref = "ideas.list()" class = "btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+      </button>
+      <button type="success" ui-sref = "global()" class = "btn btn-primary">
+        <span class="glyphicon glyphicon-home"></span>
+      </button>
+      <button type="danger" class="btn btn-danger" ng-click="remove()">
+        <span class="glyphicon glyphicon-trash"></span>
+      </button>
+
+    </div>
+  </section>

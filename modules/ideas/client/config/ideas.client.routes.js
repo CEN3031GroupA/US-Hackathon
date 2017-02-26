@@ -20,6 +20,10 @@ angular.module('ideas').config(['$stateProvider',
       .state('ideas.success', {
         url:'/success',
         templateUrl: 'modules/ideas/client/views/success.client.view.html',
+      })
+      .state('ideas.view', {
+        url:'/:ideaId',
+        templateUrl: 'modules/ideas/client/views/view-idea.client.view.html',
       });
   }
 ]);

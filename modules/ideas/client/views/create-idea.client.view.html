@@ -10,9 +10,20 @@
         <div class="form-group" show-errors>
           <textarea name="details" rows="10" class="form-control" ng-model="details" placeholder="Describe your idea" required></textarea>
         </div>
-        <button type="submit" ng-click="saveIdeaInfo()" class="btn btn-primary">
-          <span class="glyphicon glyphicon-ok"></span>
+
+
+
+        <button ui-sref="global()" class="btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left"></span>
         </button>
+
+
+        <button type="submit" ng-click="saveIdeaInfo()" class="btn btn-primary">
+          Submit
+        </button>
+
+
+
       </fieldset>
     </form>
   </div>

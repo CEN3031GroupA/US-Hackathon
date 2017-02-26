@@ -1,15 +1,35 @@
 .btn {
     padding: 14px 24px;
-    border: none;
+    border: 0 none;
     font-weight: 400;
     letter-spacing: 1px;
-    width:20%;
-    margin-top: 5vh;
+    width:100%;
+  
+}
+.btn-primary {
+    background: #509e2f;
+    color: #ffffff;
 
+}
+.btn-danger {
+    background: #d9534f;
+    color: #ffffff;
+    width: 10%;
+}
+.previous {
+  float:left;
+}
+.home {
+  float:left;
 }
 .frontscreen {
     font-family: "Times New Roman", Times, serif;
     margin-bottom: 5vh;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.idea-content {
+    font-family: "Times New Roman", Times, serif;
     font-weight: 500;
     letter-spacing: 1px;
 }
@@ -19,10 +39,7 @@
     font-weight: 500;
     letter-spacing: 1px;
 }
-.btn-primary {
-    background: #509e2f;
-    color: #ffffff;
-}
+
 
 
 .list-group {
