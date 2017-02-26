@@ -45,4 +45,3 @@ ProjectSchema.pre('save', function(next) {
 
 var Project = mongoose.model('Project', ProjectSchema);
 module.exports = Project;
-

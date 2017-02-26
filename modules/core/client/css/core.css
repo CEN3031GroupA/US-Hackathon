@@ -7,6 +7,9 @@ body {
 .undecorated-link:hover {
   text-decoration: none;
 }
+.add-idea {
+  margin-top: 6vh;
+}
 [ng\:cloak],
 [ng-cloak],
 [x-ng-cloak],
