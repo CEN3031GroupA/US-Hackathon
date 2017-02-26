@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,22 +16,3 @@
     </div>
   </section>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <link rel="stylesheet" href="../../../../public/lib/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../css/ideas.css">
-</head>
-<body>
-  <section ng-controller="IdeasController" ng-init="find()">
-    <div class="list-group" ui-sref="ideas.view({ideaId: idea._id})" ng-repeat="idea in ideas|orderBy:random">
-      <a class="list-group-item">
-        <h4 class="list-group-item-heading">{{idea.title}}</h4>
-        <h6 class="list.group-item-heading">{{idea.category}}</h6>
-        <p class="list-group-item-text">{{idea.description.short}}</p>
-      </a>
-    </div>
-  </section>
-</body>
->>>>>>> 55dd456882f5558d2e99b5c5df4d1bdeb5862474

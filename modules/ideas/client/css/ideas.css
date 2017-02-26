@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .btn {
     padding: 14px 24px;
     border: none;
@@ -53,59 +52,3 @@
   text-transform: uppercase;
   margin-top: 10px;
 }
-=======
-.btn {
-    padding: 14px 24px;
-    border: none;
-    font-weight: 400;
-    letter-spacing: 1px;
-    width:20%;
-    margin-top: 5vh;
-
-}
-.frontscreen {
-    font-family: "Times New Roman", Times, serif;
-    margin-bottom: 5vh;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-.backscreen {
-    font-family: "Times New Roman", Times, serif;
-    margin-bottom: 10vh;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-.btn-primary {
-    background: #509e2f;
-    color: #ffffff;
-}
-
-
-.list-group {
-  margin: auto;
-  padding: 10px;
-}
-
-.list-group-item {
-  font-family: "Times New Roman", Times, serif;
-  padding: 20px;
-}
-
-.add-idea {
-  background-color: #509e2f;
-  width: 100%;
-  padding: 10px;
-  color: white;
-  cursor: pointer;
-}
-
-.add-idea h3 {
-  margin-top: 5px;
-  margin-bottom: 0px;
-}
-
-.add-idea .sub-title {
-  text-transform: uppercase;
-  margin-top: 10px;
-}
->>>>>>> 55dd456882f5558d2e99b5c5df4d1bdeb5862474
