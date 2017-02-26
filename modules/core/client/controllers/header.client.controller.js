@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus',
-  function ($scope, $state, Authentication, Menus) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location',
+  function ($scope, $state, Authentication, $location) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -21,9 +21,41 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       }
     };
 
-    // Collapsing the menu after navigation
     $scope.$on('$stateChangeSuccess', function () {
+      // Collapsing the menu after navigation
       $scope.closeMenu();
+
+      // Populate menu items based on location
+      var path = $location.path();
+
+      var defaultMenu = [
+        {
+          title: 'Home',
+          'ui-sref': 'global()'
+        },
+        {
+          title: 'Projects',
+          'ui-sref': 'projects.list()'
+        }
+      ];
+
+      var adminMenu = [
+        {
+          title: 'Home',
+          'ui-sref': 'global()'
+        },
+        {
+          title: 'Admin Home',
+          'ui-sref': 'admin.index()'
+        }
+      ];
+
+      // TODO: Replace this with role/Check if user is admin
+      if (path.indexOf('admin') !== -1) {
+        $scope.activeMenu = adminMenu;
+      } else {
+        $scope.activeMenu = defaultMenu;
+      }
     });
 
     $scope.closeMenu = function() {
