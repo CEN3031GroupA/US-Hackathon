@@ -79,3 +79,7 @@ ul.team-list li {
   clear: both;
   margin: 15px 0 25px 0;
 }
+
+.project-item {
+  cursor: pointer;
+}

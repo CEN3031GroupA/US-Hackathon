@@ -841,65 +841,67 @@ angular.module('projects').config(['$stateProvider',
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects',
-  function ($scope, $state, $stateParams, $location, Projects) {
-      //TODO $scope.findTeamMembers
-      //   $scope.find = function() {
-      //   /* set loader*/
-      //   $scope.loading = true;
-      //
-      //   /* Get all the Users, then bind it to the scope */
-      //   Users.getAll().then(function(response) {
-      //       $scope.loading = false; //remove loader
-      //       // TODO is projects working?
-      //       $scope.projects = response.data;
-      //   }, function(error) {
-      //       $scope.loading = false;
-      //       $scope.error = 'Unable to retrieve listings!\n' + error;
-      //   });
-      // };
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', '$rootScope',
+  function ($scope, $state, $stateParams, $location, Projects, $rootScope) {
+    if (!$rootScope.activeProject) {
+      $rootScope.activeProject = {
+        description: {}
+      };
+    }
+
+    // TODO: We'll need to populate this dynamically later
+    $scope.categories = [
+      {
+        id: 0,
+        title: "Category 1",
+        description: "Hey there, this is the category description..."
+      },
+      {
+        id: 1,
+        title: "Category 2",
+        description: "Hi there, this is the category description..."
+      },
+      {
+        id: 2,
+        title: "Category 3",
+        description: "Hello there, this is the category description..."
+      }
+    ];
+
+    $scope.activeCategory = $scope.categories[0];
+
+    $scope.saveProjectInfo = function () {
+      $rootScope.activeProject.title = this.title;
+      $rootScope.activeProject.description.long = this.details;
+
+      $location.path('projects/category');
+    };
+
+    $scope.setActiveCategory = function(category) {
+      $scope.activeCategory = category;
+    };
+
+    $scope.saveProjectCategory = function() {
+      $rootScope.activeProject.category = $scope.activeCategory.title;
+
+      $location.path('projects/team');
+    };
+
     $scope.create = function (isValid) {
       $scope.error = null;
 
-          /*
-           Check that the form is valid. (https://github.com/paulyoder/angular-bootstrap-show-errors)
-           */
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'projectForm');
-        return false;
-      }
+      // Create new Project object
+      var project = new Projects($rootScope.activeProject);
 
-          /* Create the listing object */
-      var project = {
-        title: $scope.title,
-        details: $scope.details,
-        category: null
-      };
+      // Redirect after save
+      project.$save(function (response) {
+        $location.path('projects/' + response._id);
 
-          /* Save the project using the Projects factory  */
-      Projects.create(project)
-          .then(function (response) {
-                  //if the object is successfully saved redirect back to the list page
-            $state.go('projects.category', { successMessage: 'Project succesfully created!' });
-          }, function (error) {
-                  //otherwise display the error
-            $scope.error = 'Unable to create project!\n' + error;
-          });
-
-    };
-    $scope.category = function (isValid) {
-      $scope.error = null;
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'projectForm');
-        return false;
-      }
-      Projects.category($scope.project.title, $scope.project)
-        .then(function (response) {
-          $state.go('projects.team', { successMessage: 'Project category set' });
-        }, function (error) {
-          $scope.error = 'Unable to add category\n' + error;
-        });
-
+        // Clear form fields
+        $rootScope.activeProject = null;
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
     };
 
     // Remove existing Project
@@ -929,10 +931,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
         return false;
       }
 
-      var project = $scope.project;
-
-      project.$update(function () {
-        $location.path('projects/' + project._id);
+      $scope.project.$update(function () {
+        $location.path('projects/' + $scope.project._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -940,7 +940,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find a list of Projects
     $scope.find = function () {
-      $scope.projects = Projects.query();
+      $scope.projects = Projects.query(function(projects) {
+        shuffle(projects);
+
+        $scope.projects = projects;
+      });
+
     };
 
     // Find existing Project
@@ -949,6 +954,38 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
         projectId: $stateParams.projectId
       });
     };
+
+    // Fake data for now
+    $scope.users = [
+      {
+        name: "Jim"
+      },
+      {
+        name: "Jimbo"
+      },
+      {
+        name: "Dabo"
+      }
+    ];
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
 
   }]);
 

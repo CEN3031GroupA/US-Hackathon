@@ -9,6 +9,27 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       };
     }
 
+    // TODO: We'll need to populate this dynamically later
+    $scope.categories = [
+      {
+        id: 0,
+        title: "Category 1",
+        description: "Hey there, this is the category description..."
+      },
+      {
+        id: 1,
+        title: "Category 2",
+        description: "Hi there, this is the category description..."
+      },
+      {
+        id: 2,
+        title: "Category 3",
+        description: "Hello there, this is the category description..."
+      }
+    ];
+
+    $scope.activeCategory = $scope.categories[0];
+
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
       $rootScope.activeProject.description.long = this.details;
@@ -16,8 +37,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       $location.path('projects/category');
     };
 
+    $scope.setActiveCategory = function(category) {
+      $scope.activeCategory = category;
+    };
+
     $scope.saveProjectCategory = function() {
-      $rootScope.activeProject.category = "Selected Category"; // TODO: Give ability to select
+      $rootScope.activeProject.category = $scope.activeCategory.title;
 
       $location.path('projects/team');
     };
@@ -66,10 +91,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
         return false;
       }
 
-      var project = $scope.project;
-
-      project.$update(function () {
-        $location.path('projects/' + project._id);
+      $scope.project.$update(function () {
+        $location.path('projects/' + $scope.project._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
