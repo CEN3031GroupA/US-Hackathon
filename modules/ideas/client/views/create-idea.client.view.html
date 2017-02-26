@@ -1,0 +1,18 @@
+<section ng-controller="IdeasController">
+  <div class="col-xs-12">
+    <h2 class = "frontscreen">Add Idea</h2>
+    <form name="ideaForm" class="form-vertical">
+      <fieldset>
+        <div class="form-group" show-errors>
+          <input type="text" name="title" class="form-control" ng-model="title" placeholder="title" required>
+        </div>
+        <div class="form-group" show-errors>
+          <textarea name="details" rows="10" class="form-control" ng-model="details" placeholder="Describe your idea" required></textarea>
+        </div>
+        <button type="submit" ng-click="saveIdeaInfo()" class="btn btn-primary">
+          <span class="glyphicon glyphicon-ok"></span>
+        </button>
+      </fieldset>
+    </form>
+  </div>
+</section>
