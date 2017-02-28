@@ -1,0 +1,7 @@
+<section ng-controller="EventCategoriesController" ng-init="find()">
+  <a ui-sref="eventCategories.create()">Create New Category</a>
+
+  <div ng-repeat="eventCategory in eventCategories">
+    <a ui-sref="eventCategories.edit({eventCategoryId: eventCategory._id})">{{eventCategory.title}}</a>
+  </div>
+</section>

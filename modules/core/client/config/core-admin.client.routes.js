@@ -11,7 +11,7 @@ angular.module('core.admin.routes').config(['$stateProvider',
       })
       .state('admin.index', {
         url: '',
-        templateUrl: 'modules/core/client/views/admin/index.client.view.html'
+        templateUrl: 'modules/core/client/views/admin/list.client.view.html'
       });
   }
 ]);
