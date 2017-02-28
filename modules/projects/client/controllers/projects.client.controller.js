@@ -11,7 +11,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
-      $rootScope.activeProject.description.long = this.details;
+      $rootScope.activeProject.description.short = this.short;
+      $rootScope.activeProject.description.long = this.long;
 
       $location.path('projects/category');
     };

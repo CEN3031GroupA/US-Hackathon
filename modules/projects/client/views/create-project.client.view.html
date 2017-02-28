@@ -15,7 +15,13 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <textarea name="details" rows="5" class="form-control" ng-model="details" placeholder="Decribe your project, make it simple and cool..." required></textarea>
+          <textarea name="short" rows="2" class="form-control" ng-model="short" placeholder="Short description of your project, make it simple and cool..." required></textarea>
+          <div ng-messages="projectForm.details.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Project details are required</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <textarea name="long" rows="5" class="form-control" ng-model="long" placeholder="Detailed description of your project" required></textarea>
           <div ng-messages="projectForm.details.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Project details are required</p>
           </div>
