@@ -11,17 +11,16 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
     $scope.error = null;
 
     // Create new FAQ object
-    var faq = new Faq($rootScope.activeProject);
-
-    // Redirect after save
-    project.$save(function (response) {
-        $location.path('projects/' + response._id);
-
-        // Clear form fields
-        $rootScope.activeProject = null;
-    }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+    var faq = new FAQs({
+      question: this.question
     });
+    //
+    // // Redirect after save
+    // faq.$save(function (response) {
+    //     $location.path('projects/' + response._id);
+    // }, function (errorResponse) {
+    //     $scope.error = errorResponse.data.message;
+    // });
   };
 
         // // Remove existing Project

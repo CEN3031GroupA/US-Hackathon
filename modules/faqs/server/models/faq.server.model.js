@@ -15,7 +15,7 @@ var FAQSchema = new Schema({
   question: {
     type: String,
     default: '',
-    required: 'Title cannot be blank'
+    required: 'Question cannot be blank'
   },
   project: {
     type: String
@@ -24,8 +24,11 @@ var FAQSchema = new Schema({
     type: String
   },
   answers: [
-    {type: String, ref: 'FAQ'}
+    {type: String, ref: 'User'}
   ],
+  solution: {
+    type: String
+  },
   solved: {
     type: Boolean
   },
@@ -37,14 +40,14 @@ var FAQSchema = new Schema({
 
 /* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
 FAQSchema.pre('save', function(next) {
-    var currentDate = new Date();
+  var currentDate = new Date();
 
-    this.updated_at = currentDate;
+  this.updated_at = currentDate;
 
-    if (!this.created_at)
-        this.created_at = currentDate;
+  if (!this.created_at)
+    this.created_at = currentDate;
 
-    next();
+  next();
 });
 
 var FAQ = mongoose.model('FAQ', FAQSchema);

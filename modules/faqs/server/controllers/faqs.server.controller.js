@@ -10,7 +10,7 @@ var path = require('path'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 exports.create = function(req, res, next) {
     var faq = new FAQ(req.body);
-    project.save(function (err) {
+    faq.save(function (err) {
         if (err) {
             return next(err);
         }
