@@ -4,6 +4,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Project = require('mongoose').model('Project'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+
 exports.create = function(req, res, next) {
   var project = new Project(req.body);
   project.save(function (err) {
@@ -59,8 +60,14 @@ exports.projectById = function(req, res, next, id) {
   }
   );
 };
+
 exports.update = function (req, res) {
-  req.project.save(function (err) {
+  var project = req.project;
+
+  project.votes = req.body.votes;
+
+
+  project.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -70,3 +77,5 @@ exports.update = function (req, res) {
     }
   });
 };
+
+

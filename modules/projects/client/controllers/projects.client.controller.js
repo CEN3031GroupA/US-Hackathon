@@ -93,16 +93,22 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       });
     };
 
+    $scope.vote = function (project) {
+      project.votes += 1;
+
+      Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
+    };
+
     // Fake data for now
     $scope.users = [
       {
-        name: "Jim"
+        name: 'Jim'
       },
       {
-        name: "Jimbo"
+        name: 'Jimbo'
       },
       {
-        name: "Dabo"
+        name: 'Dabo'
       }
     ];
 

@@ -29,7 +29,10 @@ var ProjectSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  votes: Number
+  votes: {
+    type: Number,
+    default: 0
+  }
 });
 
 /* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
