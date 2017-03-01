@@ -95,7 +95,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.vote = function (project) {
       project.votes += 1;
-
+      document.getElementById("voteButton").style.backgroundColor = '#63666A';
+      document.getElementById("voteButton").innerHTML = "Voted!";
+      document.getElementById("voteButton").style.color = '#FFFFFF';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
     };
 
