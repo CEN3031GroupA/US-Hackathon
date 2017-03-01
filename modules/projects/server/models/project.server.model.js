@@ -28,7 +28,17 @@ var ProjectSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
-  }
+  },
+  comments: [{
+    posted: {type: Date, default: Date.now},
+    user:    {type: Schema.ObjectId, ref: 'User'},
+    content: {type: String, default: ''},
+    replies: [{
+      posted: {type: Date, default: Date.now},
+      user:    {type: Schema.ObjectId, ref: 'User'},
+      content: {type: String,default: ''}
+    }]
+  }]
 });
 
 /* create a 'pre' function that adds the updated_at (and created_at if not already there) property */
