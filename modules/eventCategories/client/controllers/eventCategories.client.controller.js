@@ -5,7 +5,8 @@ angular.module('eventCategories').controller('EventCategoriesController', ['$sco
   function ($scope, $state, $stateParams, $location, EventCategory) {
     $scope.create = function() {
       var eventCategory = new EventCategory({
-        title: this.title
+        title: this.title,
+        description: this.description
       });
 
       // Redirect after save

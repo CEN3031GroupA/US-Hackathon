@@ -1,10 +1,17 @@
 <section ng-controller="EventCategoriesController" ng-init="findOne()">
-  <h1>Create New Event Category</h1>
+  <h1>Update Event Category</h1>
 
   <form ng-submit="update()">
-    Title:
-    <input name="title" type="text" ng-model="eventCategory.title" />
-
-    <input type="submit" />
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="text" ng-model="eventCategory.title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" ng-model="eventCategory.description" id="description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Update" class="btn btn-default">
+    </div>
   </form>
 </section>

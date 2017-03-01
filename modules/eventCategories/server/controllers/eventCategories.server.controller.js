@@ -41,17 +41,17 @@ exports.delete = function(req, res, next) {
 
 exports.eventCategoryById = function(req, res, next, id) {
   EventCategory.findOne({
-    _id: id
-  },
-  function(err, eventCategory) {
-    if (err) {
-      return next(err);
+      _id: id
+    },
+    function(err, eventCategory) {
+      if (err) {
+        return next(err);
+      }
+      else {
+        req.eventCategory = eventCategory;
+        next();
+      }
     }
-    else {
-      req.eventCategory = eventCategory;
-      next();
-    }
-  }
   );
 };
 
@@ -59,6 +59,7 @@ exports.update = function (req, res) {
   var eventCategory = req.eventCategory;
 
   eventCategory.title = req.body.title;
+  eventCategory.description = req.body.description;
 
   eventCategory.save(function (err) {
     if (err) {
