@@ -10,12 +10,12 @@ angular.module('faqs').config(['$stateProvider',
     $stateProvider
       .state('faqs', {
         abstract: true,
-        url: '/faqs',
+        url: '',
         template: '<ui-view/>'
       })
       .state('faqs.list', {
-        url: '',
-        template: 'modules/faqs/client/views/list-faqs.client.view.html'
+        url: '/faqs',
+        templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
       .state('faqs.post', {
         url: '/post',
