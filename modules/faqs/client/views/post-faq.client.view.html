@@ -1,18 +1,8 @@
 <section ng-controller="FAQsController">
+  <div class="page-header">
+    <h1>FAQ</h1>
+  </div>
   <div class="col-md-12">
-    <div class="page-header">
-      <h1 class="glyphicon glyphicon-plus"><div class="glyphicon glyphicon-question-sign"></div></h1>
-    </div>
-    <form name="faqForm" class="form-vertical">
-      <fieldset>
-        <div class="form-group" show-errors>
-          <textarea type="text" rows="3" name="question" class="form-control" ng-model="question" placeholder="Ask a question" required></textarea>
-          <div ng-messages="faqForm.question.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Question is required</p>
-          </div>
-        </div>
-        <button type="submit" ng-click="post()" color="PMS 362c" class="btn btn-success btn-md btn-block">Ask</button>
-      </fieldset>
-    </form>
+
   </div>
 </section>
