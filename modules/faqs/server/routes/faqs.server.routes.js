@@ -9,15 +9,15 @@
 var faqs = require('../controllers/faqs.server.controller');
 
 module.exports = function(app) {
-  app.route('/api/faqs')
-    .post(faqs.create)
-    .get(faqs.list);
-
-  app.route('/api/faqs/:projectId')
-    .get(faqs.read)
-    .put(faqs.update)
-    .delete(faqs.delete);
-
-  app.param('faqId', faqs.faqsById);
+  // app.route('/api/faqs')
+  //   .post(faqs.create)
+  //   .get(faqs.list);
+  //
+  // app.route('/api/faqs/:projectId')
+  //   .get(faqs.read)
+  //   .put(faqs.update)
+  //   .delete(faqs.delete);
+  //
+  // app.param('faqId', faqs.faqsById);
 };
 
