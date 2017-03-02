@@ -30,51 +30,51 @@ exports.list = function(req, res) {
         }
     });
 };
-//
-// exports.delete = function(req, res, next) {
-//     req.faq.remove(function(err) {
-//         if (err) {
-//             return next(err);
-//         }
-//         else {
-//             res.json(req.faq);
-//         }
-//     });
-// };
-//
-// exports.read = function(req, res) {
-//     res.json(req.faq);
-// };
-//
-exports.faqById = function(req, res, next, id) {
-    FAQ.findOne({
-            _id: id
-        },
-        function(err, faq) {
-            if (err) {
-                return next(err);
-            }
-            else {
-                req.faq = faq;
-                next();
-            }
-        }
-    );
+
+exports.delete = function(req, res, next) {
+  // req.faq.remove(function(err) {
+  //   if (err) {
+  //     return next(err);
+  //   }
+  //   else {
+  //     res.json(req.faq);
+  //   }
+  // });
 };
-//
-// exports.update = function (req, res) {
-//     // var faq = req.faq;
-//     //
-//     // faq.title = req.body.title;
-//     // project.description.long = req.body.description.long;
-//     //
-//     // project.save(function (err) {
-//     //     if (err) {
-//     //         return res.status(400).send({
-//     //             message: errorHandler.getErrorMessage(err)
-//     //         });
-//     //     } else {
-//     //         res.json(project);
-//     //     }
-//     // });
-// };
+
+exports.read = function(req, res) {
+    res.json(req.faq);
+};
+
+exports.faqById = function(req, res, next, id) {
+    // FAQ.findOne({
+    //         _id: id
+    //     },
+    //     function(err, faq) {
+    //         if (err) {
+    //             return next(err);
+    //         }
+    //         else {
+    //             req.faq = faq;
+    //             next();
+    //         }
+    //     }
+    // );
+};
+
+exports.update = function (req, res) {
+  // var faq = req.faq;
+  //
+  // faq.question = req.body.question;
+  // faq.solution = req.body.solution;
+  //
+  // faq.save(function (err) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.json(faq);
+  //   }
+  // });
+};

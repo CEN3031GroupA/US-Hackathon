@@ -13,12 +13,11 @@ module.exports = function(app) {
      .get(faqs.list)
      .post(faqs.create);
 
-
   // app.route('/api/faqs/:faqId')
   //   .get(faqs.read)
   //   .put(faqs.update)
   //   .delete(faqs.delete);
-  //
+
   app.param('faqId', faqs.faqById);
 };
 

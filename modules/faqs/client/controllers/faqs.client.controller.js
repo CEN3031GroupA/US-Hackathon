@@ -12,46 +12,17 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
 
     // Create new FAQ object
       var faq = new FAQs({
-        question: this.question
+        question: this.question,
+        // project: this.project,
+        // event: this.event,
+        // answers: null,
+        // solution: this.solution,
+        // solved: false,
+        // user: this.user
       });
-    //th
+
     };
-
-        // // Remove existing Project
-        // $scope.remove = function (project) {
-        //     if (project) {
-        //         project.$remove();
-        //
-        //         for (var i in $scope.projects) {
-        //             if ($scope.projects[i] === project) {
-        //                 $scope.projects.splice(i, 1);
-        //             }
-        //         }
-        //     } else {
-        //         $scope.project.$remove(function () {
-        //             $location.path('projects');
-        //         });
-        //     }
-        // };
-
-        // // Update existing Project
-        // $scope.update = function (isValid) {
-        //     $scope.error = null;
-        //
-        //     if (!isValid) {
-        //         $scope.$broadcast('show-errors-check-validity', 'projectForm');
-        //
-        //         return false;
-        //     }
-        //
-        //     $scope.project.$update(function () {
-        //         $location.path('projects/' + $scope.project._id);
-        //     }, function (errorResponse) {
-        //         $scope.error = errorResponse.data.message;
-        //     });
-        // };
-        //
-        // Find a list of Projects
+    // Find a list of Projects
     $scope.find = function () {
       $scope.faqs = FAQs.query(function(faqs) {
         $scope.faqs = faqs;

@@ -15,7 +15,8 @@ var FAQSchema = new Schema({
   question: {
     type: String,
     default: '',
-    required: 'Question cannot be blank'
+    required: 'Question cannot be blank',
+    trim: true
   },
   project: {
     type: String
@@ -24,7 +25,7 @@ var FAQSchema = new Schema({
     type: String
   },
   answers: [
-    { type: String, ref: 'User' }
+    { body: String }
   ],
   solution: {
     type: String
