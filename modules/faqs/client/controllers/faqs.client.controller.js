@@ -7,21 +7,15 @@
 angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
   function ($scope, $state, $stateParams, $location, FAQs) {
 
-  $scope.create = function (isValid) {
-    $scope.error = null;
+    $scope.create = function (isValid) {
+      $scope.error = null;
 
     // Create new FAQ object
-    var faq = new FAQs({
-      question: this.question
-    });
-    //
-    // // Redirect after save
-    // faq.$save(function (response) {
-    //     $location.path('projects/' + response._id);
-    // }, function (errorResponse) {
-    //     $scope.error = errorResponse.data.message;
-    // });
-  };
+      var faq = new FAQs({
+        question: this.question
+      });
+    //th
+    };
 
         // // Remove existing Project
         // $scope.remove = function (project) {
@@ -66,4 +60,4 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
         //     });
         //
         // };
-    }]);
+  }]);
