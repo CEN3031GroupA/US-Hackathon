@@ -51,13 +51,10 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
         //     });
         // };
         //
-        // // Find a list of Projects
-        // $scope.find = function () {
-        //     $scope.projects = Projects.query(function(projects) {
-        //         shuffle(projects);
-        //
-        //         $scope.projects = projects;
-        //     });
-        //
-        // };
+        // Find a list of Projects
+    $scope.find = function () {
+      $scope.faqs = FAQs.query(function(faqs) {
+        $scope.faqs = faqs;
+      });
+    };
   }]);

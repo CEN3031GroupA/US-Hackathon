@@ -14,7 +14,7 @@ angular.module('faqs').config(['$stateProvider',
         template: '<ui-view/>'
       })
       .state('faqs.list', {
-        url: '/list-faqs',
+        url: '',
         template: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
       .state('faqs.post', {
