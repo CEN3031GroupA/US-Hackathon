@@ -13,18 +13,18 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     $scope.categories = [
       {
         id: 0,
-        title: "Category 1",
-        description: "Hey there, this is the category description..."
+        title: 'Category 1',
+        description: 'Hey there, this is the category description...'
       },
       {
         id: 1,
-        title: "Category 2",
-        description: "Hi there, this is the category description..."
+        title: 'Category 2',
+        description: 'Hi there, this is the category description...'
       },
       {
         id: 2,
-        title: "Category 3",
-        description: "Hello there, this is the category description..."
+        title: 'Category 3',
+        description: 'Hello there, this is the category description...'
       }
     ];
 
@@ -118,13 +118,13 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     // Fake data for now
     $scope.users = [
       {
-        name: "Jim"
+        name: 'Jim'
       },
       {
-        name: "Jimbo"
+        name: 'Jimbo'
       },
       {
-        name: "Dabo"
+        name: 'Dabo'
       }
     ];
 

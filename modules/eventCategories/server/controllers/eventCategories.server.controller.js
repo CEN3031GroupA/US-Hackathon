@@ -41,8 +41,8 @@ exports.delete = function(req, res, next) {
 
 exports.eventCategoryById = function(req, res, next, id) {
   EventCategory.findOne({
-      _id: id
-    },
+    _id: id
+  },
     function(err, eventCategory) {
       if (err) {
         return next(err);
