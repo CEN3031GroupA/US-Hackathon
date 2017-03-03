@@ -1,8 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="../../../../public/lib/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../css/faqs.css">
+</head>
+<body>
+<div class="col-xs-12">
 <section data-ng-controller="FAQsController" ng-init="find()">
   <div class="page-header">
     <h1>FAQ</h1>
+    <div class="btn-group">
+      <button type="btn" class="btn btn-xs pull-right"  ui-sref="faqs.post()"><i class="glyphicon glyphicon-plus"></i> Ask</button>
+    </div>
   </div>
-  <div class="col-md-12">
-
+  <div class="list-group" ui-sref="faqs.post({faqId: faq._id})" ng-repeat="faq in faqs">
+    <a  class="list-group-item">
+      <h4 class="list-group-item-heading">{{faq.question}}</h4>
+      <h6 class="list-group-item-heading">{{faq.solution}}</h6>
+      <p class="list-group-item-text">{{faq.solved}}</p>
+    </a>
   </div>
 </section>
+</div>
+</body>

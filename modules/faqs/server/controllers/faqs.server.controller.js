@@ -21,14 +21,14 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-    FAQ.find({}, function(err, data) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        else {
-            res.json(data);
-        }
-    });
+  FAQ.find({}, function(err, data) {
+    if (err) {
+      res.status(400).send(err);
+    }
+    else {
+      res.json(data);
+    }
+  });
 };
 
 exports.delete = function(req, res, next) {

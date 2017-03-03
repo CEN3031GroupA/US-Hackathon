@@ -2,7 +2,7 @@
  * Created by George on 2/26/2017.
  */
 'use strict';
-//TODO is this redundant?
+
 /**
  * Module dependencies
  */
