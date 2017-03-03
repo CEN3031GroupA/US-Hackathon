@@ -3,6 +3,16 @@
     <h1>FAQ</h1>
   </div>
   <div class="col-md-12">
-
+    <form name="projectForm" class="form-vertical">
+      <fieldset>
+        <div class="form-group" show-errors>
+          <input type="text" name="title" class="form-control" ng-model="title" placeholder="Ask a question" required>
+          <div ng-messages="faqForm.question.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Question is required</p>
+          </div>
+        </div>
+        <button type="submit" ng-click="" color="PMS 362c" class="btn btn-success btn-lg btn-block">Ask</button>
+      </fieldset>
+    </form>
   </div>
 </section>
