@@ -43,7 +43,7 @@ exports.delete = function(req, res, next) {
 };
 
 exports.read = function(req, res) {
-    res.json(req.faq);
+  res.json(req.faq);
 };
 
 exports.faqById = function(req, res, next, id) {

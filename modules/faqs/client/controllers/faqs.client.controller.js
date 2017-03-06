@@ -7,7 +7,7 @@
 angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
   function ($scope, $state, $stateParams, $location, FAQs) {
 
-    $scope.create = function (isValid) {
+    $scope.post = function (isValid) {
       $scope.error = null;
 
     // Create new FAQ object
@@ -20,7 +20,13 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
         // solved: false,
         // user: this.user
       });
+      // Redirect
+      faq.$save(function (response) {
+        $location.path('faqs');
 
+      }, function (errorResponse){
+        $scope.error = errorResponse.data.message;
+      });
     };
     // Find a list of Projects
     $scope.find = function () {
