@@ -1,0 +1,14 @@
+<section ng-controller="EventsController" ng-init="findOne()">
+  <h1>Update Event</h1>
+
+  <form ng-submit="update()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="text" ng-model="event.title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Update" class="btn btn-default">
+      <a class="btn btn-danger" ng-click="remove(event)">Delete</a>
+    </div>
+  </form>
+</section>

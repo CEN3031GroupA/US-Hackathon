@@ -1,0 +1,11 @@
+<section ng-controller="EventsController" ng-init="find()">
+  <div>
+    <a ui-sref="events.create()" class="btn btn-primary">Create New Event</a>
+  </div>
+
+  <div class="event" ng-repeat="event in events">
+    <h5>{{event.title}}</h5>
+
+    <a class="btn btn-info btn-sm" ui-sref="events.edit({eventId: event._id})">Edit</a>
+  </div>
+</section>

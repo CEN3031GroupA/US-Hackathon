@@ -70,7 +70,7 @@ angular.module('eventCategories').controller('EventCategoriesController', ['$sco
       if (eventCategory) {
         eventCategory.$remove();
 
-        for (var i in $scope.articles) {
+        for (var i in $scope.eventCategories) {
           if ($scope.eventCategories[i] === eventCategory) {
             $scope.eventCategories.splice(i, 1);
           }
