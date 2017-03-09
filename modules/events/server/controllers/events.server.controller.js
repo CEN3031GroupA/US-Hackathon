@@ -18,7 +18,7 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  Event.find({}, function(err, data) {
+  Event.find().populate('categories').exec({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }
@@ -42,7 +42,7 @@ exports.delete = function(req, res, next) {
 exports.eventById = function(req, res, next, id) {
   Event.findOne({
     _id: id
-  },
+  }).populate('categories').exec(
     function(err, event) {
       if (err) {
         return next(err);
@@ -59,6 +59,9 @@ exports.update = function (req, res) {
   var event = req.event;
 
   event.title = req.body.title;
+  event.description = req.body.description;
+  event.locations = req.body.locations;
+  event.categories = req.body.categories;
 
   event.save(function (err) {
     if (err) {

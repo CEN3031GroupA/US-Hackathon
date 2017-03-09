@@ -5,6 +5,12 @@
 
   <div class="event" ng-repeat="event in events">
     <h5>{{event.title}}</h5>
+    <div>{{event.description}}</div>
+    <div>Locations: {{event.locations}}</div>
+    <div>Categories:
+      <span ng-repeat="category in event.categories">{{category.title}}</span>
+    </div>
+
 
     <a class="btn btn-info btn-sm" ui-sref="events.edit({eventId: event._id})">Edit</a>
   </div>

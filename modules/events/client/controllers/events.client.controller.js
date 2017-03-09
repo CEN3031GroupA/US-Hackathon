@@ -1,11 +1,43 @@
 'use strict';
 
 // Projects controller
-angular.module('events').controller('EventsController', ['$scope', '$state', '$stateParams', '$location', 'Event',
-  function ($scope, $state, $stateParams, $location, Event) {
+angular.module('events').controller('EventsController',
+  ['$scope', '$state', '$stateParams', '$location', 'Event', 'EventCategory',
+  function ($scope, $state, $stateParams, $location, Event, EventCategory) {
+    EventCategory.query(function(eventCategories) {
+      $scope.eventCategories = eventCategories;
+      $scope.eventCategoriesMap = {};
+
+      for (var i = 0; i < $scope.eventCategories.length; i++) {
+        $scope.eventCategoriesMap[i] = $scope.eventCategories[i];
+      }
+
+      $scope.resetSelectedCategories();
+    });
+
+    $scope.resetSelectedCategories = function() {
+      $scope.selectedCategories = {};
+
+      for (var i = 0; i < $scope.eventCategories.length; i++) {
+        $scope.selectedCategories[i] = false;
+      }
+    };
+
     $scope.create = function() {
+      var categories = [];
+
+      for (var key in $scope.selectedCategories) {
+        if (!$scope.selectedCategories.hasOwnProperty(key)) continue;
+        if ($scope.selectedCategories[key] === false) continue;
+
+        categories.push($scope.eventCategoriesMap[key]._id);
+      }
+
       var event = new Event({
-        title: this.title
+        title: this.title,
+        description: this.description,
+        locations: this.locations,
+        categories: categories
       });
 
       // Redirect after save
@@ -14,6 +46,10 @@ angular.module('events').controller('EventsController', ['$scope', '$state', '$s
 
         // Clear form fields
         $scope.title = '';
+        $scope.description = '';
+        $scope.locations = '';
+        $scope.categories = [];
+        $scope.resetSelectedCategories();
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
@@ -22,6 +58,18 @@ angular.module('events').controller('EventsController', ['$scope', '$state', '$s
     $scope.update = function () {
       var event = $scope.event;
 
+      var categories = [];
+
+      for (var key in $scope.selectedCategories) {
+        if (!$scope.selectedCategories.hasOwnProperty(key)) continue;
+        if ($scope.selectedCategories[key] === false) continue;
+
+        categories.push($scope.eventCategoriesMap[key]._id);
+      }
+
+      event.categories = categories;
+
+      $scope.resetSelectedCategories();
       event.$update(function () {
         $location.path('admin/events');
       }, function (errorResponse) {
@@ -38,6 +86,15 @@ angular.module('events').controller('EventsController', ['$scope', '$state', '$s
         eventId: $stateParams.eventId
       }, function(event) {
         $scope.event = event;
+
+        for (var i = 0; i < $scope.eventCategories.length; i++) {
+          $scope.selectedCategories[i] = false;
+          for (var j = 0; j < $scope.event.categories.length; j++) {
+            if ($scope.eventCategories[i]._id === $scope.event.categories[j]._id) {
+              $scope.selectedCategories[i] = true;
+            }
+          }
+        }
       });
     };
 

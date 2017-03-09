@@ -15,7 +15,13 @@ var EventSchema = new Schema({
     default: '',
     trim: true,
     required: 'Title cannot be blank'
-  }
+  },
+  description: String,
+  locations: String,
+  categories: [{
+    type: Schema.ObjectId,
+    ref: 'EventCategory'
+  }]
 });
 
 var Event = mongoose.model('Event', EventSchema);
