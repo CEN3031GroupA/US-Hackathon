@@ -11,6 +11,14 @@
   padding: 20px;
 }
 
+.pull-right {
+  padding: 20px;
+}
+
+.badge {
+  background-color: #509E2F;
+}
+
 /*
  * projects-view
  */
