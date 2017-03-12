@@ -66,7 +66,6 @@ exports.update = function (req, res) {
 
   project.votes = req.body.votes;
 
-
   project.save(function (err) {
     if (err) {
       return res.status(400).send({
