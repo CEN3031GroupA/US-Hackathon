@@ -1,3 +1,6 @@
+.authpage {
+  font-family: 'Palatino Linotype';
+}
 .userinputfield {
   color: #63666a;
   font-weight: 500;
@@ -65,10 +68,6 @@
     margin-top:15px;
     border: 2px solid #509e2f;
     color: #509e2f
-}
-
-.authpage {
-  font-family: 'Palatino Linotype';
 }
 
 .authpage a{

@@ -5,27 +5,25 @@
     <title>view-idea</title>
     <link rel="stylesheet" href="../css/ideas.css">
   </head>
-  <section ng-controller="IdeasController" ng-init="findOne()">
+  <section class = "ideaspage" ng-controller="IdeasController" ng-init="findOne()">
     <h1 class = "frontscreen" ng-bind="idea.title"></h1>
     <div class="idea-content" ng-bind="idea.description.long"></div>
 
-    <span class="btn-group">
-
-      <button ui-sref = "ideas.list()">
+    <div class="row">
+      <div class = "col-xs-6">
+        <button ui-sref = "ideas.list()" class="btn btn-primary-1 pull-left">
         <span class="glyphicon glyphicon-arrow-left"></span>
-      </button>
+        </button>
 
-
-      <button ui-sref = "global()" >
+        <button ui-sref = "global()" class="btn btn-primary-1">
         <span class="glyphicon glyphicon-home"></span>
-      </button>
+        </button>
 
-
-      <button  ng-click="remove()">
+        <button ng-click="remove()" class="btn btn-danger">
         <span class="glyphicon glyphicon-trash"></span>
-      </button>
-
-    </span>
+        </button>
+      </div>
+    </div>
 
   </section>
 </html>
