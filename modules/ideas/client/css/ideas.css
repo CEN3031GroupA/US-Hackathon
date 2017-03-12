@@ -4,7 +4,7 @@
     font-weight: 400;
     letter-spacing: 1px;
     width:100%;
-  
+
 }
 .btn-primary {
     background: #509e2f;
@@ -68,4 +68,9 @@
 .add-idea .sub-title {
   text-transform: uppercase;
   margin-top: 10px;
+}
+
+.padding-0 {
+  padding-right:0;
+  padding-left:0;
 }

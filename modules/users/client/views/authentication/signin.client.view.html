@@ -1,21 +1,21 @@
-<div ng-controller="AuthenticationController">
+<div class="authpage" ng-controller="AuthenticationController">
 
   <h3 class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">Welcome!</h3>
   <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
     <form name="userForm" ng-submit="signin(userForm.$valid)" class="signin" novalidate autocomplete="off">
       <fieldset>
         <div class="form-group" show-errors>
-          <label id = "fields" for="username">Email</label>
+          <label class="userinputfield" for="username">Email</label>
           <input type="text" id="username" name="username" style="border:4px solid #509e2f" class="form-control" ng-model="credentials.username" placeholder="your Ultimate Email" lowercase required>
           <div ng-messages="userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Username is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label id = "fields" for="password">Password</label>
+          <label class="userinputfield" for="password">Password</label>
           <input type="{{showpassword ? 'text' : 'password'}}" id="password" name="password" style="border:4px solid #509e2f" class="form-control" ng-model="credentials.password" placeholder="your email password" required>
           <input id="option" class="custom_image" type="checkbox" ng-model="showpassword" ng-checked="false" />
-          <label id = "subtext" for="option">View Password</label>
+          <label class = "subtextpassword" for="option">View Password</label>
           <div ng-messages="userForm.password.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Password is required.</p>
           </div>
