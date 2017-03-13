@@ -11,8 +11,23 @@
   padding: 20px;
 }
 
+.pull-right {
+  padding: 20px;
+}
+
+.badge {
+  background-color: #509E2F;
+}
+
 /*
  * projects-view
+ */
+ #voteButton {
+   background-color: #509E2F;
+ }
+
+/*
+ * projects-add
  */
 .view-title {
   margin: auto;

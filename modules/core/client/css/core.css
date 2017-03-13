@@ -7,6 +7,7 @@ body {
 .undecorated-link:hover {
   text-decoration: none;
 }
+
 [ng\:cloak],
 [ng-cloak],
 [x-ng-cloak],
