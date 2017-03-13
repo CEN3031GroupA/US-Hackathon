@@ -13,7 +13,6 @@ var mongoose = require('mongoose'),
  * is valid.
  */
 var CommentSchema = new Schema({
-  parent:  {type: Schema.ObjectId},
   posted:    {type: Date, default: Date.now},
   content:   {type: String, default: '', trim: true},
   user:      {type: Schema.ObjectId, ref: 'User'}
