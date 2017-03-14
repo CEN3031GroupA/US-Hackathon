@@ -99,3 +99,8 @@ ul.team-list li {
 .project-item {
   cursor: pointer;
 }
+
+/* projects-vote */
+.tableWrapper {
+  background-color: white;
+}
