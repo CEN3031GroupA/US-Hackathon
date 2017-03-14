@@ -32,4 +32,10 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
     $scope.find = function () {
       $scope.faqs = FAQs.query();
     };
+    // Find a faq
+    $scope.findOne = function () {
+      $scope.faq = FAQs.get({
+        faqId: $stateParams.faqId
+      });
+    };
   }]);

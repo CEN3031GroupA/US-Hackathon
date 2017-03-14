@@ -20,6 +20,10 @@ angular.module('faqs').config(['$stateProvider',
       .state('faqs.post', {
         url: '/post',
         templateUrl: 'modules/faqs/client/views/post-faq.client.view.html',
+      })
+      .state('faqs.respond', {
+        url: '/respond/:faqId',
+        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
       });
   }
 ]);

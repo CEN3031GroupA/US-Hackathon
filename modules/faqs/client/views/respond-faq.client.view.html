@@ -1,0 +1,17 @@
+<section ng-controller="FAQsController" ng-init="findOne()">
+  <div class="col-xs-12">
+    <h2>Respond to FAQ</small></h2>
+    <h1 ng-bind="faq.question"></h1>
+    <form name="faqForm" class="form-vertical" ng-submit="respond(faqForm.$valid)">
+      <fieldset>
+        <div class="form-group" show-errors>
+          <input type="text" ng-model="faq.solution" name="title" class="form-control" ng-model="solution" placeholder="Solution" required>
+          <div ng-messages="faqForm.solution.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">FAQ solution is required</p>
+          </div>
+        </div>
+        <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" value="Save" />
+      </fieldset>
+    </form>
+  </div>
+</section>
