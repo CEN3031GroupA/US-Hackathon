@@ -9,29 +9,18 @@
       <h2>Pick a category</h2>
       <div class="form-group">
         <section>
-          <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#Themed">Themed</a></li>
-            <li><a data-toggle="tab" href="#BestValue">Best Value</a></li>
-            <li><a data-toggle="tab" href="#Categories">Categories</a></li>
-          </ul>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-primary {{ activeCategory.id == category.id ? 'active' : '' }}" ng-click="setActiveCategory(category)" ng-repeat="category in categories">
+              <input type="radio" name="options" id="option1" autocomplete="off" checked> {{category.title}}
+            </label>
+          </div>
 
-          <div class="tab-content">
-            <div id="Themed" class="tab-pane fade in active">
-              <p>For this category you'll have to address the following problems.</p>
-              <p>1. Buisness problem/need</p>
-              <p>2. Challenges/users</p>
-              <p>3. Remember that...</p>
-            </div>
-            <div id="BestValue" class="tab-pane fade">
-              <p>Best value content</p>
-            </div>
-            <div id="Categories" class="tab-pane fade">
-              <p>Some content in categories tab.</p>
-            </div>
+          <div class="category-description">
+            {{activeCategory.description}}
           </div>
         </section>
       </div>
-      <button type="submit" ng-click="saveProjectCategory()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next></button>
+      <button type="submit" ng-click="saveProjectCategory()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next ></button>
       <p class="form-text text-center">Step 2/3</p>
     </form>
   </div>

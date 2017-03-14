@@ -2,23 +2,23 @@
 
 var path = require('path'),
   mongoose = require('mongoose'),
-  Project = require('mongoose').model('Project'),
+  EventCategory = require('mongoose').model('EventCategory'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 exports.create = function(req, res, next) {
-  var project = new Project(req.body);
-  project.save(function (err) {
+  var eventCategory = new EventCategory(req.body);
+  eventCategory.save(function (err) {
     if (err) {
       return next(err);
     }
     else {
-      res.json(project);
+      res.json(eventCategory);
     }
   });
 };
 
 exports.list = function(req, res) {
-  Project.find({}, function(err, data) {
+  EventCategory.find({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }
@@ -39,41 +39,39 @@ exports.delete = function(req, res, next) {
   });
 };
 
-exports.read = function(req, res) {
-  res.json(req.project);
-};
-
-exports.projectById = function(req, res, next, id) {
-  Project.findOne({
-    _id: id
-  },
-  function(err, project) {
-    if (err) {
-      return next(err);
+exports.eventCategoryById = function(req, res, next, id) {
+  EventCategory.findOne({
+      _id: id
+    },
+    function(err, eventCategory) {
+      if (err) {
+        return next(err);
+      }
+      else {
+        req.eventCategory = eventCategory;
+        next();
+      }
     }
-    else {
-      req.project = project;
-      next();
-    }
-  }
   );
 };
 
 exports.update = function (req, res) {
-  var project = req.project;
+  var eventCategory = req.eventCategory;
 
-  project.votes = req.body.votes;
-  project.title = req.body.title;
-  project.description.long = req.body.description.long;
+  eventCategory.title = req.body.title;
+  eventCategory.description = req.body.description;
 
-  project.save(function (err) {
+  eventCategory.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(project);
+      res.json(eventCategory);
     }
   });
 };
 
+exports.read = function (req, res) {
+  res.json(req.eventCategory);
+};

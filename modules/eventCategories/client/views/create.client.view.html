@@ -1,0 +1,17 @@
+<section ng-controller="EventCategoriesController">
+  <h1>Create New Event Category</h1>
+
+  <form ng-submit="create()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="text" ng-model="title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" ng-model="description" id="description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Create" class="btn btn-default">
+    </div>
+  </form>
+</section>
