@@ -7,7 +7,7 @@
   </head>
 
 
-<section ng-controller="AuthenticationController">
+<section class = "authpage" ng-controller="AuthenticationController">
 
       <header style="
       width:200%;
@@ -24,7 +24,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;">
-      <label id="container3">
+      <label class="container3">
           <img src='modules/users/client/img/logo.svg'  width="405" />
         </label>
       </header>
@@ -32,7 +32,7 @@
 
 
 
-<label id="container1">
+<label class="container1">
 
           <div style="margin-bottom:10vh">
             <h3 class="text-left">Welcome to the hackathon</h3>
@@ -54,9 +54,9 @@
             </p>
           </div>
 
-          <div id="container2">
+          <div class="container2">
             <div style="margin-top:50px">
-            <a href="/1" class="btn btn-primary outline"> Sign-in</a>
+            <a ui-sref="login()" class="btn btn-primary outline"> Sign-in</a>
             </div>
           </div>
 </label>

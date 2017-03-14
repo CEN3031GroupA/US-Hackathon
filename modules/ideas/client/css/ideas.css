@@ -1,0 +1,99 @@
+.add-idea {
+  margin-top:6vh;
+  background-color: #509e2f;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  font-family: "Times New Roman", Times, serif;
+  letter-spacing:1px;
+}
+.ideaspage h2 {
+  font-weight: 500;
+  margin-bottom: 3vh;
+  font-size: 38px;
+  letter-spacing:1px;
+}
+.add-idea h3 {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  font-weight: 400;
+  font-size:32px;
+}
+
+.add-idea .sub-title {
+  text-transform: uppercase;
+  margin-top: 10px;
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.ideaspage .frontscreen {
+    font-family: "Times New Roman", Times, serif;
+    margin-bottom: 5vh;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.ideaspage .idea-content {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 5vh;
+}
+.ideaspage .backscreen {
+    font-family: "Times New Roman", Times, serif;
+    margin-bottom: 10vh;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+.ideaspage .list-group {
+  margin: auto;
+  padding: 10px;
+}
+.ideaspage .list-group-item {
+  font-family: "Times New Roman", Times, serif;
+  padding: 20px;
+}
+.ideaspage .form-group {
+  margin-bottom:3vh;
+}
+
+ /* styling for idea pages buttons */
+
+.ideaspage .btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 400;
+    letter-spacing: 1px;
+
+}
+.ideaspage .btn:focus, .btn:active:focus, .btn.active:focus {
+    outline: 0 none;
+}
+.ideaspage .btn-primary {
+    background: #509e2f;
+    color: #ffffff;
+    display:inline;
+}
+.ideaspage .btn-primary-1 {
+    background: #509e2f;
+    color: #ffffff;
+    display:inline;
+    margin-right: 10px;
+}
+.ideaspage .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #509000;
+}
+.ideaspage .btn-primary-1:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #509000;
+}
+
+.ideaspage .btn-primary:active, .btn-primary.active {
+    background: #509e2f;
+    box-shadow: none;
+}
+.ideaspage .btn-danger {
+    background: #d9534f;
+    color: #ffffff;
+    display: inline;
+}

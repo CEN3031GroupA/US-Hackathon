@@ -28,6 +28,10 @@ var ProjectSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  votes: {
+    type: Number,
+    default: 0
   }
 });
 
@@ -45,4 +49,3 @@ ProjectSchema.pre('save', function(next) {
 
 var Project = mongoose.model('Project', ProjectSchema);
 module.exports = Project;
-

@@ -18,8 +18,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
       templateUrl: 'modules/users/client/views/authentication/welcome.client.view.html'
     })
 
-    .state('1', {
-      url: '/1',
+    .state('login', {
+      url: '/login',
       templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
     })
 
