@@ -37,7 +37,9 @@ angular.module('events').controller('EventsController',
         title: this.title,
         description: this.description,
         locations: this.locations,
-        categories: categories
+        categories: categories,
+        start: this.start,
+        end: this.end
       });
 
       // Redirect after save
@@ -49,6 +51,8 @@ angular.module('events').controller('EventsController',
         $scope.description = '';
         $scope.locations = '';
         $scope.categories = [];
+        $scope.categories = null;
+        $scope.categories = null;
         $scope.resetSelectedCategories();
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
@@ -78,7 +82,9 @@ angular.module('events').controller('EventsController',
     };
 
     $scope.find = function() {
-      $scope.events = Event.query();
+      $scope.events = Event.query({
+
+      });
     };
 
     $scope.findOne = function () {

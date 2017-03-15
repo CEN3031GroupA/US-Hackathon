@@ -62,6 +62,8 @@ exports.update = function (req, res) {
   event.description = req.body.description;
   event.locations = req.body.locations;
   event.categories = req.body.categories;
+  event.start = req.body.start;
+  event.end = req.body.end;
 
   event.save(function (err) {
     if (err) {

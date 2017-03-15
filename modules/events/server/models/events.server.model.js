@@ -21,7 +21,9 @@ var EventSchema = new Schema({
   categories: [{
     type: Schema.ObjectId,
     ref: 'EventCategory'
-  }]
+  }],
+  start: Date,
+  end: Date
 });
 
 var Event = mongoose.model('Event', EventSchema);
