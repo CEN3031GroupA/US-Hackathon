@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var IdeaSchema = new Schema({
   created_at: Date,
   updated_at: Date,
+
   title: {
     type: String,
     default: '',
@@ -32,6 +33,7 @@ var IdeaSchema = new Schema({
     default: false
   }
 });
+
 
 IdeaSchema.pre('save', function(next) {
   var currentDate = new Date();
