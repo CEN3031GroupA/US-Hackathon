@@ -19,10 +19,7 @@
 
     <div class="project-content" ng-bind="project.description.long"></div>
     <div>
-      <button type="submit" ui-sref ="projects.vote()" class="btn btn-success btn-md btn-block">Vote</button>
+      <button type="button" id="voteButton" ng-click="vote(project);" class="btn btn-md btn-block">Vote</button>
     </div>
-
   </section>
-
 </html>
-

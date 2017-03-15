@@ -72,7 +72,7 @@ var UserSchema = new Schema({
   },
   provider: {
     type: String,
-    required: 'Provider is required'
+
   },
   providerData: {},
   additionalProvidersData: {},
@@ -82,7 +82,7 @@ var UserSchema = new Schema({
       enum: ['user', 'admin']
     }],
     default: ['user'],
-    required: 'Please provide at least one role'
+
   },
   updated: {
     type: Date
@@ -177,7 +177,7 @@ UserSchema.statics.generateRandomPassphrase = function () {
     var password = '';
     var repeatingCharacters = new RegExp('(.)\\1{2,}', 'g');
 
-    // iterate until the we have a valid passphrase. 
+    // iterate until the we have a valid passphrase.
     // NOTE: Should rarely iterate more than once, but we need this to ensure no repeating characters are present.
     while (password.length < 20 || repeatingCharacters.test(password)) {
       // build the random password
@@ -203,4 +203,14 @@ UserSchema.statics.generateRandomPassphrase = function () {
   });
 };
 
-mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+
+
+var user = new User({
+  firstName: "Jason",
+  lastName: "Hackleman",
+  displayName: "asdf",
+  email: "clinton.andrews@gmail.com",
+  username: "asdf",
+  password: "1234"
+});
