@@ -2,23 +2,23 @@
 
 var path = require('path'),
   mongoose = require('mongoose'),
-  EventCategory = require('mongoose').model('EventCategory'),
+  HackathonEvent = require('mongoose').model('HackathonEvent'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 exports.create = function(req, res, next) {
-  var eventCategory = new EventCategory(req.body);
-  eventCategory.save(function (err) {
+  var event = new HackathonEvent(req.body);
+  event.save(function (err) {
     if (err) {
       return next(err);
     }
     else {
-      res.json(eventCategory);
+      res.json(event);
     }
   });
 };
 
 exports.list = function(req, res) {
-  EventCategory.find({}, function(err, data) {
+  HackathonEvent.find().populate('categories').exec({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }
@@ -29,26 +29,26 @@ exports.list = function(req, res) {
 };
 
 exports.delete = function(req, res, next) {
-  req.eventCategory.remove(function(err) {
+  req.event.remove(function(err) {
     if (err) {
       return next(err);
     }
     else {
-      res.json(req.eventCategory);
+      res.json(req.event);
     }
   });
 };
 
-exports.eventCategoryById = function(req, res, next, id) {
-  EventCategory.findOne({
+exports.eventById = function(req, res, next, id) {
+  HackathonEvent.findOne({
     _id: id
-  },
-    function(err, eventCategory) {
+  }).populate('categories').exec(
+    function(err, event) {
       if (err) {
         return next(err);
       }
       else {
-        req.eventCategory = eventCategory;
+        req.event = event;
         next();
       }
     }
@@ -56,23 +56,26 @@ exports.eventCategoryById = function(req, res, next, id) {
 };
 
 exports.update = function (req, res) {
-  var eventCategory = req.eventCategory;
+  var event = req.event;
 
-  eventCategory.title = req.body.title;
-  eventCategory.description = req.body.description;
-  eventCategory.questions = req.body.questions;
+  event.title = req.body.title;
+  event.description = req.body.description;
+  event.locations = req.body.locations;
+  event.categories = req.body.categories;
+  event.start = req.body.start;
+  event.end = req.body.end;
 
-  eventCategory.save(function (err) {
+  event.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(eventCategory);
+      res.json(event);
     }
   });
 };
 
 exports.read = function (req, res) {
-  res.json(req.eventCategory);
+  res.json(req.event);
 };

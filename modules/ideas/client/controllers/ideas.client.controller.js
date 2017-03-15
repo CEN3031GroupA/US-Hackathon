@@ -83,4 +83,4 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       return array;
     }
 
-}]);
+  }]);
