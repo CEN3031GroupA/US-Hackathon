@@ -101,6 +101,10 @@ ul.team-list li {
 }
 
 /* projects-vote */
-.tableWrapper {
+thead {
+  background-color: #509E2F;
+}
+
+tbody {
   background-color: white;
 }
