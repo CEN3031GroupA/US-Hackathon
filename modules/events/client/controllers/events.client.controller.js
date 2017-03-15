@@ -51,8 +51,6 @@ angular.module('events').controller('EventsController',
         $scope.description = '';
         $scope.locations = '';
         $scope.categories = [];
-        $scope.categories = null;
-        $scope.categories = null;
         $scope.resetSelectedCategories();
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;

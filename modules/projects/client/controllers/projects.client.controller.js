@@ -32,7 +32,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
-      $rootScope.activeProject.description.long = this.details;
+      $rootScope.activeProject.description.short = this.short;
+      $rootScope.activeProject.description.long = this.long;
 
       $location.path('projects/category');
     };
@@ -101,18 +102,30 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     // Find a list of Projects
     $scope.find = function () {
       $scope.projects = Projects.query(function(projects) {
-        shuffle(projects);
-
         $scope.projects = projects;
       });
-
     };
+
+    // Sort projects randomly
+    $scope.randomSort = function() {
+      var projects = $scope.projects;
+      shuffle(projects);
+    };
+
 
     // Find existing Project
     $scope.findOne = function () {
       $scope.project = Projects.get({
         projectId: $stateParams.projectId
       });
+    };
+
+    $scope.vote = function (project) {
+      project.votes += 1;
+      document.getElementById("voteButton").style.backgroundColor = '#63666A';
+      document.getElementById("voteButton").innerHTML = "Voted!";
+      document.getElementById("voteButton").style.color = '#FFFFFF';
+      Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
     };
 
     // Fake data for now
