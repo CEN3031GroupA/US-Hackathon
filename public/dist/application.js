@@ -122,6 +122,20 @@ ApplicationConfiguration.registerModule('core.admin.routes', ['ui.router']);
 'use strict';
 
 // Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('eventCategories');
+
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('events', ['ui.bootstrap.datetimepicker']);
+
+'use strict';
+
+ApplicationConfiguration.registerModule('ideas');
+
+'use strict';
+
+// Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('projects');
 
 'use strict';
@@ -371,19 +385,6 @@ angular.module('chat').controller('ChatController', ['$scope', '$location', 'Aut
 
 'use strict';
 
-angular.module('core.admin').run(['Menus',
-  function (Menus) {
-    Menus.addMenuItem('topbar', {
-      title: 'Admin',
-      state: 'admin',
-      type: 'dropdown',
-      roles: ['admin']
-    });
-  }
-]);
-
-'use strict';
-
 // Setting up route
 angular.module('core.admin.routes').config(['$stateProvider',
   function ($stateProvider) {
@@ -392,9 +393,10 @@ angular.module('core.admin.routes').config(['$stateProvider',
         abstract: true,
         url: '/admin',
         template: '<ui-view/>',
-        data: {
-          roles: ['admin']
-        }
+      })
+      .state('admin.index', {
+        url: '',
+        templateUrl: 'modules/core/client/views/admin/index.client.view.html'
       });
   }
 ]);
@@ -416,8 +418,19 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     $stateProvider
     .state('home', {
       url: '/',
+      templateUrl: 'modules/users/client/views/authentication/welcome.client.view.html'
+    })
+
+    .state('login', {
+      url: '/login',
+      templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
+    })
+
+    .state('global', {
+      url: '/home',
       templateUrl: 'modules/core/client/views/home.client.view.html'
     })
+
     .state('not-found', {
       url: '/not-found',
       templateUrl: 'modules/core/client/views/404.client.view.html',
@@ -444,8 +457,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus',
-  function ($scope, $state, Authentication, Menus) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location',
+  function ($scope, $state, Authentication, $location) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -465,9 +478,41 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       }
     };
 
-    // Collapsing the menu after navigation
     $scope.$on('$stateChangeSuccess', function () {
+      // Collapsing the menu after navigation
       $scope.closeMenu();
+
+      // Populate menu items based on location
+      var path = $location.path();
+
+      var defaultMenu = [
+        {
+          title: 'Home',
+          'ui-sref': 'global()'
+        },
+        {
+          title: 'Projects',
+          'ui-sref': 'projects.list()'
+        }
+      ];
+
+      var adminMenu = [
+        {
+          title: 'Home',
+          'ui-sref': 'global()'
+        },
+        {
+          title: 'Admin Home',
+          'ui-sref': 'admin.index()'
+        }
+      ];
+
+      // TODO: Replace this with role/Check if user is admin
+      if (path.indexOf('admin') !== -1) {
+        $scope.activeMenu = adminMenu;
+      } else {
+        $scope.activeMenu = defaultMenu;
+      }
     });
 
     $scope.closeMenu = function() {
@@ -802,6 +847,466 @@ angular.module('core').service('Socket', ['Authentication', '$state', '$timeout'
 'use strict';
 
 // Setting up route
+angular.module('eventCategories').config(['$stateProvider',
+  function ($stateProvider) {
+    // Event Categories state routing
+    $stateProvider
+      .state('eventCategories', {
+        abstract: true,
+        url: '/admin/eventCategories',
+        template: '<ui-view/>'
+      })
+      .state('eventCategories.index', {
+        url: '',
+        templateUrl: 'modules/eventCategories/client/views/list.client.view.html'
+      })
+      .state('eventCategories.create', {
+        url: '/create',
+        templateUrl: 'modules/eventCategories/client/views/create.client.view.html'
+      })
+      .state('eventCategories.edit', {
+        url: '/:eventCategoryId/edit',
+        templateUrl: 'modules/eventCategories/client/views/edit.client.view.html',
+      });
+  }
+]);
+
+'use strict';
+
+// Projects controller
+angular.module('eventCategories').controller('EventCategoriesController', ['$scope', '$state', '$stateParams', '$location', 'EventCategory',
+  function ($scope, $state, $stateParams, $location, EventCategory) {
+    $scope.create = function() {
+      var i;
+      var questions = [];
+      for (i = 0; i < $scope.questions.length; i++) {
+        questions.push($scope.questions[i].content);
+      }
+
+      var eventCategory = new EventCategory({
+        title: this.title,
+        description: this.description,
+        questions: questions
+      });
+
+      // Redirect after save
+      eventCategory.$save(function (response) {
+        $location.path('admin/eventCategories');
+
+        // Clear form fields
+        $scope.title = '';
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.update = function () {
+      var eventCategory = $scope.eventCategory;
+
+      var questions = [];
+      var i;
+      for (i = 0; i < $scope.questions.length; i++) {
+        questions.push($scope.questions[i].content);
+      }
+
+      eventCategory.questions = questions;
+
+      eventCategory.$update(function () {
+        $location.path('admin/eventCategories');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.find = function() {
+      $scope.eventCategories = EventCategory.query();
+    };
+
+    $scope.findOne = function () {
+      EventCategory.get({
+        eventCategoryId: $stateParams.eventCategoryId
+      }, function(eventCategory) {
+        $scope.eventCategory = eventCategory;
+
+        var i;
+        $scope.questions = [];
+        for (i = 0; i < $scope.eventCategory.questions.length; i++) {
+          $scope.questions.push({
+            num: i + 1,
+            content: $scope.eventCategory.questions[i]
+          });
+        }
+      });
+    };
+
+    $scope.remove = function (eventCategory) {
+      if (eventCategory) {
+        eventCategory.$remove();
+
+        for (var i in $scope.eventCategories) {
+          if ($scope.eventCategories[i] === eventCategory) {
+            $scope.eventCategories.splice(i, 1);
+          }
+        }
+
+        $location.path('admin/eventCategories');
+      } else {
+        $scope.eventCategory.$remove(function () {
+          $location.path('admin/eventCategories');
+        });
+      }
+    };
+
+    $scope.deleteQuestion = function (questionIndex) {
+      // TODO UPDATE QUESTION.NUM
+      var questions = [];
+      var i;
+      for (i = 0; i < $scope.questions.length; i++) {
+        if (i !== questionIndex - 1) {
+          questions.push($scope.questions[i]);
+        }
+      }
+
+      $scope.questions = questions;
+    };
+
+    $scope.initCreate = function() {
+      $scope.questions = [
+        {
+          num: 1,
+          content: ''
+        }
+      ];
+    };
+
+    $scope.addQuestion = function () {
+      $scope.questions.push({
+        num: $scope.questions.length + 1,
+        content: ''
+      });
+    };
+
+  }]);
+
+'use strict';
+
+angular.module('eventCategories').factory('EventCategory', ['$resource',
+  function ($resource) {
+    return $resource('api/admin/eventCategories/:eventCategoryId', {
+      eventCategoryId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    }, {
+      create: {
+        method: 'POST'
+      }
+    });
+  }
+]);
+
+'use strict';
+
+// Setting up route
+angular.module('events').config(['$stateProvider',
+  function ($stateProvider) {
+    // Events state routing
+    $stateProvider
+      .state('events', {
+        abstract: true,
+        url: '/admin/events',
+        template: '<ui-view/>'
+      })
+      .state('events.index', {
+        url: '',
+        templateUrl: 'modules/events/client/views/list.client.view.html'
+      })
+      .state('events.create', {
+        url: '/create',
+        templateUrl: 'modules/events/client/views/create.client.view.html'
+      })
+      .state('events.edit', {
+        url: '/:eventId/edit',
+        templateUrl: 'modules/events/client/views/edit.client.view.html'
+      });
+  }
+]);
+
+'use strict';
+
+// Projects controller
+angular.module('events').controller('EventsController',
+  ['$scope', '$state', '$stateParams', '$location', 'HackathonEvent', 'EventCategory',
+  function ($scope, $state, $stateParams, $location, HackathonEvent, EventCategory) {
+    EventCategory.query(function(eventCategories) {
+      $scope.eventCategories = eventCategories;
+      $scope.eventCategoriesMap = {};
+
+      for (var i = 0; i < $scope.eventCategories.length; i++) {
+        $scope.eventCategoriesMap[i] = $scope.eventCategories[i];
+      }
+
+      $scope.resetSelectedCategories();
+    });
+
+    $scope.resetSelectedCategories = function() {
+      $scope.selectedCategories = {};
+
+      for (var i = 0; i < $scope.eventCategories.length; i++) {
+        $scope.selectedCategories[i] = false;
+      }
+    };
+
+    $scope.create = function() {
+      var categories = [];
+
+      for (var key in $scope.selectedCategories) {
+        if (!$scope.selectedCategories.hasOwnProperty(key)) continue;
+        if ($scope.selectedCategories[key] === false) continue;
+
+        categories.push($scope.eventCategoriesMap[key]._id);
+      }
+
+      var event = new HackathonEvent({
+        title: this.title,
+        description: this.description,
+        locations: this.locations,
+        categories: categories,
+        start: this.start,
+        end: this.end
+      });
+
+      // Redirect after save
+      event.$save(function (response) {
+        $location.path('admin/events');
+
+        // Clear form fields
+        $scope.title = '';
+        $scope.description = '';
+        $scope.locations = '';
+        $scope.categories = [];
+        $scope.resetSelectedCategories();
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.update = function () {
+      var event = $scope.event;
+
+      var categories = [];
+
+      for (var key in $scope.selectedCategories) {
+        if (!$scope.selectedCategories.hasOwnProperty(key)) continue;
+        if ($scope.selectedCategories[key] === false) continue;
+
+        categories.push($scope.eventCategoriesMap[key]._id);
+      }
+
+      event.categories = categories;
+
+      $scope.resetSelectedCategories();
+      event.$update(function () {
+        $location.path('admin/events');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.find = function() {
+      $scope.events = HackathonEvent.query({
+
+      });
+    };
+
+    $scope.findOne = function () {
+      HackathonEvent.get({
+        eventId: $stateParams.eventId
+      }, function(event) {
+        $scope.event = event;
+
+        for (var i = 0; i < $scope.eventCategories.length; i++) {
+          $scope.selectedCategories[i] = false;
+          for (var j = 0; j < $scope.event.categories.length; j++) {
+            if ($scope.eventCategories[i]._id === $scope.event.categories[j]._id) {
+              $scope.selectedCategories[i] = true;
+            }
+          }
+        }
+      });
+    };
+
+    $scope.remove = function (event) {
+      if (event) {
+        event.$remove();
+
+        $location.path('admin/events');
+      } else {
+        $scope.event.$remove(function () {
+          $location.path('admin/events');
+        });
+      }
+    };
+
+  }]);
+
+'use strict';
+
+angular.module('events').factory('HackathonEvent', ['$resource',
+  function ($resource) {
+    return $resource('api/admin/events/:eventId', {
+      eventId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    }, {
+      create: {
+        method: 'POST'
+      }
+    });
+  }
+]);
+
+'use strict';
+
+angular.module('ideas').config(['$stateProvider',
+  function ($stateProvider) {
+
+    $stateProvider
+      .state('ideas', {
+        abstract: true,
+        url: '/ideas',
+        template: '<ui-view/>'
+      })
+      .state('ideas.list', {
+        url:'',
+        templateUrl: 'modules/ideas/client/views/list-ideas.client.view.html'
+      })
+      .state('ideas.create', {
+        url:'/create',
+        templateUrl: 'modules/ideas/client/views/create-idea.client.view.html',
+      })
+      .state('ideas.success', {
+        url:'/success',
+        templateUrl: 'modules/ideas/client/views/success.client.view.html',
+      })
+      .state('ideas.view', {
+        url:'/:ideaId',
+        templateUrl: 'modules/ideas/client/views/view-idea.client.view.html',
+      });
+  }
+]);
+
+'use strict';
+
+
+angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', '$rootScope',
+  function ($scope, $state, $stateParams, $location, Ideas, $rootScope) {
+    if (!$rootScope.activeIdea) {
+      $rootScope.activeIdea = {
+        description: {}
+      };
+    }
+
+    $scope.saveIdeaInfo = function () {
+      $rootScope.activeIdea.title = this.title;
+      $rootScope.activeIdea.description.long = this.details;
+
+      $location.path('ideas/success');
+    };
+
+    $scope.create = function (isValid) {
+      $scope.error = null;
+
+      var idea = new Ideas($rootScope.activeIdea);
+
+
+      idea.$save(function (response) {
+        $location.path('ideas/' + response._id);
+
+
+        $rootScope.activeIdea = null;
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.remove = function (idea) {
+      if (idea) {
+        idea.$remove();
+
+        for (var i in $scope.ideas) {
+          if ($scope.ideas[i] === idea) {
+            $scope.ideas.splice(i,1);
+          }
+        }
+      } else {
+        $scope.idea.$remove(function () {
+          $location.path('ideas');
+        });
+      }
+    };
+
+    $scope.find = function () {
+      $scope.ideas = Ideas.query(function(ideas) {
+        shuffle(ideas);
+
+        $scope.ideas = ideas;
+      });
+    };
+
+    $scope.findOne = function () {
+      $scope.idea = Ideas.get({
+        ideaId: $stateParams.ideaId
+      });
+    };
+
+
+
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+
+      return array;
+    }
+
+  }]);
+
+'use strict';
+
+angular.module('ideas').factory('Ideas', ['$resource',
+  function ($resource) {
+    return $resource('api/ideas/:ideaId', {
+      ideaId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    }, {
+      create: {
+        method: 'POST'
+      }
+    });
+  }
+]);
+
+'use strict';
+
+// Setting up route
 angular.module('projects').config(['$stateProvider',
   function ($stateProvider) {
     // Projects state routing
@@ -853,18 +1358,18 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     $scope.categories = [
       {
         id: 0,
-        title: "Category 1",
-        description: "Hey there, this is the category description..."
+        title: 'Category 1',
+        description: 'Hey there, this is the category description...'
       },
       {
         id: 1,
-        title: "Category 2",
-        description: "Hi there, this is the category description..."
+        title: 'Category 2',
+        description: 'Hi there, this is the category description...'
       },
       {
         id: 2,
-        title: "Category 3",
-        description: "Hello there, this is the category description..."
+        title: 'Category 3',
+        description: 'Hello there, this is the category description...'
       }
     ];
 
@@ -872,7 +1377,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
-      $rootScope.activeProject.description.long = this.details;
+      $rootScope.activeProject.description.short = this.short;
+      $rootScope.activeProject.description.long = this.long;
 
       $location.path('projects/category');
     };
@@ -941,12 +1447,16 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     // Find a list of Projects
     $scope.find = function () {
       $scope.projects = Projects.query(function(projects) {
-        shuffle(projects);
-
         $scope.projects = projects;
       });
-
     };
+
+    // Sort projects randomly
+    $scope.randomSort = function() {
+      var projects = $scope.projects;
+      shuffle(projects);
+    };
+
 
     // Find existing Project
     $scope.findOne = function () {
@@ -955,16 +1465,28 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       });
     };
 
+    $scope.vote = function (project) {
+      project.votes += 1;
+      document.getElementById('voteButton').style.backgroundColor = '#63666A';
+      document.getElementById('voteButton').innerHTML = 'Voted!';
+      document.getElementById('voteButton').style.color = '#FFFFFF';
+      Projects.update({
+        projectId: $stateParams.projectId
+      },{
+        votes: project.votes
+      });
+    };
+
     // Fake data for now
     $scope.users = [
       {
-        name: "Jim"
+        name: 'Jim'
       },
       {
-        name: "Jimbo"
+        name: 'Jimbo'
       },
       {
-        name: "Dabo"
+        name: 'Dabo'
       }
     ];
 
@@ -1247,7 +1769,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-      $location.path('/');
+      $location.path('/home');
     }
 
     $scope.signup = function (isValid) {
@@ -1284,7 +1806,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.authentication.user = response;
 
         // And redirect to the previous or home page
-        $state.go($state.previous.state.name || 'home', $state.previous.params);
+        $state.go($state.previous.state.name || 'global', $state.previous.params);
       }).error(function (response) {
         $scope.error = response.message;
       });
