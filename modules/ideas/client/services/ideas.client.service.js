@@ -13,5 +13,5 @@ angular.module('ideas').factory('Ideas', ['$resource',
         method: 'POST'
       }
     });
-    }
-  ]);
+  }
+]);

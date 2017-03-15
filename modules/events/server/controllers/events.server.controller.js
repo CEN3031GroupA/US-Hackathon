@@ -40,7 +40,7 @@ exports.delete = function(req, res, next) {
 };
 
 exports.eventById = function(req, res, next, id) {
-  Event.findOne({
+  HackathonEvent.findOne({
     _id: id
   }).populate('categories').exec(
     function(err, event) {
