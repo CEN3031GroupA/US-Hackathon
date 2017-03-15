@@ -2,11 +2,11 @@
 
 var path = require('path'),
   mongoose = require('mongoose'),
-  Event = require('mongoose').model('Event'),
+  HackathonEvent = require('mongoose').model('HackathonEvent'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 exports.create = function(req, res, next) {
-  var event = new Event(req.body);
+  var event = new HackathonEvent(req.body);
   event.save(function (err) {
     if (err) {
       return next(err);
@@ -18,7 +18,7 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  Event.find().populate('categories').exec({}, function(err, data) {
+  HackathonEvent.find().populate('categories').exec({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }

@@ -26,6 +26,6 @@ var EventSchema = new Schema({
   end: Date
 });
 
-var Event = mongoose.model('Event', EventSchema);
-module.exports = Event;
+var HackathonEvent = mongoose.model('HackathonEvent', EventSchema);
+module.exports = HackathonEvent;
 

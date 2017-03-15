@@ -2,8 +2,8 @@
 
 // Projects controller
 angular.module('events').controller('EventsController',
-  ['$scope', '$state', '$stateParams', '$location', 'Event', 'EventCategory',
-  function ($scope, $state, $stateParams, $location, Event, EventCategory) {
+  ['$scope', '$state', '$stateParams', '$location', 'HackathonEvent', 'EventCategory',
+  function ($scope, $state, $stateParams, $location, HackathonEvent, EventCategory) {
     EventCategory.query(function(eventCategories) {
       $scope.eventCategories = eventCategories;
       $scope.eventCategoriesMap = {};
@@ -33,7 +33,7 @@ angular.module('events').controller('EventsController',
         categories.push($scope.eventCategoriesMap[key]._id);
       }
 
-      var event = new Event({
+      var event = new HackathonEvent({
         title: this.title,
         description: this.description,
         locations: this.locations,
@@ -82,13 +82,13 @@ angular.module('events').controller('EventsController',
     };
 
     $scope.find = function() {
-      $scope.events = Event.query({
+      $scope.events = HackathonEvent.query({
 
       });
     };
 
     $scope.findOne = function () {
-      Event.get({
+      HackathonEvent.get({
         eventId: $stateParams.eventId
       }, function(event) {
         $scope.event = event;
