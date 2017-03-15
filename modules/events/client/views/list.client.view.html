@@ -1,0 +1,18 @@
+<section ng-controller="EventsController" ng-init="find()">
+  <div>
+    <a ui-sref="events.create()" class="btn btn-primary">Create New Event</a>
+  </div>
+
+  <div class="event" ng-repeat="event in events | orderBy: 'start'">
+    <h5>{{event.title}}</h5>
+    <div>{{event.description}}</div>
+    <div>Locations: {{event.locations}}</div>
+    <div>Categories:
+      <span ng-repeat="category in event.categories">{{category.title}}</span>
+    </div>
+    <div>Start: {{event.start | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+    <div>End: {{event.end | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+
+    <a class="btn btn-info btn-sm" ui-sref="events.edit({eventId: event._id})">Edit</a>
+  </div>
+</section>

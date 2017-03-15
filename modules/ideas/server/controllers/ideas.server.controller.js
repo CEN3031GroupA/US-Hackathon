@@ -1,9 +1,9 @@
 'use strict';
 
 var path = require('path'),
-mongoose = require('mongoose'),
-Idea = require('mongoose').model('Idea'),
-errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+  mongoose = require('mongoose'),
+  Idea = require('mongoose').model('Idea'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 exports.create = function(req, res, next) {
   var idea = new Idea(req.body);

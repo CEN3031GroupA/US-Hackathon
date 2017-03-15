@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('ideas').factory('Ideas', ['$resource',
+angular.module('events').factory('HackathonEvent', ['$resource',
   function ($resource) {
-    return $resource('api/ideas/:ideaId', {
-      ideaId: '@_id'
+    return $resource('api/admin/events/:eventId', {
+      eventId: '@_id'
     }, {
       update: {
         method: 'PUT'
