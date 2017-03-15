@@ -99,12 +99,3 @@ ul.team-list li {
 .project-item {
   cursor: pointer;
 }
-
-/* projects-vote */
-thead {
-  background-color: #509E2F;
-}
-
-tbody {
-  background-color: white;
-}

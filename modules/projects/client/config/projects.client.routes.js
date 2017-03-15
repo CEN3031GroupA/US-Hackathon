@@ -28,15 +28,11 @@ angular.module('projects').config(['$stateProvider',
       })
       .state('projects.view', {
         url: '/:projectId',
-        templateUrl: 'modules/projects/client/views/view-project.client.view.html',
+        templateUrl: 'modules/projects/client/views/view-project.client.view.html'
       })
       .state('projects.edit', {
         url: '/:projectId/edit',
         templateUrl: 'modules/projects/client/views/edit-project.client.view.html',
-      })
-      .state('projects.votes', {
-        url: '/admin/projectsVotes',
-        templateUrl: 'modules/projects/client/views/list-projects-votes.client.view.html',
       });
   }
 ]);
