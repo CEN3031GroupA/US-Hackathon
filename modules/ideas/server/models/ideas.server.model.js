@@ -26,6 +26,10 @@ var IdeaSchema = new Schema({
       */
       type: Schema.ObjectId,
       ref: 'User'
+    },
+    likes: {
+      type: Number,
+      default:0
     }
   });
 

@@ -62,6 +62,10 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       });
     };
 
+    $scope.view_flag = function(request){
+      $scope.isClicked = !$scope.isClicked;
+    };
+
 
 
     function shuffle(array) {
