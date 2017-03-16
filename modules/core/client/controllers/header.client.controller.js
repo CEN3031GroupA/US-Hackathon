@@ -49,6 +49,10 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
         {
           title: 'Ideas',
           'ui-sref': 'ideas.list()'
+        },
+        {
+          title: 'FAQs',
+          'ui-sref': 'faqs.list()'
         }
       ];
 
