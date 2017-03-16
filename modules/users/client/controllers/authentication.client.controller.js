@@ -6,7 +6,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-      $location.path('/home');
+      $location.path('/');
     }
 
     $scope.signin = function (isValid) {
@@ -22,7 +22,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.authentication.user = response;
 
         // And redirect to the previous or home page
-        $state.go($state.previous.state.name || 'global', $state.previous.params);
+        $state.go($state.previous.state.name || 'home', $state.previous.params);
       }).error(function (response) {
         $scope.error = response.message;
       });
