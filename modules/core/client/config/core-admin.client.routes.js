@@ -8,6 +8,9 @@ angular.module('core.admin.routes').config(['$stateProvider',
         abstract: true,
         url: '/admin',
         template: '<ui-view/>',
+        data: {
+          adminOnly: true
+        }
       })
       .state('admin.index', {
         url: '',

@@ -8,7 +8,10 @@ angular.module('events').config(['$stateProvider',
       .state('events', {
         abstract: true,
         url: '/admin/events',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          adminOnly: true
+        }
       })
       .state('events.index', {
         url: '',
