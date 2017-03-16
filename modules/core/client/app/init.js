@@ -20,7 +20,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(function ($ro
       return;
     }
 
-    if (toState.data && toState.data.adminOnly && !Authentication.user.admin) {
+    if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
       event.preventDefault();
       $state.go('forbidden');
       return;

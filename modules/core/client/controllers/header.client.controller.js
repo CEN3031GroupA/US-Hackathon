@@ -52,14 +52,11 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
         }
       ];
 
-      // TODO: Replace this with role/Check if user is admin
       if ($scope.loggedIn && $scope.authentication.user.isAdmin) {
         $scope.activeMenu.push({
           title: 'Admin Home',
           'ui-sref': 'admin.index()'
         });
-      } else {
-
       }
     });
 
