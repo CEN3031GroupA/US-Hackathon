@@ -112,14 +112,14 @@ function seedUsers() {
       lastName: '',
       email: 'amy@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
     },
     {
       firstName: 'Amy',
       lastName: '',
       email: 'amy+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
     },
     {
       firstName: 'Travis',
@@ -148,7 +148,7 @@ function seedUsers() {
       email: 'jason+admin@gmail.com',
       password: '1234',
       isAdmin: true
-    },
+    }
   ];
 
 

@@ -19,7 +19,10 @@
 
     <div class="project-content" ng-bind="project.description.long"></div>
     <div>
-      <button type="button" id="voteButton" ng-click="vote(project);" class="btn btn-md btn-block">Vote</button>
+      <button type="button" ng-click="vote(project, user);"
+              class="btn btn-md btn-block" ng-class="(voting.hasVoted) ? 'unvoteButton' : 'voteButton'">
+        <span>{{ voting.hasVoted ? 'Thanks for Voting!' : 'Vote!' }}</span>
+      </button>
     </div>
   </section>
 </html>

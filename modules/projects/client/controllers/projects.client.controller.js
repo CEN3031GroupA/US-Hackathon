@@ -1,9 +1,9 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', '$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, $rootScope) {
-    if (!$rootScope.activeProject) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', '$rootScope',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, $rootScope) {
+      if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
         description: {}
       };
@@ -120,12 +120,30 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       });
     };
 
-    $scope.vote = function (project) {
-      project.votes += 1;
-      document.getElementById('voteButton').style.backgroundColor = '#63666A';
-      document.getElementById('voteButton').innerHTML = 'Voted!';
-      document.getElementById('voteButton').style.color = '#FFFFFF';
-      Projects.update({
+    $scope.voting = {
+      user: $scope.user,
+      project: null,
+      hasVoted: false
+    };
+
+    $scope.vote = function (project, user) { //TODO: check app current user
+      $scope.voting.project = project.title;
+
+      if($scope.user == user)
+      {
+        if (!$scope.voting.hasVoted) {
+          $scope.voting.hasVoted = true;
+          project.votes++;
+        }
+        else if ($scope.voting.hasVoted) {
+          $scope.voting.hasVoted = false;
+          project.votes--;
+        }
+      }
+
+      console.log(project.votes); //TODO: delete later
+
+      Projects.update({ //TODO: fix vote update
         projectId: $stateParams.projectId
       },{
         votes: project.votes
