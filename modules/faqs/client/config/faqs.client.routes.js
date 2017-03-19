@@ -6,15 +6,14 @@
 // Setting up route
 angular.module('faqs').config(['$stateProvider',
   function ($stateProvider) {
-        // Projects state routing
     $stateProvider
       .state('faqs', {
         abstract: true,
-        url: '',
+        url: '/faqs',
         template: '<ui-view/>'
       })
       .state('faqs.list', {
-        url: '/faqs',
+        url: '',
         templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
       .state('faqs.post', {
@@ -23,7 +22,7 @@ angular.module('faqs').config(['$stateProvider',
       })
       .state('faqs.respond', {
         url: '/:faqId',
-        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
+        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html'
       });
   }
 ]);

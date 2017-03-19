@@ -3,14 +3,41 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash');
+var path = require('path'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  mongoose = require('mongoose'),
+  User = mongoose.model('User');
 
 /**
- * Extend user's controller
+ * Signin after passport authentication
  */
-module.exports = _.extend(
-  require('./users/users.authentication.server.controller'),
-  require('./users/users.authorization.server.controller'),
-  require('./users/users.password.server.controller'),
-  require('./users/users.profile.server.controller')
-);
+exports.signin = function (req, res, next) {
+  User.findOne({
+    email: req.body.email
+  }).exec(
+    function(err, user) {
+      if (err) {
+        return next(err);
+      } else if (!user) {
+        res.status(400).send({
+          message: "Email not found"
+        });
+      } else if (!user.authenticate(req.body.password)) {
+        res.status(400).send({
+          message: "Bad password"
+        });
+      } else {
+        req.session.user = user;
+        res.json(user);
+      }
+    }
+  );
+};
+
+/**
+ * Signout
+ */
+exports.signout = function (req, res, next) {
+  req.session.user = "";
+  res.end();
+};

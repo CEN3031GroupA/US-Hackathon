@@ -16,25 +16,19 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(function ($ro
 
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
-      var allowed = false;
-      toState.data.roles.forEach(function (role) {
-        if (Authentication.user.roles !== undefined && Authentication.user.roles.indexOf(role) !== -1) {
-          allowed = true;
-          return true;
-        }
-      });
+    if (toState.data && toState.data.allowAnon) {
+      return;
+    }
 
-      if (!allowed) {
-        event.preventDefault();
-        if (Authentication.user !== undefined && typeof Authentication.user === 'object') {
-          $state.go('forbidden');
-        } else {
-          $state.go('authentication.signin').then(function () {
-            storePreviousState(toState, toParams);
-          });
-        }
-      }
+    if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
+      event.preventDefault();
+      $state.go('forbidden');
+      return;
+    }
+
+    if (!(Authentication.user !== undefined && typeof Authentication.user === 'object')) {
+      event.preventDefault();
+      $state.go('signin');
     }
   });
 
