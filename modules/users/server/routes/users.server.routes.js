@@ -7,7 +7,9 @@ module.exports = function (app) {
   app.route('/api/auth/signin').post(users.signin);
   app.route('/logout').post(users.signout);
 
-  app.route('/api/auth/').put(users.update);
+  app.route('/api/auth/:userId')
+    .get(users.read)
+    .put(users.update);
 
   app.param('userId', users.userById);
 };

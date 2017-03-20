@@ -27,14 +27,15 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.error = response.message;
       });
     };
+
     /* Update user */
     $scope.update = function () {
       $scope.error = null;
 
       $scope.user.$update(function () {
-        $location.path('auth/' + $scope.user._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+        $location.path('/api/auth/' + $scope.authentication.user._id);
+      }, function (response) {
+        $scope.error = response.data.message;
       });
     };
   }

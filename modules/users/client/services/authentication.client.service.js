@@ -9,3 +9,15 @@ angular.module('users').factory('Authentication', ['$window',
     return auth;
   }
 ]);
+
+angular.module('users').factory('Users', ['$resource',
+  function ($resource) {
+    return $resource('api/auth/:userId', {userId: '@_id'}, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+]);
+
+

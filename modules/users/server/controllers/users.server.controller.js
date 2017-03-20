@@ -42,6 +42,10 @@ exports.signout = function (req, res, next) {
   res.end();
 };
 
+exports.read = function(req, res) {
+  res.json(req.user);
+};
+
 exports.update = function (req, res) {
   var user = req.user;
   if(req.body.updateType === 'updateVote')
@@ -50,10 +54,12 @@ exports.update = function (req, res) {
   }
   user.save(function (err) {
     if (err) {
+      console.log("exports error updating: " + user.name);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log("exports updated: " + user.name);
       res.json(user);
     }
   });

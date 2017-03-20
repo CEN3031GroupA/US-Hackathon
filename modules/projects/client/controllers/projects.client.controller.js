@@ -145,7 +145,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       }
       $scope.updateType = 'updateVote';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
-      Users.update({userId: $stateParams.userId}, {votedProjects: $scope.user.votedProjects});
+      Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
     };
 
     $scope.vote = function (project) {
@@ -154,11 +154,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       $scope.hasVoted = true;
       $scope.updateType = 'updateVote';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
-      Users.update({userId: $stateParams.userId}, {votedProjects: $scope.user.votedProjects});
+      Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
     };
 
     // Fake data for now
-    $scope.users = [
+    $scope.teamusers = [
       {
         name: 'Jim'
       },

@@ -77,7 +77,7 @@ UserSchema.methods.authenticate = function (password) {
 };
 
 var User = mongoose.model('User', UserSchema, 'user');
-/*
+
 function seedUsers() {
   var users = [
     {
@@ -161,15 +161,13 @@ function seedUsers() {
       votedProjects: []
     }
   ];
-}
-
-
 
   for (var i = 0; i < users.length; i++) {
     users[i] = new User(users[i]);
     seedUser(users[i]);
   }
 }
+
 
 function seedUser(user) {
   user.save(function (err) {
@@ -188,6 +186,5 @@ User.remove({}, function(err) {
     console.log("Removed all users...");
     seedUsers();
   }
-
 });
-*/
+
