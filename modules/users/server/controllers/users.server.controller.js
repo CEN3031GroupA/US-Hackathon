@@ -41,3 +41,40 @@ exports.signout = function (req, res, next) {
   req.session.user = "";
   res.end();
 };
+
+exports.update = function (req, res) {
+  var user = req.user;
+  if(req.body.updateType === 'updateVote')
+  {
+    user.votedProjects = req.body.votedProjects;
+  }
+  user.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(user);
+    }
+  });
+};
+
+exports.userById = function(req, res, next, id) {
+  User.findOne({
+      _id: id
+    },
+    function(err, user) {
+      if (err) {
+        return next(err);
+      }
+      else {
+        req.user = user;
+        next();
+      }
+    }
+  );
+};
+
+
+
+

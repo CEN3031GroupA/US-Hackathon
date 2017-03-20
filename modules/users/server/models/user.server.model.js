@@ -77,7 +77,7 @@ UserSchema.methods.authenticate = function (password) {
 };
 
 var User = mongoose.model('User', UserSchema, 'user');
-
+/*
 function seedUsers() {
   var users = [
     {
@@ -85,28 +85,32 @@ function seedUsers() {
       lastName: 'Andrews',
       email: 'candrews800@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Clinton',
       lastName: 'Andrews',
       email: 'candrews800+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'George',
       lastName: '',
       email: 'george@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'George',
       lastName: '',
       email: 'george+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'Amy',
@@ -122,37 +126,43 @@ function seedUsers() {
       email: 'amy+admin@gmail.com',
       password: '1234',
       isAdmin: true,
-      votedProjects: ['Project 4']
+      votedProjects: []
     },
     {
       firstName: 'Travis',
       lastName: '',
       email: 'travis@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Travis',
       lastName: '',
       email: 'travis+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'Jason',
       lastName: '',
       email: 'jason@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Jason',
       lastName: '',
       email: 'jason+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     }
   ];
+}
+
 
 
   for (var i = 0; i < users.length; i++) {
@@ -178,4 +188,6 @@ User.remove({}, function(err) {
     console.log("Removed all users...");
     seedUsers();
   }
+
 });
+*/

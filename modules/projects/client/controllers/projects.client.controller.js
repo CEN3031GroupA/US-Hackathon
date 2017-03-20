@@ -1,8 +1,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', '$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, $rootScope) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
     $scope.authentication = Authentication;
     $scope.user = $scope.authentication.user;
 
@@ -125,7 +125,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     };
 
     /* Initialize voting fields */
-    console.log($scope.user);
     $scope.hasVoted = false;
     $scope.project = Projects.get({projectId: $stateParams.projectId}, function(current) {
       for (var i in $scope.user.votedProjects) {
@@ -135,6 +134,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
         }
       }
     });
+
     $scope.unvote = function (project) {
       for (var i in $scope.user.votedProjects) {
         if ($scope.user.votedProjects[i] === project.title) {
@@ -145,14 +145,16 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       }
       $scope.updateType = 'updateVote';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
+      Users.update({userId: $stateParams.userId}, {votedProjects: $scope.user.votedProjects});
     };
 
     $scope.vote = function (project) {
       $scope.user.votedProjects.push(project.title);
       project.votes++;
       $scope.hasVoted = true;
-      var updateType = 'updateVote';
+      $scope.updateType = 'updateVote';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
+      Users.update({userId: $stateParams.userId}, {votedProjects: $scope.user.votedProjects});
     };
 
     // Fake data for now
