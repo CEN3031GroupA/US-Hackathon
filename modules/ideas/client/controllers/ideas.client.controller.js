@@ -25,7 +25,7 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
 
 
       idea.$save(function (response) {
-        
+
         $location.path('ideas/success');
 
         $rootScope.activeIdea = null;
