@@ -39,6 +39,7 @@ var UserSchema = new Schema({
   updated: {
     type: Date
   },
+  votedProjects: [String],
   created: {
     type: Date,
     default: Date.now
@@ -113,13 +114,15 @@ function seedUsers() {
       email: 'amy@gmail.com',
       password: '1234',
       isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Amy',
-      lastName: '',
+      lastName: 'Ly',
       email: 'amy+admin@gmail.com',
       password: '1234',
       isAdmin: true,
+      votedProjects: ['Project 4']
     },
     {
       firstName: 'Travis',

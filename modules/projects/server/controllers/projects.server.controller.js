@@ -61,11 +61,16 @@ exports.projectById = function(req, res, next, id) {
 
 exports.update = function (req, res) {
   var project = req.project;
-
-  project.votes = req.body.votes;
-  project.title = req.body.title;
-  project.description.long = req.body.description.long;
-
+  //TODO: update votes or edit project update function
+  if(req.body.updateType == 'updateVote')
+  {
+    project.votes = req.body.votes;
+  }
+  else if (req.body.updateType == 'updateEdit')
+  {
+    project.title = req.body.title;
+    project.description.long = req.body.description.long;
+  }
   project.save(function (err) {
     if (err) {
       return res.status(400).send({
@@ -76,4 +81,5 @@ exports.update = function (req, res) {
     }
   });
 };
+
 
