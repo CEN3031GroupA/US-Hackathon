@@ -11,20 +11,17 @@
   padding: 20px;
 }
 
-.pull-right {
-  padding: 20px;
-}
-
-.badge {
-  background-color: #509E2F;
-  float: right;
-}
-
 /*
  * projects-view
  */
- #voteButton {
-   background-color: #509E2F;
+
+.voteButton {
+  background-color: #509E2F;
+ }
+
+ .unvoteButton {
+   background-color: #63666A;
+   color: white;
  }
 
 /*

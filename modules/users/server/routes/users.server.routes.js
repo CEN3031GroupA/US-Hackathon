@@ -6,4 +6,9 @@ module.exports = function (app) {
 
   app.route('/api/auth/signin').post(users.signin);
   app.route('/logout').post(users.signout);
+
+  app.route('/api/user/:userId')
+    .put(users.update);
+
+  app.param('userId', users.userById);
 };
