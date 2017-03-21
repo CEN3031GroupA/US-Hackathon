@@ -18,7 +18,7 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  HackathonEvent.find().populate('categories').exec({}, function(err, data) {
+  HackathonEvent.find().sort('start').populate('categories').exec({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }

@@ -73,3 +73,9 @@ a:hover .header-profile-image {
 
   border-bottom: 1px solid grey;
 }
+
+.event-countdown {
+  background-color: #eee;
+  padding: 10px;
+  margin-bottom: 6vh;
+}
