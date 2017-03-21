@@ -1,0 +1,11 @@
+/* seeder that was used in faq.server.model.js to seed database with faqlistings.json file */
+
+var faqs = require('../faqlistings.json').faqs;
+for (var i = 0; i < faqs.length; i++) {
+    var item = FAQ(faqs[i]);
+    item.save(function (err) {
+        if (err) throw err;
+
+        console.log("FAQ saved!");
+    });
+}

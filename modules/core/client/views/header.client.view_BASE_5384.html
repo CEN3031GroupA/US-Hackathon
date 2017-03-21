@@ -1,0 +1,17 @@
+<div ng-controller="HeaderController">
+    <nav style="width:200px" id="side-menu">
+        <a href="#" ng-click="closeMenu()">Close &times;</a>
+<<<<<<<<< Temporary merge branch 1
+        <a ui-sref="{{menuItem['ui-sref']}}" ng-repeat="menuItem in activeMenu">{{menuItem.title}}</a>
+=========
+        <a ui-sref="global()">Home</a>
+        <a ui-sref="projects.list()">Projects</a>
+        <a ui-sref="ideas.list()">Ideas</a>
+        <a class="signin" ui-sref="login()">Sign In</a>
+>>>>>>>>> Temporary merge branch 2
+    </nav>
+
+    <div id="top-menu" ng-click="toggleCollapsibleMenu()">
+        <span>&#9776;</span>
+    </div>
+</div>

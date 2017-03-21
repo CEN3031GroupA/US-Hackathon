@@ -18,7 +18,8 @@
 
   <div class="list-group" id="projects-list" ui-sref="projects.view({projectId: project._id})" ng-repeat="project in projects|orderBy:sortType:sortReverse">
     <a  class="list-group-item clearfix">
-      <h4 class="list-group-item-heading">{{project.title}}<span class="badge pull-right" ng-show="showVotes">{{project.votes}}</span></h4>
+
+      <h4 class="list-group-item-heading">{{project.title}}<span class="badge" ng-show="showVotes">{{project.votes}}</span></h4>
 
       <h6 class="list-group-item-heading">{{project.category}}</h6>
       <p class="list-group-item-text">{{project.description.short}}</p>

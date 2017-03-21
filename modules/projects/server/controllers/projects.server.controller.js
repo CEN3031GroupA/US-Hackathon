@@ -63,10 +63,9 @@ exports.update = function (req, res) {
   var project = req.project;
 
 
+  project.votes = req.body.votes;
   project.title = req.body.title;
   project.description.long = req.body.description.long;
-
-  project.votes = req.body.votes;
 
 
   project.save(function (err) {
@@ -78,5 +77,6 @@ exports.update = function (req, res) {
       res.json(project);
     }
   });
+
 
 };

@@ -29,20 +29,20 @@ exports.list = function(req, res) {
 };
 
 exports.delete = function(req, res, next) {
-  req.project.remove(function(err) {
+  req.eventCategory.remove(function(err) {
     if (err) {
       return next(err);
     }
     else {
-      res.json(req.project);
+      res.json(req.eventCategory);
     }
   });
 };
 
 exports.eventCategoryById = function(req, res, next, id) {
   EventCategory.findOne({
-      _id: id
-    },
+    _id: id
+  },
     function(err, eventCategory) {
       if (err) {
         return next(err);
@@ -60,6 +60,7 @@ exports.update = function (req, res) {
 
   eventCategory.title = req.body.title;
   eventCategory.description = req.body.description;
+  eventCategory.questions = req.body.questions;
 
   eventCategory.save(function (err) {
     if (err) {

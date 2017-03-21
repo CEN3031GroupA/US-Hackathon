@@ -18,13 +18,15 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
 
     $scope.create = function (isValid) {
       $scope.error = null;
+      $rootScope.activeIdea.title = this.title;
+      $rootScope.activeIdea.description.long = this.details;
 
       var idea = new Ideas($rootScope.activeIdea);
 
 
       idea.$save(function (response) {
-        $location.path('ideas/' + response._id);
 
+        $location.path('ideas/success');
 
         $rootScope.activeIdea = null;
       }, function (errorResponse) {
@@ -87,4 +89,4 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       return array;
     }
 
-}]);
+  }]);

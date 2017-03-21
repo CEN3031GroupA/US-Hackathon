@@ -129,6 +129,7 @@ module.exports.initSession = function (app, db) {
  */
 module.exports.initModulesConfiguration = function (app, db) {
   config.files.server.configs.forEach(function (configPath) {
+    console.log(configPath);
     require(path.resolve(configPath))(app, db);
   });
 };
@@ -180,6 +181,7 @@ module.exports.initModulesServerPolicies = function (app) {
 module.exports.initModulesServerRoutes = function (app) {
   // Globbing routing files
   config.files.server.routes.forEach(function (routePath) {
+    console.log(routePath);
     require(path.resolve(routePath))(app);
   });
 };
