@@ -35,21 +35,17 @@ angular.module('core').controller('HomeController', ['$scope', '$interval', 'Aut
           hours = parseInt(timeLeft / (60*60));
           minutes = parseInt((timeLeft - hours * 60 * 60) / 60);
           seconds = timeLeft - hours * 60 * 60 - minutes * 60;
-          $scope.activeEvent.timer = hours + ':'
-            + minutes + ':'
-            + seconds;
+          $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
         } else {
           $scope.activeEvent.inProgress = false;
-          timeTill = parseInt((now - start) / 1000); // Time till in seconds
+          timeTill = parseInt((now - startDate) / 1000); // Time till in seconds
           days = timeTill / (24 * 60 * 60);
           hours = (timeTill - days * 24 * 60 * 60);
           minutes = (timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60;
-          $scope.activeEvent.timer = parseInt(days) + ' days, '
-            + parseInt(hours) + ' hours, '
-            + parseInt(minutes) + ' minutes';
+          $scope.activeEvent.timer = parseInt(days) + ' days, ' + parseInt(hours) + ' hours, ' + parseInt(minutes) + ' minutes';
         }
         break;
       }
-    }
+    };
   }
 ]);

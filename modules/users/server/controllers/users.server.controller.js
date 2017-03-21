@@ -20,11 +20,11 @@ exports.signin = function (req, res, next) {
         return next(err);
       } else if (!user) {
         res.status(400).send({
-          message: "Email not found"
+          message: 'Email not found'
         });
       } else if (!user.authenticate(req.body.password)) {
         res.status(400).send({
-          message: "Bad password"
+          message: 'Bad password'
         });
       } else {
         req.session.user = user;
@@ -38,6 +38,6 @@ exports.signin = function (req, res, next) {
  * Signout
  */
 exports.signout = function (req, res, next) {
-  req.session.user = "";
+  req.session.user = '';
   res.end();
 };

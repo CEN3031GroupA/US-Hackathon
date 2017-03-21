@@ -34,9 +34,15 @@ var ProjectSchema = new Schema({
     default: 0
   },
   comments: [{
-    posted: {type: Date, default: Date.now},
-    user:    {type: Schema.ObjectId, ref: 'User'},
-    content: {type: String, default: ''}
+    posted: {
+      type: Date, default: Date.now
+    },
+    user:    {
+      type: Schema.ObjectId, ref: 'User'
+    },
+    content: {
+      type: String, default: ''
+    }
   }]
 });
 
