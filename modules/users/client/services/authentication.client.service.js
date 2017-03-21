@@ -13,7 +13,7 @@ angular.module('users').factory('Authentication', ['$window',
 
 angular.module('users').factory('Users', ['$resource',
   function ($resource) {
-    return $resource('api/user/:userId', {userId: '@_id'}, {
+    return $resource('api/user/:userId', { userId: '@_id' }, {
       update: {
         method: 'PUT'
       }

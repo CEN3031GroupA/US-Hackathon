@@ -44,7 +44,7 @@ exports.read = function(req, res) {
 };
 
 exports.projectById = function(req, res, next, id) {
-  Project.findOne({_id: id},
+  Project.findOne({ _id: id } ,
   function(err, project) {
     if (err) {
       return next(err);

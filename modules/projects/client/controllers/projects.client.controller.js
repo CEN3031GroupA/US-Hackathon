@@ -115,15 +115,15 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({projectId: $stateParams.projectId});
-      /*
-      //TODO: check to see if user already voted project
+      $scope.project = Projects.get({ projectId: $stateParams.projectId });
+
+      /* Initialize voting button */ //TODO: grab user information after signIn
       for(var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === $scope.project.title) { //TODO: get current project
-          console.log('project has been voted!');
+        if ($scope.user.votedProjects[i] === $stateParams.projectId) {
+          console.log('project has been voted!'); //TODO delete later
           $scope.hasVoted = true;
         }
-      } */
+      }
     };
 
     /* Initialize voting field */
@@ -131,23 +131,23 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.unvote = function (project) {
       for (var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === project.title) {
+        if ($scope.user.votedProjects[i] === project._id) {
           $scope.user.votedProjects.splice(i, 1);
           project.votes -= 1;
           $scope.hasVoted = false;
         }
       }
-      Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
-      Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
+      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
+      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
     $scope.vote = function (project) {
-      $scope.user.votedProjects.push(project.title);
+      $scope.user.votedProjects.push(project._id);
       project.votes += 1;
       $scope.hasVoted = true;
 
-      Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
-      Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
+      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
+      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
     // Fake data for now
