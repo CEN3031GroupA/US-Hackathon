@@ -44,7 +44,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(["$rootScope"
       return;
     }
 
-    if (toState.data && toState.data.adminOnly && !Authentication.user.admin) {
+    if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
       event.preventDefault();
       $state.go('forbidden');
       return;
@@ -122,6 +122,14 @@ ApplicationConfiguration.registerModule('eventCategories');
 
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('events', ['ui.bootstrap.datetimepicker']);
+
+/**
+ * Created by George on 3/2/2017.
+ */
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('faqs');
 
 'use strict';
 
@@ -490,17 +498,18 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
         {
           title: 'Ideas',
           'ui-sref': 'ideas.list()'
+        },
+        {
+          title: 'FAQs',
+          'ui-sref': 'faqs.list()'
         }
       ];
 
-      // TODO: Replace this with role/Check if user is admin
       if ($scope.loggedIn && $scope.authentication.user.isAdmin) {
         $scope.activeMenu.push({
           title: 'Admin Home',
           'ui-sref': 'admin.index()'
         });
-      } else {
-
       }
     });
 
@@ -512,10 +521,53 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
 
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication',
-  function ($scope, Authentication) {
+angular.module('core').controller('HomeController', ['$scope', '$interval', 'Authentication', 'HackathonEvent',
+  function ($scope, $interval, Authentication, HackathonEvent) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
+
+    $scope.init = function() {
+      HackathonEvent.query({}, function(events) {
+        $scope.events = events;
+        $interval($scope.calcEventTime, 1000);
+      });
+    };
+
+    $scope.calcEventTime = function() {
+      var now = new Date();
+      var timeLeft, timeTill;
+      var days, hours, minutes, seconds;
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var startDate = new Date($scope.events[i].start);
+        var endDate = new Date($scope.events[i].end);
+
+        // Event has concluded
+        if (endDate < now) {
+          continue;
+        }
+
+        $scope.activeEvent = $scope.events[i];
+
+        // Event is in progress
+        if (startDate < now) {
+          $scope.activeEvent.inProgress = true;
+          timeLeft = parseInt((endDate - now) / 1000); // Time left in seconds
+          hours = parseInt(timeLeft / (60*60));
+          minutes = parseInt((timeLeft - hours * 60 * 60) / 60);
+          seconds = timeLeft - hours * 60 * 60 - minutes * 60;
+          $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
+        } else {
+          $scope.activeEvent.inProgress = false;
+          timeTill = parseInt((now - startDate) / 1000); // Time till in seconds
+          days = timeTill / (24 * 60 * 60);
+          hours = (timeTill - days * 24 * 60 * 60);
+          minutes = (timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60;
+          $scope.activeEvent.timer = parseInt(days) + ' days, ' + parseInt(hours) + ' hours, ' + parseInt(minutes) + ' minutes';
+        }
+        break;
+      }
+    };
   }
 ]);
 
@@ -1164,6 +1216,99 @@ angular.module('events').factory('HackathonEvent', ['$resource',
   }
 ]);
 
+/**
+ * Created by George on 2/26/2017.
+ */
+'use strict';
+
+// Setting up route
+angular.module('faqs').config(['$stateProvider',
+  function ($stateProvider) {
+    $stateProvider
+      .state('faqs', {
+        abstract: true,
+        url: '/faqs',
+        template: '<ui-view/>'
+      })
+      .state('faqs.list', {
+        url: '',
+        templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
+      })
+      .state('faqs.post', {
+        url: '/post',
+        templateUrl: 'modules/faqs/client/views/post-faq.client.view.html',
+      })
+      .state('faqs.respond', {
+        url: '/:faqId',
+        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html'
+      });
+  }
+]);
+
+/**
+ * Created by George on 2/26/2017.
+ */
+'use strict';
+
+// Projects controller
+angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
+  function ($scope, $state, $stateParams, $location, FAQs) {
+
+    $scope.post = function (isValid) {
+      $scope.error = null;
+
+    // Create new FAQ object
+      var faq = new FAQs({
+        question: this.question,
+        // project: this.project,
+        // event: this.event,
+        // answers: null,
+        // solution: this.solution,
+        // solved: false,
+        // user: this.user
+      });
+      // Redirect
+      faq.$save(function (response) {
+        $location.path('faqs');
+
+      }, function (errorResponse){
+        $scope.error = errorResponse.data.message;
+      });
+    };
+    // Find a list of Projects
+    $scope.find = function () {
+      $scope.faqs = FAQs.query();
+    };
+    // Find a faq
+    $scope.findOne = function () {
+      $scope.faq = FAQs.get({
+        faqId: $stateParams.faqId
+      });
+    };
+  }]);
+
+/**
+ * Created by George on 3/1/2017.
+ */
+'use strict';
+
+//Projects service used for communicating with the faqs REST endpoints
+angular.module('faqs').factory('FAQs', ['$resource',
+  function ($resource) {
+    return $resource('api/faqs/:faqId', {
+      projectId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    }, {
+      create: {
+        method: 'POST'
+      }
+    });
+  }
+]);
+
 'use strict';
 
 angular.module('ideas').config(['$stateProvider',
@@ -1214,13 +1359,15 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
 
     $scope.create = function (isValid) {
       $scope.error = null;
+      $rootScope.activeIdea.title = this.title;
+      $rootScope.activeIdea.description.long = this.details;
 
       var idea = new Ideas($rootScope.activeIdea);
 
 
       idea.$save(function (response) {
-        $location.path('ideas/' + response._id);
 
+        $location.path('ideas/success');
 
         $rootScope.activeIdea = null;
       }, function (errorResponse) {
@@ -1257,7 +1404,6 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
         ideaId: $stateParams.ideaId
       });
     };
-
 
 
     function shuffle(array) {
@@ -1334,6 +1480,10 @@ angular.module('projects').config(['$stateProvider',
       .state('projects.edit', {
         url: '/:projectId/edit',
         templateUrl: 'modules/projects/client/views/edit-project.client.view.html',
+      })
+      .state('projects.votes', {
+        url: '/admin/projectsVotes',
+        templateUrl: 'modules/projects/client/views/list-projects-votes.client.view.html',
       });
   }
 ]);
@@ -1442,16 +1592,9 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     // Find a list of Projects
     $scope.find = function () {
       $scope.projects = Projects.query(function(projects) {
-        $scope.projects = projects;
+        $scope.projects = shuffle(projects);
       });
     };
-
-    // Sort projects randomly
-    $scope.randomSort = function() {
-      var projects = $scope.projects;
-      shuffle(projects);
-    };
-
 
     // Find existing Project
     $scope.findOne = function () {

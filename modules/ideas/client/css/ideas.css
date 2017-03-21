@@ -20,7 +20,27 @@
   font-weight: 400;
   font-size:32px;
 }
+.ideaspage .col-xs-1 {
+   background: white;
+   margin-bottom:0;
+ }
+ .ideaspage .col-xs-11 {
+   padding-right:0;
+ }
 
+ .ideaspage .base-class {
+   transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+   border:0 none;
+   color: #ddd;
+ }
+
+ .ideaspage .base-class.glyphicon.glyphicon-heart {
+   color: red;
+ }
+
+ .ideaspage .list-group .row {
+   background: white;
+ }
 .add-idea .sub-title {
   text-transform: uppercase;
   margin-top: 10px;
@@ -28,6 +48,27 @@
   font-size: 16px;
 }
 
+.ideaspage .col-xs-1 {
+  background: white;
+  margin-bottom:0;
+}
+.ideaspage .col-xs-11 {
+  padding-right:0;
+}
+
+.ideaspage .base-class {
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  border:0 none;
+  color: #ddd;
+}
+
+.ideaspage .base-class.glyphicon.glyphicon-heart {
+  color: red;
+}
+
+.ideaspage .list-group .row {
+  background: white;
+}
 .ideaspage .frontscreen {
     font-family: "Times New Roman", Times, serif;
     margin-bottom: 5vh;
@@ -53,6 +94,7 @@
 .ideaspage .list-group-item {
   font-family: "Times New Roman", Times, serif;
   padding: 20px;
+  border-color: white;
 }
 .ideaspage .form-group {
   margin-bottom:3vh;
@@ -67,6 +109,16 @@
     letter-spacing: 1px;
 
 }
+
+
+.ideaspage .btn1 {
+   margin-top: 10px;
+   background: white;
+   border: 0 none;
+   font-weight: 400;
+   letter-spacing: 1px;
+ }
+
 .ideaspage .btn:focus, .btn:active:focus, .btn.active:focus {
     outline: 0 none;
 }

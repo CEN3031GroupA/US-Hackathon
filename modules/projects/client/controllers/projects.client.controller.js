@@ -115,7 +115,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       shuffle(projects);
     };
 
-
     // Find existing Project
     $scope.findOne = function () {
       $scope.project = Projects.get({projectId: $stateParams.projectId});

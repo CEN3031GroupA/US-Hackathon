@@ -1,0 +1,30 @@
+.authpage {
+
+}
+
+.authpage h3 {
+  color: #63666a;
+  font-family: 'Helvetica';
+  font-size: 32px;
+  font-weight: 600;
+}
+.authpage .btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.authpage .btn-primary {
+    background: #509e2f;
+    color: #ffffff;
+    display:inline;
+}
+.authpage .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background: #509e2f;
+}
+
+.authpage .option {
+  margin-top: 2vh;
+}

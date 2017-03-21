@@ -1,17 +1,19 @@
 <div class="authpage" ng-controller="AuthenticationController">
   <div class="alert alert-danger" ng-if="error">{{error}}</div>
-  <form ng-submit="signin()">
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input required name="email" type="text" ng-model="email" id="email" class="form-control" placeholder="Email">
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input required name="password" type="password" ng-model="password" id="password" class="form-control" placeholder="Password">
-    </div>
-
-    <div class="form-group">
-      <input type="submit" value="Create" class="btn btn-default">
-    </div>
-  </form>
+  <div class="col-md-offset-2 col-md-8">
+    <form ng-submit="signin()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input required name="email" type="text" ng-model="email" id="email" class="form-control" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input required name="password" type="{{showpassword ? 'text' : 'password'}}" ng-model="password" id="password" class="form-control" placeholder="Password">
+        <input class="option" type="checkbox" ng-model="showpassword" ng-checked="false"> Show Password </input>
+      </div>
+          <div class="form-group">
+            <input type="submit" value="Login" class="btn btn-primary">
+          </div>
+    </form>
+  </div>
 </div>

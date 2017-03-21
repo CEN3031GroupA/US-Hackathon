@@ -176,7 +176,7 @@ function seedUser(user) {
     if (err) {
       console.log(err);
     } else {
-      console.log("seeded: " + user.email);
+      console.log('seeded: ' + user.email);
     }
   });
 }
@@ -185,7 +185,7 @@ User.remove({}, function(err) {
   if (err) {
     console.log(err);
   } else {
-    console.log("Removed all users...");
+    console.log('Removed all users...');
     seedUsers();
   }
 });
