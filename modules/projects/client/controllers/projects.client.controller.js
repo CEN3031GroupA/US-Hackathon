@@ -106,13 +106,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     $scope.find = function () {
       $scope.projects = Projects.query(function (projects) {
         $scope.projects = projects;
-      });
-    };
 
-    // Sort projects randomly
-    $scope.randomSort = function () {
-      var projects = $scope.projects;
-      shuffle(projects);
+        shuffle(projects);
+
+        $scope.projects = projects;
+      });
     };
 
     // Find existing Project
