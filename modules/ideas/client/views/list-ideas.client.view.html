@@ -20,10 +20,11 @@
             </a>
           </div>
               <div class="col-xs-1">
-              <button class = "btn1" ng-click="liked=!liked">
-                  <span class = "base-class glyphicon" ng-class="liked ? 'glyphicon-heart' : 'glyphicon-heart-empty'">
+              <button class = "btn1">
+                  <span class = "base-class glyphicon" ng-class="isLiked() ? 'glyphicon-heart' : 'glyphicon-heart-empty'">
                  </span>
               </button>
+              <button class = "btn1" ng-click="like()" ng-model="findOne()">Like This</button>
             </div>
 
 

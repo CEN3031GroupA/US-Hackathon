@@ -16,6 +16,12 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       $location.path('ideas/success');
     };
 
+    $scope.isLiked = function (idea) {
+      return $scope.idea.liked;
+    }
+    $scope.like = function(idea) {
+      $scope.idea.liked = !$scope.idea.liked;
+    }
     $scope.create = function (isValid) {
       $scope.error = null;
       $rootScope.activeIdea.title = this.title;
@@ -63,11 +69,6 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
         ideaId: $stateParams.ideaId
       });
     };
-
-    $scope.view_flag = function(request){
-      $scope.isClicked = !$scope.isClicked;
-    };
-
 
 
     function shuffle(array) {
