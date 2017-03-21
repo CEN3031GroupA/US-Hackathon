@@ -58,6 +58,11 @@ exports.projectById = function(req, res, next, id) {
 
 exports.update = function (req, res) {
   var project = req.project;
+  //TODO: filter which kind of update to do
+  /*
+  project.title = req.body.title;
+  project.description.long = req.body.description.long;
+  */
 
   project.votes = req.body.votes;
 

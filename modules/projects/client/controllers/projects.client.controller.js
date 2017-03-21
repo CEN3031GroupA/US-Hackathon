@@ -87,7 +87,6 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Update existing Project
     $scope.update = function (isValid) {
-      $scope.updateType = 'updateEdit';
       $scope.error = null;
 
       if (!isValid) {
@@ -130,7 +129,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       } */
     };
 
-    /* Initialize voting fields */
+    /* Initialize voting field */
     $scope.hasVoted = false;
 
     $scope.unvote = function (project) {
@@ -149,6 +148,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       $scope.user.votedProjects.push(project.title);
       project.votes += 1;
       $scope.hasVoted = true;
+
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
       Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
     };
