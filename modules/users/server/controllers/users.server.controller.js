@@ -57,6 +57,7 @@ exports.update = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      req.session.user = user;
       res.json(user);
     }
   });
