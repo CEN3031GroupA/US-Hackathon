@@ -44,9 +44,7 @@ exports.read = function(req, res) {
 };
 
 exports.projectById = function(req, res, next, id) {
-  Project.findOne({
-    _id: id
-  },
+  Project.findOne({_id: id},
   function(err, project) {
     if (err) {
       return next(err);
@@ -55,21 +53,14 @@ exports.projectById = function(req, res, next, id) {
       req.project = project;
       next();
     }
-  }
-  );
+  });
 };
 
 exports.update = function (req, res) {
   var project = req.project;
-  if(req.body.updateType === 'updateVote')
-  {
-    project.votes = req.body.votes;
-  }
-  else if (req.body.updateType === 'updateEdit')
-  {
-    project.title = req.body.title;
-    project.description.long = req.body.description.long;
-  }
+
+  project.votes = req.body.votes;
+
   project.save(function (err) {
     if (err) {
       return res.status(400).send({

@@ -77,6 +77,8 @@ UserSchema.methods.authenticate = function (password) {
 };
 
 var User = mongoose.model('User', UserSchema, 'user');
+module.exports = User;
+
 
 function seedUsers() {
   var users = [
@@ -187,4 +189,5 @@ User.remove({}, function(err) {
     seedUsers();
   }
 });
+
 

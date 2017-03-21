@@ -7,8 +7,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
     $scope.user = $scope.authentication.user;
 
     if (!$rootScope.activeProject) {
-    $rootScope.activeProject = {
-      description: {}
+      $rootScope.activeProject = {
+        description: {}
       };
     }
 
@@ -41,11 +41,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       $location.path('projects/category');
     };
 
-    $scope.setActiveCategory = function(category) {
+    $scope.setActiveCategory = function (category) {
       $scope.activeCategory = category;
     };
 
-    $scope.saveProjectCategory = function() {
+    $scope.saveProjectCategory = function () {
       $rootScope.activeProject.category = $scope.activeCategory.title;
 
       $location.path('projects/team');
@@ -105,13 +105,13 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find a list of Projects
     $scope.find = function () {
-      $scope.projects = Projects.query(function(projects) {
+      $scope.projects = Projects.query(function (projects) {
         $scope.projects = projects;
       });
     };
 
     // Sort projects randomly
-    $scope.randomSort = function() {
+    $scope.randomSort = function () {
       var projects = $scope.projects;
       shuffle(projects);
     };
@@ -119,40 +119,36 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({
-        projectId: $stateParams.projectId
-      });
+      $scope.project = Projects.get({projectId: $stateParams.projectId});
+      /*
+      //TODO: check to see if user already voted project
+      for(var i in $scope.user.votedProjects) {
+        if ($scope.user.votedProjects[i] === $scope.project.title) { //TODO: get current project
+          console.log('project has been voted!');
+          $scope.hasVoted = true;
+        }
+      } */
     };
 
     /* Initialize voting fields */
     $scope.hasVoted = false;
-    $scope.project = Projects.get({projectId: $stateParams.projectId}, function(current) {
-      for (var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === current.title) {
-          console.log(current.title);
-          $scope.hasVoted = true;
-        }
-      }
-    });
 
     $scope.unvote = function (project) {
       for (var i in $scope.user.votedProjects) {
         if ($scope.user.votedProjects[i] === project.title) {
           $scope.user.votedProjects.splice(i, 1);
-          project.votes--;
+          project.votes -= 1;
           $scope.hasVoted = false;
         }
       }
-      $scope.updateType = 'updateVote';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
       Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
     };
 
     $scope.vote = function (project) {
       $scope.user.votedProjects.push(project.title);
-      project.votes++;
+      project.votes += 1;
       $scope.hasVoted = true;
-      $scope.updateType = 'updateVote';
       Projects.update({projectId: $stateParams.projectId},{votes: project.votes});
       Users.update({userId: $scope.user._id}, {votedProjects: $scope.user.votedProjects});
     };

@@ -32,8 +32,8 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
     $scope.update = function () {
       $scope.error = null;
 
-      $scope.user.$update(function () {
-        $location.path('/api/auth/' + $scope.authentication.user._id);
+      $scope.authentication.user.$update(function () {
+        $http.put('/api/user/' + $scope.authentication.user._id);
       }, function (response) {
         $scope.error = response.data.message;
       });

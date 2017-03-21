@@ -48,18 +48,15 @@ exports.read = function(req, res) {
 
 exports.update = function (req, res) {
   var user = req.user;
-  if(req.body.updateType === 'updateVote')
-  {
-    user.votedProjects = req.body.votedProjects;
-  }
+
+  user.votedProjects = req.body.votedProjects;
+
   user.save(function (err) {
     if (err) {
-      console.log("exports error updating: " + user.name);
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log("exports updated: " + user.name);
       res.json(user);
     }
   });
