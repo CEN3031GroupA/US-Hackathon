@@ -1,0 +1,27 @@
+<section ng-controller="EventCategoriesController" ng-init="initCreate()">
+  <h1>Create New Event Category</h1>
+
+  <form ng-submit="create()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="text" ng-model="title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" ng-model="description" id="description" class="form-control" cols="20" rows="5" placeholder="Description"></textarea>
+    </div>
+    <div class="form-group" ng-repeat="question in questions">
+      <label for="question-{{question.num}}">Required Question {{question.num}}</label>
+      <textarea name="description" ng-model="question.content" id="question-{{question.num}}" class="form-control" cols="10" rows="5"></textarea>
+      <a class="btn btn-danger" ng-click="deleteQuestion(question.num)">Delete</a>
+    </div>
+    <div class="form-group">
+      <a class="btn btn-warning" ng-click="addQuestion()">
+        Add Question
+      </a>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Create" class="btn btn-default">
+    </div>
+  </form>
+</section>

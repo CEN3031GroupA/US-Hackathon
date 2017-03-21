@@ -9,8 +9,12 @@ angular.module('core.admin.routes').config(['$stateProvider',
         url: '/admin',
         template: '<ui-view/>',
         data: {
-          roles: ['admin']
+          adminOnly: true
         }
+      })
+      .state('admin.index', {
+        url: '',
+        templateUrl: 'modules/core/client/views/admin/index.client.view.html'
       });
   }
 ]);

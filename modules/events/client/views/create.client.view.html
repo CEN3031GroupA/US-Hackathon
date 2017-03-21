@@ -1,0 +1,40 @@
+<section ng-controller="EventsController">
+  <h1>Create New Event</h1>
+
+  <form ng-submit="create()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="text" ng-model="title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" type="text" ng-model="description" id="description" class="form-control" placeholder="Description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="locations">Location(s)</label>
+      <input name="locations" type="text" ng-model="locations" id="locations" class="form-control" placeholder="Locations">
+    </div>
+    <div class="checkbox" ng-repeat="(index, eventCategory) in eventCategories">
+      <label>
+        <input type="checkbox" ng-model="selectedCategories[index]">
+        {{eventCategory.title}}
+      </label>
+    </div>
+    <div class="form-group">
+      <label>Start Date/Time</label> <br />
+      <datetimepicker ng-model="start"
+                      date-format="dd-MMM-yyyy">
+      </datetimepicker>
+    </div>
+
+    <div class="form-group">
+      <label>End Date/Time</label> <br />
+      <datetimepicker ng-model="end"
+                      date-format="dd-MMM-yyyy">
+      </datetimepicker>
+    </div>
+    <div class="form-group">
+      <input type="submit" value="Create" class="btn btn-default">
+    </div>
+  </form>
+</section>

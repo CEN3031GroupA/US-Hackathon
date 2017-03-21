@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', 'Menus',
-  function ($scope, $state, Authentication, Menus) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location', '$http',
+  function ($scope, $state, Authentication, $location, $http) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -21,9 +21,47 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       }
     };
 
-    // Collapsing the menu after navigation
+    $scope.logout = function () {
+      $http.post('/logout').success(function () {
+        delete $scope.authentication.user;
+
+        $state.go('signin', $state.previous.params);
+      }).error(function (response) {
+        $scope.error = response.message;
+      });
+    };
+
     $scope.$on('$stateChangeSuccess', function () {
+      $scope.loggedIn = Authentication.user !== undefined && typeof Authentication.user === 'object';
+
+      // Collapsing the menu after navigation
       $scope.closeMenu();
+
+      $scope.activeMenu = [
+        {
+          title: 'Home',
+          'ui-sref': 'home()'
+        },
+        {
+          title: 'Projects',
+          'ui-sref': 'projects.list()'
+        },
+        {
+          title: 'Ideas',
+          'ui-sref': 'ideas.list()'
+        },
+        {
+          title: 'FAQs',
+          'ui-sref': 'faqs.list()'
+        }
+      ];
+
+      if ($scope.loggedIn && $scope.authentication.user.isAdmin) {
+        $scope.activeMenu.push({
+          title: 'Admin Home',
+          'ui-sref': 'admin.index()'
+        });
+      }
     });
 
     $scope.closeMenu = function() {

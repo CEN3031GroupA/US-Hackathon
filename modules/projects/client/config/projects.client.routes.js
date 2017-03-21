@@ -1,6 +1,6 @@
-'use strict';
+  'use strict';
 
-// Setting up route
+  // Setting up route
 angular.module('projects').config(['$stateProvider',
   function ($stateProvider) {
     // Projects state routing
@@ -33,6 +33,10 @@ angular.module('projects').config(['$stateProvider',
       .state('projects.edit', {
         url: '/:projectId/edit',
         templateUrl: 'modules/projects/client/views/edit-project.client.view.html',
+      })
+      .state('projects.votes', {
+          url: '/admin/projectsVotes',
+          templateUrl: 'modules/projects/client/views/list-projects-votes.client.view.html',
       });
-  }
+    }
 ]);

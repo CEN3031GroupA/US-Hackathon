@@ -29,15 +29,14 @@ var ProjectSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  votes: {
+    type: Number,
+    default: 0
+  },
   comments: [{
     posted: {type: Date, default: Date.now},
     user:    {type: Schema.ObjectId, ref: 'User'},
-    content: {type: String, default: ''},
-    replies: [{
-      posted: {type: Date, default: Date.now},
-      user:    {type: Schema.ObjectId, ref: 'User'},
-      content: {type: String,default: ''}
-    }]
+    content: {type: String, default: ''}
   }]
 });
 
@@ -55,4 +54,3 @@ ProjectSchema.pre('save', function(next) {
 
 var Project = mongoose.model('Project', ProjectSchema);
 module.exports = Project;
-
