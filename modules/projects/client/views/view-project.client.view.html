@@ -7,7 +7,6 @@
   </head>
   <section ng-controller="ProjectsController" ng-init="findOne()">
     <h1 ng-bind="project.title"></h1>
-    <p><small>Category:</small> <strong ng-bind="project.category"></strong></p>
     <div class="pull-right">
       <a class="btn btn-primary" ui-sref="projects.edit({projectId: project._id})">
         <i class="glyphicon glyphicon-edit"></i>
@@ -20,6 +19,24 @@
     <div class="project-content" ng-bind="project.description.long"></div>
     <div>
       <button type="button" id="voteButton" ng-click="vote(project);" class="btn btn-md btn-block">Vote</button>
+    </div>
+    
+  <!-- TODO: link team members to schema -->
+    <h3 class="project-team">Team members</h3>
+    <div class="row">
+      <div class="col-xs-12">
+        <ul class="team-list">
+          <li><i class="glyphicon glyphicon-user"></i></li>
+        </ul>
+
+        <h3 class="comment">Comments</h3>
+        <div class="form-group" show-errors>
+          <textarea name="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
+        </div>
+        <div class="comments-list" ng-repeat="project.comment in project">
+
+        </div>
+      </div>
     </div>
   </section>
 </html>
