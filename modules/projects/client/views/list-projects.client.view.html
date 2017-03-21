@@ -6,21 +6,10 @@
 </head>
 <body>
 
-
-<section ng-controller="ProjectsController" ng-init="find(); sortType = randomSort;">
-  <div class="row">
-    <div class="pull-right">
-    <a class="btn btn-primary" ng-click="sortType = 'votes'; showVotes = true; sortReverse = !sortReverse">
-      <i class="glyphicon glyphicon-sort"></i>
-    </a>
-    </div>
-  </div>
-
-  <div class="list-group" id="projects-list" ui-sref="projects.view({projectId: project._id})" ng-repeat="project in projects|orderBy:sortType:sortReverse">
-    <a  class="list-group-item clearfix">
-
-      <h4 class="list-group-item-heading">{{project.title}}<span class="badge" ng-show="showVotes">{{project.votes}}</span></h4>
-
+<section ng-controller="ProjectsController" ng-init="find();">
+  <div class="list-group" id="projects-list" ui-sref="projects.view({projectId: project._id})" ng-repeat="project in projects">
+    <a  class="list-group-item">
+      <h4 class="list-group-item-heading">{{project.title}}</h4>
       <h6 class="list-group-item-heading">{{project.category}}</h6>
       <p class="list-group-item-text">{{project.description.short}}</p>
     </a>

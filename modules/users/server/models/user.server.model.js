@@ -39,6 +39,7 @@ var UserSchema = new Schema({
   updated: {
     type: Date
   },
+  votedProjects: [String],
   created: {
     type: Date,
     default: Date.now
@@ -76,7 +77,9 @@ UserSchema.methods.authenticate = function (password) {
 };
 
 var User = mongoose.model('User', UserSchema, 'user');
+module.exports = User;
 
+/*
 function seedUsers() {
   var users = [
     {
@@ -84,73 +87,82 @@ function seedUsers() {
       lastName: 'Andrews',
       email: 'candrews800@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Clinton',
       lastName: 'Andrews',
       email: 'candrews800+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'George',
       lastName: '',
       email: 'george@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'George',
       lastName: '',
       email: 'george+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'Amy',
       lastName: '',
       email: 'amy@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Amy',
-      lastName: '',
+      lastName: 'Ly',
       email: 'amy+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'Travis',
       lastName: '',
       email: 'travis@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Travis',
       lastName: '',
       email: 'travis+admin@gmail.com',
       password: '1234',
-      isAdmin: true
+      isAdmin: true,
+      votedProjects: []
     },
     {
       firstName: 'Jason',
       lastName: '',
       email: 'jason@gmail.com',
       password: '1234',
-      isAdmin: false
+      isAdmin: false,
+      votedProjects: []
     },
     {
       firstName: 'Jason',
       lastName: '',
       email: 'jason+admin@gmail.com',
       password: '1234',
-      isAdmin: true
-    },
+      isAdmin: true,
+      votedProjects: []
+    }
   ];
-
 
   for (var i = 0; i < users.length; i++) {
     users[i] = new User(users[i]);
@@ -158,12 +170,13 @@ function seedUsers() {
   }
 }
 
+
 function seedUser(user) {
   user.save(function (err) {
     if (err) {
       console.log(err);
     } else {
-      console.log("seeded: " + user.email);
+      console.log('seeded: ' + user.email);
     }
   });
 }
@@ -172,7 +185,10 @@ User.remove({}, function(err) {
   if (err) {
     console.log(err);
   } else {
-    console.log("Removed all users...");
+    console.log('Removed all users...');
     seedUsers();
   }
 });
+
+
+*/

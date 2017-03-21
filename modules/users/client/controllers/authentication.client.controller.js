@@ -27,5 +27,16 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
         $scope.error = response.message;
       });
     };
+
+    /* Update user */
+    $scope.update = function () {
+      $scope.error = null;
+
+      $scope.authentication.user.$update(function () {
+        $http.put('/api/user/' + $scope.authentication.user._id);
+      }, function (response) {
+        $scope.error = response.data.message;
+      });
+    };
   }
 ]);

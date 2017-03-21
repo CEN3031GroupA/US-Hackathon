@@ -13,9 +13,15 @@ var mongoose = require('mongoose'),
  * is valid.
  */
 var CommentSchema = new Schema({
-  posted:    {type: Date, default: Date.now},
-  content:   {type: String, default: '', trim: true},
-  user:      {type: Schema.ObjectId, ref: 'User'}
+  posted:    {
+    type: Date, default: Date.now
+  },
+  content:   {
+    type: String, default: '', trim: true
+  },
+  user:      {
+    type: Schema.ObjectId, ref: 'User'
+  }
 });
 
 mongoose.model('Comment', CommentSchema);
