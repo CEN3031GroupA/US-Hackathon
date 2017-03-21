@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var IdeaSchema = new Schema({
   created_at: Date,
   updated_at: Date,
+
   title: {
     type: String,
     default: '',
@@ -26,8 +27,13 @@ var IdeaSchema = new Schema({
     */
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  liked: {
+    type: Boolean,
+    default: false
   }
 });
+
 
 IdeaSchema.pre('save', function(next) {
   var currentDate = new Date();
