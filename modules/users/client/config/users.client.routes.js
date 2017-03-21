@@ -11,11 +11,6 @@ angular.module('users').config(['$stateProvider',
         data: {
           allowAnon: true,
         }
-      })
-
-      .state('welcomescreen', {
-        url: '/welcome',
-        templateUrl: 'modules/users/client/views/welcome.client.view.html',
       });
   }
 ]);
