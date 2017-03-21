@@ -62,9 +62,11 @@ exports.projectById = function(req, res, next, id) {
 exports.update = function (req, res) {
   var project = req.project;
 
+
   project.votes = req.body.votes;
   project.title = req.body.title;
   project.description.long = req.body.description.long;
+
 
   project.save(function (err) {
     if (err) {
@@ -75,5 +77,6 @@ exports.update = function (req, res) {
       res.json(project);
     }
   });
-};
 
+
+};
