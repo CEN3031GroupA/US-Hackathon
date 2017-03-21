@@ -7,20 +7,24 @@
 </head>
 <body>
   <section class="ideaspage" ng-controller="IdeasController" ng-init="find()">
+
     <div class="list-group" ng-repeat="idea in ideas|orderBy:'-title'">
+
       <div class="row">
         <div class="col-xs-11">
           <a ui-sref="ideas.view({ideaId: idea._id})" class="list-group-item">
             <h4 class="list-group-item-heading">{{idea.title}}
+
             <h6 class="list.group-item-heading">{{idea.category}}</h6>
             <p class="list-group-item-text">{{idea.description.short}}</p>
             </a>
           </div>
               <div class="col-xs-1">
-              <button class = "btn1" ng-click="liked=!liked">
+              <button ng-click = "liked=!liked" ng-model = "liked" class = "btn1">
                   <span class = "base-class glyphicon" ng-class="liked ? 'glyphicon-heart' : 'glyphicon-heart-empty'">
                  </span>
               </button>
+
             </div>
 
 
@@ -36,6 +40,8 @@
       </a>
 -->
     </div>
+
     </div>
+  </div>
   </section>
 </body>

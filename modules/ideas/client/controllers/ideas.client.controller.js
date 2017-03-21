@@ -65,7 +65,6 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
     };
 
 
-
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;
 
