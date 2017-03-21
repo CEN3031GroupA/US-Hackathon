@@ -5,7 +5,7 @@
  */
 exports.renderIndex = function (req, res) {
   res.render('modules/core/server/views/index', {
-    user: req.user || req.session.user || null
+    user: req.session.user || req.user || null
   });
 };
 
