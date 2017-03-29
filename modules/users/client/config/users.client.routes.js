@@ -5,15 +5,11 @@ angular.module('users').config(['$stateProvider',
   function ($stateProvider) {
     // Users state routing
     $stateProvider
-<<<<<<< HEAD
       .state('user', {
         abstract: true,
         url: '/user',
         template: '<ui-view/>'
       })
-=======
-
->>>>>>> staging for changes
       .state('signin', {
         url: '/signin?err',
         templateUrl: 'modules/users/client/views/signin.client.view.html',
@@ -24,6 +20,10 @@ angular.module('users').config(['$stateProvider',
       .state('user.view', {
         url: '/:userId',
         templateUrl: 'modules/users/client/views/view-user.client.view.html'
+      })
+      .state('user.welcome', {
+        url: '/welcome',
+        templateUrl: 'modules/users/client/views/welcome.client.view.html'
       });
   }
 ]);
