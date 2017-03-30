@@ -6,28 +6,8 @@
     <link rel="stylesheet" href="modules/users/client/css/users.css">
   </head>
 <section class = "authpage" ng-controller="AuthenticationController">
-      <header style="
-      width:200%;
-      height: 100vh;
-      position:absolute;
-      top:0;
-      left:-50vh;
-      background-image: url(modules/users/client/img/pexels-photo.jpg);
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 50px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;">
-      <label class="container3">
-          <img src='modules/users/client/img/logo.svg'  width="405" />
-        </label>
-      </header>
-<label class="container1">
           <div style="margin-bottom:10vh">
-            <h3 class="text-left">Welcome to the hackathon</h3>
+            <h3 class="text-left">Events and Schedules </h3>
               <p class="text-left">
                  Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.</li>
                  Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</li>
@@ -36,7 +16,7 @@
               </p>
           </div>
           <div style="margin-bottom:10vh">
-            <h3 class="text-left">How to use this app</h3>
+            <h3 class="text-left">Get Started Today!</h3>
             <p class="text-left">
               Morbi in sem quis dui placerat ornare. Pellentesque odio nisi, euismod in, pharetra a, ultricies in, diam. Sed arcu. Cras consequat.</li>
               Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</li>
@@ -46,9 +26,12 @@
           </div>
           <div class="container2">
             <div style="margin-top:50px">
-            <a ui-sref="login()" class="btn btn-primary outline"> Sign-in</a>
+              <a ui-sref="user.welcome1()" class="btn btn-primary outline"> Back </a>
+              &nbsp;
+              <a ui-sref="home()" class="btn btn-primary outline">
+              <span class="glyphicon glyphicon-home"></span> </a>
             </div>
           </div>
-</label>
+
 </section>﻿
 </html>
