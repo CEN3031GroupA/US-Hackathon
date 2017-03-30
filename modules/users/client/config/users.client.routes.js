@@ -23,19 +23,31 @@ angular.module('users').config(['$stateProvider',
       })
       .state('user.splash', {
         url: '/welcome',
-        templateUrl: 'modules/users/client/views/welcomescreens/splash.client.view.html'
+        templateUrl: 'modules/users/client/views/welcomescreens/splash.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
       })
       .state('user.welcome', {
-        url: '/welcome',
-        templateUrl: 'modules/users/client/views/welcomescreens/welcome.client.view.html'
+        url: '/welcome1',
+        templateUrl: 'modules/users/client/views/welcomescreens/welcome.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
       })
       .state('user.welcome1', {
-        url: '/welcome1',
-        templateUrl: 'modules/users/client/views/welcomescreens/welcome1.client.view.html'
+        url: '/welcome2',
+        templateUrl: 'modules/users/client/views/welcomescreens/welcome1.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
       })
       .state('user.welcome2', {
-        url: '/welcome',
-        templateUrl: 'modules/users/client/views/welcomescreens/welcome2.client.view.html'
+        url: '/welcome3',
+        templateUrl: 'modules/users/client/views/welcomescreens/welcome2.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
       });
   }
 ]);
