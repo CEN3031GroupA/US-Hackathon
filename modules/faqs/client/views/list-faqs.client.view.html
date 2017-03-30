@@ -5,19 +5,24 @@
   <link rel="stylesheet" href="../css/faqs.css">
 </head>
 <body>
-<div class="col-xs-12">
+<div class="col-lg-12">
 <section data-ng-controller="FAQsController" ng-init="find()">
   <div class="page-header">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
     <h1>Frequently Asked Questions</h1>
     <button data-toggle="collapse" class="btn btn-group-lg" ng-click="askme=!askme">Ask a question</button>
     <div ng-show="askme">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Ask a question...">
-        <span class="input-group-btn">
-        <button class="btn btn-secondary" type="button">?</button>
-      </span>
-      </div>
+      <form name="faqForm" class="form-vertical" ng-submit="respond(faqForm.$valid)">
+        <fieldset>
+          <div class="form-group" show-errors>
+            <input type="text" name="question" class="form-control" ng-model="question" placeholder="Ask a question" required>
+            <div ng-messages="faqForm.solution.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">FAQ solution is required</p>
+            </div>
+          </div>
+          <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" ng-click="post()" placeholder="Ask" />
+        </fieldset>
+      </form>
     </div>
     </div>
   </div>
