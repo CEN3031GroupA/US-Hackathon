@@ -17,13 +17,9 @@ angular.module('faqs').config(['$stateProvider',
         url: '/faqs',
         templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
-      .state('faqs.post', {
-        url: '/post',
-        templateUrl: 'modules/faqs/client/views/post-faq.client.view.html',
+      .state('faqs.respond', {
+        url: '/respond',
+        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
       });
-      // .state('faqs.respond', {
-      //   url: '',
-      //   templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
-      // });
   }
 ]);

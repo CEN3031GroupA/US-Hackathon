@@ -207,10 +207,10 @@ var User = mongoose.model('User', UserSchema);
 
 
 var user = new User({
-  firstName: "Jason",
-  lastName: "Hackleman",
-  displayName: "asdf",
-  email: "clinton.andrews@gmail.com",
-  username: "asdf",
-  password: "1234"
+  firstName: 'Jason',
+  lastName: 'Hackleman',
+  displayName: 'asdf',
+  email: 'clinton.andrews@gmail.com',
+  username: 'asdf',
+  password: '1234'
 });

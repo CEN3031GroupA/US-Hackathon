@@ -26,7 +26,7 @@
     </div>
     </div>
   </div>
-  <div class="list-group" ng-repeat="faq in faqs">
+  <div class="list-group" ui-sref="faqs.respond({projectId: project._id})" ng-repeat="faq in faqs">
     <a  class="list-group-item">
       <h4 class="list-group-item-heading" ng-click="showme=!showme"> {{faq.question}} <button class="btn btn-link glyphicon glyphicon-question-sign"></button></h4>
       <h6 class="list-group-item-heading" ng-show="showme"> {{faq.solution}} <button class="btn btn-secondary glyphicon glyphicon-exclamation-sign" ui-sref="faqs.respond({faqId: faq._id})"></button></h6>

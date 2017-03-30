@@ -1,17 +1,23 @@
-<section ng-controller="FAQsController" ng-init="">
+<section ng-controller="FAQsController" ng-init="findOne()">
   <div class="col-xs-12">
     <h2>Respond to FAQ</small></h2>
-    <h1 ng-bind="faq.question"></h1>
-    <form name="faqForm" class="form-vertical" ng-submit="respond(faqForm.$valid)">
+    <form name="faqForm" class="form-vertical" ng-submit="update(faqForm.$valid)">
       <fieldset>
         <div class="form-group" show-errors>
-          <input type="text" ng-model="faq.solution" name="title" class="form-control" ng-model="solution" placeholder="Solution" required>
-          <div ng-messages="faqForm.solution.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">FAQ solution is required</p>
+          <input type="text" ng-model="faq.question" name="question" class="form-control" ng-model="question" placeholder="Question" required>
+          <div ng-messages="projectForm.title.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">A question is required</p>
           </div>
         </div>
-        <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" value="Save" />
+        <div class="form-group" show-errors>
+          <textarea name="solution" rows="5" ng-model="faq.solution" class="form-control" ng-model="solution" placeholder="The best solution..." required></textarea>
+          <div ng-messages="faqForm.details.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">A solution is required</p>
+          </div>
+        </div>
+        <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" value="Respond" />
       </fieldset>
     </form>
   </div>
 </section>
+
