@@ -5,30 +5,31 @@
 
 // Projects controller
 angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
-  function ($scope, $state, $stateParams, $location, FAQs) {
+  function ($scope, $state, $stateParams, $location, FAQs, $window) {
 
     $scope.post = function (isValid) {
       $scope.error = null;
 
     // Create new FAQ object
       var faq = new FAQs({
-        question: this.question,
-        // project: this.project,
-        // event: this.event,
-        // answers: null,
-        // solution: this.solution,
-        // solved: false,
-        // user: this.user
-      });
+            question: this.question,
+            // project: this.project,
+            // event: this.event,
+            // answers: null,
+            // solution: this.solution,
+            // solved: false,
+            // user: this.user
+        });
       // Redirect
       faq.$save(function (response) {
-        $location.path('faqs');
+        $scope.faqs.push(response);
+        $scope.askme=false;
 
       }, function (errorResponse){
         $scope.error = errorResponse.data.message;
       });
     };
-    // Find a list of Projects
+    // Find a list of faqs
     $scope.find = function () {
       $scope.faqs = FAQs.query();
     };
@@ -55,12 +56,12 @@ angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$state
       }
     };
 
-    // Update existing Project
+    // Update existing faq
     $scope.update = function (isValid) {
       $scope.error = null;
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'projectForm');
+        $scope.$broadcast('show-errors-check-validity', 'faqForm');
 
         return false;
       }

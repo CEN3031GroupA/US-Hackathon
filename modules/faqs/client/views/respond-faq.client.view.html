@@ -1,16 +1,16 @@
 <section ng-controller="FAQsController" ng-init="findOne()">
   <div class="col-xs-12">
-    <h2>Respond to FAQ</small></h2>
+    <h2>Respond to  a FAQ {{faq.question}}</small></h2>
     <form name="faqForm" class="form-vertical" ng-submit="update(faqForm.$valid)">
       <fieldset>
         <div class="form-group" show-errors>
           <input type="text" ng-model="faq.question" name="question" class="form-control" ng-model="question" placeholder="Question" required>
-          <div ng-messages="projectForm.title.$error" role="alert">
+          <div ng-messages="faqForm.question.$error" role="alert">
             <p class="help-block error-text" ng-message="required">A question is required</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <textarea name="solution" rows="5" ng-model="faq.solution" class="form-control" ng-model="solution" placeholder="The best solution..." required></textarea>
+          <textarea name="solution" rows="5" ng-model="faq.solution" class="form-control" ng-model="solution" placeholder="solution" required></textarea>
           <div ng-messages="faqForm.details.$error" role="alert">
             <p class="help-block error-text" ng-message="required">A solution is required</p>
           </div>

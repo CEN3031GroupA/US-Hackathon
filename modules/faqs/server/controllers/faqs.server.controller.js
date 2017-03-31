@@ -32,14 +32,14 @@ exports.list = function(req, res) {
 };
 
 exports.delete = function(req, res, next) {
-  // req.faq.remove(function(err) {
-  //   if (err) {
-  //     return next(err);
-  //   }
-  //   else {
-  //     res.json(req.faq);
-  //   }
-  // });
+  req.faq.remove(function(err) {
+    if (err) {
+      return next(err);
+    }
+    else {
+      res.json(req.faq);
+    }
+  });
 };
 
 exports.read = function(req, res) {
@@ -47,34 +47,34 @@ exports.read = function(req, res) {
 };
 
 exports.faqById = function(req, res, next, id) {
-    // FAQ.findOne({
-    //         _id: id
-    //     },
-    //     function(err, faq) {
-    //         if (err) {
-    //             return next(err);
-    //         }
-    //         else {
-    //             req.faq = faq;
-    //             next();
-    //         }
-    //     }
-    // );
+  FAQ.findOne({
+          _id: id
+      },
+      function(err, faq) {
+          if (err) {
+              return next(err);
+          }
+          else {
+              req.faq = faq;
+              next();
+          }
+      }
+  );
 };
 
 exports.update = function (req, res) {
-  // var faq = req.faq;
-  //
-  // faq.question = req.body.question;
-  // faq.solution = req.body.solution;
-  //
-  // faq.save(function (err) {
-  //   if (err) {
-  //     return res.status(400).send({
-  //       message: errorHandler.getErrorMessage(err)
-  //     });
-  //   } else {
-  //     res.json(faq);
-  //   }
-  // });
+  var faq = req.faq;
+
+  faq.question = req.body.question;
+  faq.solution = req.body.solution;
+
+  faq.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(faq);
+    }
+  });
 };
