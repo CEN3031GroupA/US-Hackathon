@@ -6,12 +6,12 @@
     .module('questions')
     .controller('QuestionsController', QuestionsController);
 
-  QuestionsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'questionResolve'];
+  QuestionsController.$inject = ['$scope', '$state', '$window', 'questionResolve'];
 
-  function QuestionsController ($scope, $state, $window, Authentication, question) {
+  function QuestionsController ($scope, $state, $window, question) {
     var vm = this;
 
-    vm.authentication = Authentication;
+
     vm.question = question;
     vm.error = null;
     vm.form = {};

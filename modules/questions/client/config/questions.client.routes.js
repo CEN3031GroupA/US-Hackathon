@@ -16,7 +16,7 @@
       })
       .state('questions.list', {
         url: '',
-        templateUrl: 'modules/questions/views/list-questions.client.view.html',
+        templateUrl: 'modules/questions/client/views/list-questions.client.view.html',
         controller: 'QuestionsListController',
         controllerAs: 'vm',
         data: {
