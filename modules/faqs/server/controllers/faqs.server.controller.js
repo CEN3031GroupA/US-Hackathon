@@ -48,18 +48,17 @@ exports.read = function(req, res) {
 
 exports.faqById = function(req, res, next, id) {
   FAQ.findOne({
-          _id: id
-      },
-      function(err, faq) {
-          if (err) {
-              return next(err);
-          }
-          else {
-              req.faq = faq;
-              next();
-          }
-      }
-  );
+    _id: id
+  },
+  function(err, faq) {
+    if (err) {
+      return next(err);
+    }
+    else {
+      req.faq = faq;
+      next();
+    }
+  });
 };
 
 exports.update = function (req, res) {

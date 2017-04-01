@@ -3,28 +3,33 @@
  */
 'use strict';
 
-// Projects controller
-angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
-  function ($scope, $state, $stateParams, $location, FAQs, $window) {
+// FAQs controller
+angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs','$rootScope',
+  function ($scope, $state, $stateParams, $location, FAQs, $rootScope) {
+    if (!$rootScope.activeFAQ) {
+      $rootScope.activeFAQ = {
+        solution: {}
+      };
+    }
+
+
+    $scope.saveQuestion = function (response) {
+      $rootScope.activeFAQ.question = this.question;
+
+      $location.path('faqs');
+    };
 
     $scope.post = function (isValid) {
       $scope.error = null;
 
     // Create new FAQ object
-      var faq = new FAQs({
-            question: this.question,
-            // project: this.project,
-            // event: this.event,
-            // answers: null,
-            // solution: this.solution,
-            // solved: false,
-            // user: this.user
-        });
+      var faq = new FAQs($rootScope.activeFAQ);
       // Redirect
       faq.$save(function (response) {
         $scope.faqs.push(response);
         $scope.askme=false;
-
+        // clear active
+        $rootScope.activeFAQ = null;
       }, function (errorResponse){
         $scope.error = errorResponse.data.message;
       });
