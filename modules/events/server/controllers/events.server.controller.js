@@ -28,6 +28,28 @@ exports.list = function(req, res) {
   });
 };
 
+exports.latest = function(req, res) {
+  HackathonEvent.find().sort('start').populate('categories').exec({}, function(err, events) {
+    if (err) {
+      res.status(400).send(err);
+    }
+    else {
+      var now = new Date();
+      for (var i = 0; i < events.length; i++) {
+        var endDate = new Date(events[i].end);
+
+        // Event has concluded
+        if (endDate < now) {
+          continue;
+        }
+
+        res.json(events[i]);
+        return;
+      }
+    }
+  });
+};
+
 exports.delete = function(req, res, next) {
   req.event.remove(function(err) {
     if (err) {

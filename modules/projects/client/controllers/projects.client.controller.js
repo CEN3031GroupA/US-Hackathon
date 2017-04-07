@@ -1,8 +1,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
 

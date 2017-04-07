@@ -11,6 +11,9 @@ module.exports = function(app) {
     .post(events.create)
     .get(events.list);
 
+  app.route('/api/events/latest')
+    .get(events.latest);
+
   app.route('/api/admin/events/:eventId')
     .get(events.read)
     .put(events.update)
