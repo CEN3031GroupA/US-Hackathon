@@ -38,11 +38,11 @@ angular.module('core').controller('HomeController', ['$scope', '$interval', 'Aut
           $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
         } else {
           $scope.activeEvent.inProgress = false;
-          timeTill = parseInt((now - startDate) / 1000); // Time till in seconds
-          days = timeTill / (24 * 60 * 60);
-          hours = (timeTill - days * 24 * 60 * 60);
-          minutes = (timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60;
-          $scope.activeEvent.timer = parseInt(days) + ' days, ' + parseInt(hours) + ' hours, ' + parseInt(minutes) + ' minutes';
+          timeTill = parseInt((startDate - now) / 1000); // Time till in seconds
+          days = parseInt(timeTill / (24 * 60 * 60));
+          hours = parseInt((timeTill - days * 24 * 60 * 60) / 60 / 60);
+          minutes = parseInt((timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60);
+          $scope.activeEvent.timer = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes';
         }
         break;
       }
