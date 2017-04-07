@@ -18,7 +18,7 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  Project.find({}, function(err, data) {
+  Project.find().populate(['owner', 'team']).exec({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }
@@ -44,7 +44,9 @@ exports.read = function(req, res) {
 };
 
 exports.projectById = function(req, res, next, id) {
-  Project.findOne({ _id: id } ,
+  Project.findOne({
+    _id: id
+  }).populate(['owner', 'team']).exec(
   function(err, project) {
     if (err) {
       return next(err);

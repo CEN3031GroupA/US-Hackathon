@@ -25,10 +25,14 @@ var ProjectSchema = new Schema({
     short: String,
     long: String
   },
-  user: {
+  owner: {
     type: Schema.ObjectId,
     ref: 'User'
   },
+  team: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }],
   votes: {
     type: Number,
     default: 0
