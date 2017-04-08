@@ -1,8 +1,8 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
 
@@ -171,6 +171,27 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
           $rootScope.activeProject.team.splice(i, 1);
         }
       }
+    };
+
+    $scope.addComment = function() {
+      var comment = this.comment;
+
+      var req = {
+        method: 'POST',
+        url: '/api/projects/' + $scope.project._id + '/addComment',
+        data: {
+          content: comment
+        }
+      };
+
+      this.comment = '';
+
+      $http(req).then(function(response){
+        $scope.project = response.data;
+        console.log($scope.project);
+      }, function(err){
+        console.error(err);
+      });
     };
 
     function shuffle(array) {

@@ -56,7 +56,7 @@ exports.read = function(req, res) {
 exports.projectById = function(req, res, next, id) {
   Project.findOne({
     _id: id
-  }).populate(['owner', 'team']).exec(
+  }).populate(['owner', 'team', 'comments.user']).exec(
   function(err, project) {
     if (err) {
       return next(err);
@@ -84,6 +84,27 @@ exports.update = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      res.json(project);
+    }
+  });
+};
+
+exports.addComment = function(req, res) {
+  var project = req.project;
+
+  project.comments.push({
+    user: req.session.user,
+    posted: new Date(),
+    content: req.body.content
+  });
+
+  project.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+    else {
       res.json(project);
     }
   });
