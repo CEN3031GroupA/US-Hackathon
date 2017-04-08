@@ -28,10 +28,10 @@ exports.list = function(req, res) {
   });
 };
 
-exports.latest = function(req, res) {
+var getActiveEvent = function(cb, errCb) {
   HackathonEvent.find().sort('start').populate('categories').exec({}, function(err, events) {
     if (err) {
-      res.status(400).send(err);
+      errCb(err);
     }
     else {
       var now = new Date();
@@ -43,11 +43,21 @@ exports.latest = function(req, res) {
           continue;
         }
 
-        res.json(events[i]);
+        cb(events[i]);
         return;
       }
     }
   });
+};
+
+exports.getActiveEvent = getActiveEvent;
+
+exports.latest = function(req, res) {
+  getActiveEvent(function(event) {
+    res.json(event);
+  }, function(err) {
+    res.status(400).send(err);
+  })
 };
 
 exports.delete = function(req, res, next) {
