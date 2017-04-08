@@ -48,7 +48,7 @@ a:hover .header-profile-image {
 #top-menu {
   background-color: #509E2F;
   color: white;
-  text-align:center;
+  text-align: center;
   cursor: pointer;
   height: 50px;
   line-height: 50px;
@@ -57,11 +57,11 @@ a:hover .header-profile-image {
 }
 
 #subheader {
-  text-align:center;
-  background-color:#63666A;
-  color:white;
-  height:40px;
-  line-height:40px;
+  text-align: center;
+  background-color: #63666A;
+  color: white;
+  height: 40px;
+  line-height: 40px;
 }
 
 #side-menu {
@@ -73,7 +73,6 @@ a:hover .header-profile-image {
   overflow: auto;
   left: -200px;
   top: 50px;
-
   transition: left 0.25s;
 }
 
@@ -82,14 +81,32 @@ a:hover .header-profile-image {
   width: 100%;
   color: black;
   text-decoration: none;
-
   padding: 15px 10px;
-
   border-bottom: 1px solid grey;
 }
 
 .event-countdown {
   background-color: #eee;
   padding: 10px;
-  margin-bottom: 6vh;
+  margin-bottom: 2vh;
+}
+
+.create {
+  background-color: #509e2f;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 2vh;
+}
+
+.create h3 {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.create .sub-title {
+  text-transform: uppercase;
+  margin-top: 5px;
+  margin-bottom: 0px;
 }
