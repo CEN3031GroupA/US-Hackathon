@@ -16,5 +16,9 @@ module.exports = function(app) {
     .put(projects.update)
     .delete(projects.delete);
 
+  app.route('/api/projects/:projectId/vote')
+    .put(projects.vote)
+    .delete(projects.unvote);
+
   app.param('projectId', projects.projectById);
 };
