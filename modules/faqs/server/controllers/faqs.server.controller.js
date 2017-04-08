@@ -31,6 +31,28 @@ exports.list = function(req, res) {
   });
 };
 
+exports.addAnswer = function(req,res,next){
+  var faq = req.faq;
+
+  console.log(req.session.user);
+  faq.answers.push({
+    date: new Date(),
+    user: req.session.user,
+    answer: req.body.answer
+  });
+
+  faq.save(function (err) {
+    if (err) {
+      return next(err);
+    }
+    else {
+      res.json(faq);
+    }
+  });
+
+
+};
+
 exports.delete = function(req, res, next) {
   req.faq.remove(function(err) {
     if (err) {
@@ -48,8 +70,9 @@ exports.read = function(req, res) {
 
 exports.faqById = function(req, res, next, id) {
   FAQ.findOne({
+
     _id: id
-  },
+  }).populate(['answers.user','user']).exec(
   function(err, faq) {
     if (err) {
       return next(err);

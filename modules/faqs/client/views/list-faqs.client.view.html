@@ -29,8 +29,7 @@
   <div class="list-group" id="faqs-list" ng-repeat="faq in faqsCtrl.faqs">
     <a  class="list-group-item">
       <h4 class="list-group-item-heading" ng-click="showme=!showme"> {{faq.question}} <button class="btn btn-link glyphicon glyphicon-question-sign"></button></h4>
-      <h6 class="list-group-item-heading" ng-show="showme"> {{faq.solution}} <a ui-sref="faqs.respond({faqId: faq._id})"><button class="btn btn-secondary glyphicon glyphicon-exclamation-sign"></button></a></h6>
-
+      <h6 class="list-group-item-heading" ng-show="showme"> {{faq.solution}} <a ui-sref="faqs.respond({faqId: faq._id})"><button class="btn btn-secondary glyphicon glyphicon-exclamation-sign"></button>Click here to add a solution or edit existing solution</a></h6>
       <h8 class="list-group-item-text" ng-show="showme"> {{faq.solved}} <div class="glyphicon glyphicon-warning-sign"></div></h8>
     </a>
   </div>

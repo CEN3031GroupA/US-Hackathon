@@ -4,23 +4,53 @@
 'use strict';
 var faqsApp = angular.module('faqs');
 
-faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs','$rootScope',
-  function ($scope, $state, $stateParams, $location, FAQs, $rootScope) {
+faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs','$rootScope', '$http',
+  function ($scope, $state, $stateParams, $location, FAQs, $rootScope, $http) {
     this.faqs = FAQs.query();
+    $scope.findOne = function () {
+      $scope.faq = FAQs.get({
+        faqId: $stateParams.faqId
+      });
+      console.log($scope.faq);
+    };
+
+    $scope.addAnswer = function(){
+      console.log($scope.faq);
+      var answer = this.answer;
+
+      var req = {
+        method: 'POST',
+        url: '/api/faqs/' + $scope.faq._id + '/addAnswer',
+        data: {
+          answer: answer
+        }
+      };
+      this.answer = '';
+      $http(req).then(function(response){
+        $scope.faq = response.data;
+      }, function(err){
+        console.error(err);
+      });
+    };
+
+    $scope.post = function (isValid) {
+      $scope.error = null;
+
+      // Create new FAQ object
+      var faq = new FAQs($rootScope.activeFAQ);
+      // Redirect
+      faq.$save(function (response) {
+        $scope.faqs.push(response);
+        $scope.askme=false;
+        // clear active
+        $rootScope.activeFAQ = null;
+      }, function (errorResponse){
+        $scope.error = errorResponse.data.message;
+      });
+    };
   }
 ]);
 
-faqsApp.controller('FAQsCreateController', ['$scope', 'FAQs',
-  function ($scope, FAQs) {
-
-  }
-]);
-
-faqsApp.controller('FAQsEditController', ['$scope', 'FAQs',
-  function ($scope, FAQs) {
-
-  }
-]);
 // if (!$rootScope.activeFAQ) {
 //   $rootScope.activeFAQ = {
 //     solution: {}
