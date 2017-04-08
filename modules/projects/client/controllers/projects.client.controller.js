@@ -14,28 +14,12 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       };
     }
 
+    ActiveEvent.get().then(function(activeEvent) {
+      $scope.activeEvent = activeEvent;
+      $scope.activeCategory = $scope.activeEvent.categories[0];
+    });
+
     $scope.team = $rootScope.activeProject.team;
-
-    // TODO: We'll need to populate this dynamically later
-    $scope.categories = [
-      {
-        id: 0,
-        title: 'Category 1',
-        description: 'Hey there, this is the category description...'
-      },
-      {
-        id: 1,
-        title: 'Category 2',
-        description: 'Hi there, this is the category description...'
-      },
-      {
-        id: 2,
-        title: 'Category 3',
-        description: 'Hello there, this is the category description...'
-      }
-    ];
-
-    $scope.activeCategory = $scope.categories[0];
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
@@ -57,6 +41,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.create = function (isValid) {
       $scope.error = null;
+
+      $rootScope.activeProject.event = $scope.activeEvent;
 
       // Create new Project object
       var project = new Projects($rootScope.activeProject);

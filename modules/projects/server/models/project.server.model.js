@@ -18,6 +18,10 @@ var ProjectSchema = new Schema({
     trim: true,
     required: 'Title cannot be blank'
   },
+  event: {
+    type: Schema.ObjectId,
+    ref: 'HackathonEvent'
+  },
   category: {
     type: String
   },
