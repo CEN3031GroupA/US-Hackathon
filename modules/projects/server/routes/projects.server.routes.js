@@ -16,5 +16,8 @@ module.exports = function(app) {
     .put(projects.update)
     .delete(projects.delete);
 
+  app.route('/api/projects/:projectId/addComment')
+    .post(projects.addComment);
+
   app.param('projectId', projects.projectById);
 };
