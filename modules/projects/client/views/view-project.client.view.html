@@ -5,49 +5,55 @@
     <title>view-project</title>
     <link rel="stylesheet" href="../css/projects.css">
   </head>
+
   <section ng-controller="ProjectsController" ng-init="findOne()" >
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="pull-right">
-          <a class="btn btn-primary" ui-sref="projects.edit({projectId: project._id})">
-            <i class="glyphicon glyphicon-edit"></i>
-          </a>
-          <a class="btn btn-primary" ng-click="remove()">
-            <i class="glyphicon glyphicon-trash"></i>
-          </a>
-        </div>
-        <h1 ng-bind="project.title"></h1>
-        <p><small>Category:</small> <strong ng-bind="project.category"></strong></p>
-        <div ng-show="project.youtube != null">
-          <iframe width="100%" height="300" src="{{project.youtube}}" frameborder="0" allowfullscreen></iframe>
-        </div>
-
-        <div class="project-content" ng-bind="project.description.long"></div>
-        <div>
-          <button type="button" ng-click="hasVoted ? unvote(project) : vote(project)"
-                  class="btn btn-md btn-block" ng-class="hasVoted ? 'unvoteButton' : 'voteButton'">
-            <span>{{hasVoted ? 'Thanks for Voting!' : 'Vote!'}}</span>
-          </button>
-        </div>
-
-        <h3 class="project-team">Team members</h3>
-        <ul class="team-list">
-          <li>
-            <i class="glyphicon glyphicon-user"></i> <span ng-bind="project.owner.firstName"></span> <span ng-bind="project.owner.lastName"></span> - <em>Owner</em>
-          </li>
-          <li ng-repeat="member in project.team">
-            <i class="glyphicon glyphicon-user"></i> <span ng-bind="member.firstName"></span> <span ng-bind="member.lastName"></span> - <em>Member</em>
-          </li>
-        </ul>
-
-        <h3 class="comment">Comments</h3>
-        <div class="form-group" show-errors>
-          <textarea name="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
-        </div>
-        <div class="comments-list" ng-repeat="project.comment in project">
-
-        </div>
-        </div>
+    <div class="col-xs-12" style="padding-bottom: 10px;">
+      <div class="pull-right">
+        <a class="btn btn-primary" ui-sref="projects.edit({projectId: project._id})">
+          <i class="glyphicon glyphicon-edit"></i>
+        </a>
+        <a class="btn btn-primary" ng-click="remove()">
+          <i class="glyphicon glyphicon-trash"></i>
+        </a>
       </div>
+    </div>
+    <div class="col-xs-12">
+      <div class="pull-right">
+        <qr text="'project._id'" size="100"></qr>
+      </div>
+
+      <h1 ng-bind="project.title"></h1>
+      <p><small>Category:</small><strong ng-bind="project.category"></strong></p>
+
+      <div ng-show="project.youtube != null">
+        <iframe width="100%" height="300" src="{{project.youtube}}" frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <div class="project-content" ng-bind="project.description.long"></div>
+      <div>
+        <button type="button" ng-click="hasVoted ? unvote(project) : vote(project)"
+                class="btn btn-md btn-block" ng-class="hasVoted ? 'unvoteButton' : 'voteButton'">
+          <span>{{hasVoted ? 'Thanks for Voting!' : 'Vote!'}}</span>
+        </button>
+      </div>
+
+      <h3 class="project-team">Team members</h3>
+      <ul class="team-list">
+        <li>
+          <i class="glyphicon glyphicon-user"></i> <span ng-bind="project.owner.firstName"></span> <span ng-bind="project.owner.lastName"></span> - <em>Owner</em>
+        </li>
+        <li ng-repeat="member in project.team">
+          <i class="glyphicon glyphicon-user"></i> <span ng-bind="member.firstName"></span> <span ng-bind="member.lastName"></span> - <em>Member</em>
+        </li>
+      </ul>
+
+      <h3 class="comment">Comments</h3>
+      <div class="form-group" show-errors>
+        <textarea name="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
+      </div>
+      <div class="comments-list" ng-repeat="project.comment in project">
+
+      </div>
+    </div>
   </section>
 </html>

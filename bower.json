@@ -15,7 +15,8 @@
     "angular-file-upload": "1.1.5",
     "angular-messages": "~1.3.17",
     "owasp-password-strength-test": "~1.3.0",
-    "angular-ui-bootstrap-datetimepicker": "^2.5.0"
+    "angular-ui-bootstrap-datetimepicker": "^2.5.0",
+    "angular-qr": "latest"
   },
   "resolutions": {
     "angular": ">=1.4.4",
