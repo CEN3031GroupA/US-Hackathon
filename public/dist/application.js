@@ -558,11 +558,11 @@ angular.module('core').controller('HomeController', ['$scope', '$interval', 'Aut
           $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
         } else {
           $scope.activeEvent.inProgress = false;
-          timeTill = parseInt((now - startDate) / 1000); // Time till in seconds
-          days = timeTill / (24 * 60 * 60);
-          hours = (timeTill - days * 24 * 60 * 60);
-          minutes = (timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60;
-          $scope.activeEvent.timer = parseInt(days) + ' days, ' + parseInt(hours) + ' hours, ' + parseInt(minutes) + ' minutes';
+          timeTill = parseInt((startDate - now) / 1000); // Time till in seconds
+          days = parseInt(timeTill / (24 * 60 * 60));
+          hours = parseInt((timeTill - days * 24 * 60 * 60) / 60 / 60);
+          minutes = parseInt((timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60);
+          $scope.activeEvent.timer = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes';
         }
         break;
       }
@@ -1493,13 +1493,17 @@ angular.module('projects').config(['$stateProvider',
 angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
   function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
     $scope.authentication = Authentication;
-    $scope.user = $scope.authentication.user;
+    $scope.user = $scope.owner = $scope.authentication.user;
 
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
-        description: {}
+        description: {},
+        owner: $scope.user,
+        team: []
       };
     }
+
+    $scope.team = $rootScope.activeProject.team;
 
     // TODO: We'll need to populate this dynamically later
     $scope.categories = [
@@ -1639,18 +1643,38 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
-    // Fake data for now
-    $scope.teamusers = [
-      {
-        name: 'Jim'
-      },
-      {
-        name: 'Jimbo'
-      },
-      {
-        name: 'Dabo'
+    $scope.loadUsers = function() {
+      $scope.users = Users.query(function (users) {
+        $scope.users = users;
+
+        // Remove owner from being able to be added
+        for (var i = 0; i < $scope.users.length; i++) {
+          if ($scope.owner._id === $scope.users[i]._id) {
+            $scope.users.splice(i, 1);
+          }
+        }
+      });
+    };
+
+    $scope.addMember = function(user) {
+      $rootScope.activeProject.team.push(user);
+
+      for (var i = 0; i < $scope.users.length; i++) {
+        if (user._id === $scope.users[i]._id) {
+          $scope.users.splice(i, 1);
+        }
       }
-    ];
+    };
+
+    $scope.removeMember = function(user) {
+      $scope.users.push(user);
+
+      for (var i = 0; i < $rootScope.activeProject.team.length; i++) {
+        if (user._id === $rootScope.activeProject.team[i]._id) {
+          $rootScope.activeProject.team.splice(i, 1);
+        }
+      }
+    };
 
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;
@@ -1745,6 +1769,34 @@ angular.module('users').config(['$stateProvider',
       .state('user.view', {
         url: '/:userId',
         templateUrl: 'modules/users/client/views/view-user.client.view.html'
+      })
+      .state('user.splash', {
+        url: '/welcome',
+        templateUrl: 'modules/users/client/views/welcomescreens/splash.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
+      })
+      .state('user.welcome', {
+        url: '/welcome1',
+        templateUrl: 'modules/users/client/views/welcomescreens/welcome.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
+      })
+      .state('user.welcome1', {
+        url: '/welcome2',
+        templateUrl: 'modules/users/client/views/welcomescreens/welcome1.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
+      })
+      .state('user.welcome2', {
+        url: '/welcome3',
+        templateUrl: 'modules/users/client/views/welcomescreens/welcome2.client.view.html',
+        access: {
+          allowAnonymous: true,
+        }
       });
   }
 ]);

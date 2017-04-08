@@ -18,6 +18,10 @@ var ProjectSchema = new Schema({
     trim: true,
     required: 'Title cannot be blank'
   },
+  event: {
+    type: Schema.ObjectId,
+    ref: 'HackathonEvent'
+  },
   category: {
     type: String
   },
@@ -25,10 +29,14 @@ var ProjectSchema = new Schema({
     short: String,
     long: String
   },
-  user: {
+  owner: {
     type: Schema.ObjectId,
     ref: 'User'
   },
+  team: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }],
   votes: {
     type: Number,
     default: 0

@@ -10,7 +10,7 @@
       <div class="form-group">
         <section>
           <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary {{ activeCategory.id == category.id ? 'active' : '' }}" ng-click="setActiveCategory(category)" ng-repeat="category in categories">
+            <label class="btn btn-primary {{ activeCategory._id == category._id ? 'active' : '' }}" ng-click="setActiveCategory(category)" ng-repeat="category in activeEvent.categories">
               <input type="radio" name="options" id="option1" autocomplete="off" checked> {{category.title}}
             </label>
           </div>

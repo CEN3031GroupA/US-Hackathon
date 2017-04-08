@@ -28,6 +28,38 @@ exports.list = function(req, res) {
   });
 };
 
+var getActiveEvent = function(cb, errCb) {
+  HackathonEvent.find().sort('start').populate('categories').exec({}, function(err, events) {
+    if (err) {
+      errCb(err);
+    }
+    else {
+      var now = new Date();
+      for (var i = 0; i < events.length; i++) {
+        var endDate = new Date(events[i].end);
+
+        // Event has concluded
+        if (endDate < now) {
+          continue;
+        }
+
+        cb(events[i]);
+        return;
+      }
+    }
+  });
+};
+
+exports.getActiveEvent = getActiveEvent;
+
+exports.latest = function(req, res) {
+  getActiveEvent(function(event) {
+    res.json(event);
+  }, function(err) {
+    res.status(400).send(err);
+  });
+};
+
 exports.delete = function(req, res, next) {
   req.event.remove(function(err) {
     if (err) {
