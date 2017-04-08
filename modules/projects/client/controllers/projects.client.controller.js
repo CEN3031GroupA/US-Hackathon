@@ -1,40 +1,37 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
+angular.module('projects')
+  .config(function ($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',                    // trust all resources from the same origin
+      '*://www.youtube.com/**'   // trust all resources from `www.youtube.com`
+    ]);
+  })
+
+  .controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
-    $scope.user = $scope.authentication.user;
+    $scope.user = $scope.owner = $scope.authentication.user;
 
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
-        description: {}
+        description: {},
+        owner: $scope.user,
+        team: []
       };
     }
 
-    // TODO: We'll need to populate this dynamically later
-    $scope.categories = [
-      {
-        id: 0,
-        title: 'Category 1',
-        description: 'Hey there, this is the category description...'
-      },
-      {
-        id: 1,
-        title: 'Category 2',
-        description: 'Hi there, this is the category description...'
-      },
-      {
-        id: 2,
-        title: 'Category 3',
-        description: 'Hello there, this is the category description...'
-      }
-    ];
+    ActiveEvent.get().then(function(activeEvent) {
+      $scope.activeEvent = activeEvent;
+      $scope.activeCategory = $scope.activeEvent.categories[0];
+    });
 
-    $scope.activeCategory = $scope.categories[0];
+    $scope.team = $rootScope.activeProject.team;
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
+      $rootScope.activeProject.youtube = this.youtube;
       $rootScope.activeProject.description.short = this.short;
       $rootScope.activeProject.description.long = this.long;
 
@@ -53,6 +50,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.create = function (isValid) {
       $scope.error = null;
+
+      $rootScope.activeProject.event = $scope.activeEvent;
 
       // Create new Project object
       var project = new Projects($rootScope.activeProject);
@@ -115,53 +114,66 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({ projectId: $stateParams.projectId });
-
-      /* Initialize voting button */ //TODO: grab user information after signIn
-      for(var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === $stateParams.projectId) {
-          console.log('project has been voted!'); //TODO delete later
-          $scope.hasVoted = true;
-        }
-      }
+      $scope.project = Projects.get({ projectId: $stateParams.projectId },function(project) {
+        $scope.hasVoted = $scope.user.votedProjects.indexOf(project._id) !== -1;
+      });
     };
 
     /* Initialize voting field */
     $scope.hasVoted = false;
 
     $scope.unvote = function (project) {
-      for (var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === project._id) {
-          $scope.user.votedProjects.splice(i, 1);
-          project.votes -= 1;
+      $http.delete('/api/projects/' + project._id + '/vote')
+        .success(function() {
           $scope.hasVoted = false;
-        }
-      }
-      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
-      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
+        })
+        .error(function () {
+          console.log('data error');
+        });
     };
 
     $scope.vote = function (project) {
-      $scope.user.votedProjects.push(project._id);
-      project.votes += 1;
-      $scope.hasVoted = true;
-
-      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
-      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
+      $http.put('/api/projects/' + project._id + '/vote')
+        .success(function() {
+         $scope.hasVoted = true;
+        })
+        .error(function () {
+          console.log('data error');
+        });
     };
 
-    // Fake data for now
-    $scope.teamusers = [
-      {
-        name: 'Jim'
-      },
-      {
-        name: 'Jimbo'
-      },
-      {
-        name: 'Dabo'
+    $scope.loadUsers = function() {
+      $scope.users = Users.query(function (users) {
+        $scope.users = users;
+
+        // Remove owner from being able to be added
+        for (var i = 0; i < $scope.users.length; i++) {
+          if ($scope.owner._id === $scope.users[i]._id) {
+            $scope.users.splice(i, 1);
+          }
+        }
+      });
+    };
+
+    $scope.addMember = function(user) {
+      $rootScope.activeProject.team.push(user);
+
+      for (var i = 0; i < $scope.users.length; i++) {
+        if (user._id === $scope.users[i]._id) {
+          $scope.users.splice(i, 1);
+        }
       }
-    ];
+    };
+
+    $scope.removeMember = function(user) {
+      $scope.users.push(user);
+
+      for (var i = 0; i < $rootScope.activeProject.team.length; i++) {
+        if (user._id === $rootScope.activeProject.team[i]._id) {
+          $rootScope.activeProject.team.splice(i, 1);
+        }
+      }
+    };
 
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;

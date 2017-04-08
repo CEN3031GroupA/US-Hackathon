@@ -1,0 +1,17 @@
+<section ng-controller="EventsController" ng-init="findOne()">
+  <div>
+    <a ui-sref="events.index()" class="btn btn-primary">Back</a>
+  </div>
+
+  <h5>{{event.title}}</h5>
+  <div>{{event.description}}</div>
+  <div>Locations: {{event.locations}}</div>
+  <div>Categories:
+    <span ng-repeat="category in event.categories">{{category.title}}</span>
+  </div>
+  <div>Start: {{event.start | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+  <div>End: {{event.end | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+
+  <a class="btn btn-info" ui-sref="events.edit({eventId: event._id})">Edit</a>
+  <a class="btn btn-info" ui-sref="subevents.index({eventId: event._id})">Manage SubEvents</a>
+</section>

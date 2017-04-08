@@ -8,6 +8,12 @@
   font-family: "Times New Roman", Times, serif;
   letter-spacing:1px;
 }
+
+.welcome-screen {
+  margin-top:6vh;
+  font-family: "Times New Roman", Times, serif;
+  letter-spacing: 1px;
+}
 .ideaspage h2 {
   font-weight: 500;
   margin-bottom: 3vh;
