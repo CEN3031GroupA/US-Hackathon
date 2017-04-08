@@ -40,14 +40,19 @@
           </li>
         </ul>
 
-        <h3 class="comment">Comments</h3>
-        <div class="form-group" show-errors>
-          <textarea name="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
+        <h3>Comments (<span ng-bind="project.comments.length"></span>)</h3>
+        <div class="clearfix" style="margin-bottom: 15px">
+          <textarea name="comment" ng-model="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
+          <button class="btn btn-primary pull-right" ng-click="addComment()">Add Comment</button>
         </div>
-        <div class="comments-list" ng-repeat="project.comment in project">
-
-        </div>
+        <div class="comments-list">
+          <div class="comment" ng-repeat="comment in project.comments">
+            <h6>{{comment.user.firstName}} {{comment.user.lastName}}</h6>
+            <p>Posted on: {{comment.posted}}</p>
+            <p>{{comment.content}}</p>
+          </div>
         </div>
       </div>
+    </div>
   </section>
 </html>
