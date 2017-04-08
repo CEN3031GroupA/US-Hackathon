@@ -138,7 +138,7 @@ ApplicationConfiguration.registerModule('ideas');
 'use strict';
 
 // Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('projects');
+ApplicationConfiguration.registerModule('projects', ['ja.qr']);
 
 'use strict';
 
