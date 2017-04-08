@@ -520,14 +520,14 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
 
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', '$interval', 'Authentication', 'HackathonEvent',
-  function ($scope, $interval, Authentication, HackathonEvent) {
+angular.module('core').controller('HomeController', ['$scope', '$interval', 'Authentication', 'ActiveEvent',
+  function ($scope, $interval, Authentication, ActiveEvent) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
 
     $scope.init = function() {
-      HackathonEvent.query({}, function(events) {
-        $scope.events = events;
+      ActiveEvent.get().then(function(activeEvent) {
+        $scope.activeEvent = activeEvent;
         $interval($scope.calcEventTime, 1000);
       });
     };
@@ -536,35 +536,23 @@ angular.module('core').controller('HomeController', ['$scope', '$interval', 'Aut
       var now = new Date();
       var timeLeft, timeTill;
       var days, hours, minutes, seconds;
+      var startDate = new Date($scope.activeEvent.start);
+      var endDate = new Date($scope.activeEvent.end);
 
-      for (var i = 0; i < $scope.events.length; i++) {
-        var startDate = new Date($scope.events[i].start);
-        var endDate = new Date($scope.events[i].end);
-
-        // Event has concluded
-        if (endDate < now) {
-          continue;
-        }
-
-        $scope.activeEvent = $scope.events[i];
-
-        // Event is in progress
-        if (startDate < now) {
-          $scope.activeEvent.inProgress = true;
-          timeLeft = parseInt((endDate - now) / 1000); // Time left in seconds
-          hours = parseInt(timeLeft / (60*60));
-          minutes = parseInt((timeLeft - hours * 60 * 60) / 60);
-          seconds = timeLeft - hours * 60 * 60 - minutes * 60;
-          $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
-        } else {
-          $scope.activeEvent.inProgress = false;
-          timeTill = parseInt((startDate - now) / 1000); // Time till in seconds
-          days = parseInt(timeTill / (24 * 60 * 60));
-          hours = parseInt((timeTill - days * 24 * 60 * 60) / 60 / 60);
-          minutes = parseInt((timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60);
-          $scope.activeEvent.timer = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes';
-        }
-        break;
+      if (startDate < now) {
+        $scope.activeEvent.inProgress = true;
+        timeLeft = parseInt((endDate - now) / 1000); // Time left in seconds
+        hours = parseInt(timeLeft / (60*60));
+        minutes = parseInt((timeLeft - hours * 60 * 60) / 60);
+        seconds = timeLeft - hours * 60 * 60 - minutes * 60;
+        $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
+      } else {
+        $scope.activeEvent.inProgress = false;
+        timeTill = parseInt((startDate - now) / 1000); // Time till in seconds
+        days = parseInt(timeTill / (24 * 60 * 60));
+        hours = parseInt((timeTill - days * 24 * 60 * 60) / 60 / 60);
+        minutes = parseInt((timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60);
+        $scope.activeEvent.timer = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes';
       }
     };
   }
@@ -1072,6 +1060,10 @@ angular.module('events').config(['$stateProvider',
         url: '/create',
         templateUrl: 'modules/events/client/views/create.client.view.html'
       })
+      .state('events.manage', {
+        url: '/:eventId',
+        templateUrl: 'modules/events/client/views/manage.client.view.html'
+      })
       .state('events.edit', {
         url: '/:eventId/edit',
         templateUrl: 'modules/events/client/views/edit.client.view.html'
@@ -1199,21 +1191,35 @@ angular.module('events').controller('EventsController',
 
 'use strict';
 
-angular.module('events').factory('HackathonEvent', ['$resource',
-  function ($resource) {
-    return $resource('api/admin/events/:eventId', {
-      eventId: '@_id'
-    }, {
-      update: {
-        method: 'PUT'
-      }
-    }, {
-      create: {
-        method: 'POST'
-      }
-    });
-  }
-]);
+angular.module('events')
+  .factory('HackathonEvent', ['$resource',
+    function ($resource) {
+      return $resource('api/admin/events/:eventId', {
+        eventId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      }, {
+        create: {
+          method: 'POST'
+        }
+      }, {
+        latest: {
+          method: 'POST'
+        }
+      });
+    }
+  ])
+  .service('ActiveEvent', ['$http',
+    function ($http) {
+      this.get = function () {
+        return $http.get('/api/events/latest').then(function(response) {
+          return response.data;
+        });
+      };
+    }
+  ]);
 
 /**
  * Created by George on 2/26/2017.
@@ -1490,8 +1496,16 @@ angular.module('projects').config(['$stateProvider',
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
+angular.module('projects')
+  .config(["$sceDelegateProvider", function ($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',                    // trust all resources from the same origin
+      '*://www.youtube.com/**'   // trust all resources from `www.youtube.com`
+    ]);
+  }])
+
+  .controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
 
@@ -1503,31 +1517,16 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       };
     }
 
+    ActiveEvent.get().then(function(activeEvent) {
+      $scope.activeEvent = activeEvent;
+      $scope.activeCategory = $scope.activeEvent.categories[0];
+    });
+
     $scope.team = $rootScope.activeProject.team;
-
-    // TODO: We'll need to populate this dynamically later
-    $scope.categories = [
-      {
-        id: 0,
-        title: 'Category 1',
-        description: 'Hey there, this is the category description...'
-      },
-      {
-        id: 1,
-        title: 'Category 2',
-        description: 'Hi there, this is the category description...'
-      },
-      {
-        id: 2,
-        title: 'Category 3',
-        description: 'Hello there, this is the category description...'
-      }
-    ];
-
-    $scope.activeCategory = $scope.categories[0];
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
+      $rootScope.activeProject.youtube = this.youtube;
       $rootScope.activeProject.description.short = this.short;
       $rootScope.activeProject.description.long = this.long;
 
@@ -1546,6 +1545,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.create = function (isValid) {
       $scope.error = null;
+
+      $rootScope.activeProject.event = $scope.activeEvent;
 
       // Create new Project object
       var project = new Projects($rootScope.activeProject);
@@ -1608,39 +1609,32 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({ projectId: $stateParams.projectId });
-
-      /* Initialize voting button */ //TODO: grab user information after signIn
-      for(var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === $stateParams.projectId) {
-          console.log('project has been voted!'); //TODO delete later
-          $scope.hasVoted = true;
-        }
-      }
+      $scope.project = Projects.get({ projectId: $stateParams.projectId },function(project) {
+        $scope.hasVoted = $scope.user.votedProjects.indexOf(project._id) !== -1;
+      });
     };
 
     /* Initialize voting field */
     $scope.hasVoted = false;
 
     $scope.unvote = function (project) {
-      for (var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === project._id) {
-          $scope.user.votedProjects.splice(i, 1);
-          project.votes -= 1;
+      $http.delete('/api/projects/' + project._id + '/vote')
+        .success(function() {
           $scope.hasVoted = false;
-        }
-      }
-      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
-      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
+        })
+        .error(function () {
+          console.log('data error');
+        });
     };
 
     $scope.vote = function (project) {
-      $scope.user.votedProjects.push(project._id);
-      project.votes += 1;
-      $scope.hasVoted = true;
-
-      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
-      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
+      $http.put('/api/projects/' + project._id + '/vote')
+        .success(function() {
+          $scope.hasVoted = true;
+        })
+        .error(function () {
+          console.log('data error');
+        });
     };
 
     $scope.loadUsers = function() {
