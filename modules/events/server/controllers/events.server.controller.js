@@ -57,7 +57,7 @@ exports.latest = function(req, res) {
     res.json(event);
   }, function(err) {
     res.status(400).send(err);
-  })
+  });
 };
 
 exports.delete = function(req, res, next) {
