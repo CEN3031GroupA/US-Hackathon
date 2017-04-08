@@ -3,6 +3,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Project = require('mongoose').model('Project'),
+  eventCtrl = require(path.resolve('./modules/events/server/controllers/events.server.controller')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 exports.create = function(req, res, next) {
@@ -18,14 +19,23 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  Project.find({}, function(err, data) {
-    if (err) {
-      res.status(400).send(err);
-    }
-    else {
-      res.json(data);
-    }
-  });
+  var onError = function(err) {
+    res.status(400).send(err);
+  };
+  var findProjects = function(event) {
+    Project.find({
+      event: event._id
+    }).populate(['owner', 'team', 'event']).exec({}, function(err, data) {
+      if (err) {
+        onError(err);
+      }
+      else {
+        res.json(data);
+      }
+    });
+  };
+
+  eventCtrl.getActiveEvent(findProjects, onError);
 };
 
 exports.delete = function(req, res, next) {
@@ -44,7 +54,9 @@ exports.read = function(req, res) {
 };
 
 exports.projectById = function(req, res, next, id) {
-  Project.findOne({ _id: id } ,
+  Project.findOne({
+    _id: id
+  }).populate(['owner', 'team']).exec(
   function(err, project) {
     if (err) {
       return next(err);

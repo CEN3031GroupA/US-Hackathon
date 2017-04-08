@@ -46,6 +46,17 @@ exports.read = function(req, res) {
   res.json(req.user);
 };
 
+exports.list = function(req, res) {
+  User.find({}, function(err, data) {
+    if (err) {
+      res.status(400).send(err);
+    }
+    else {
+      res.json(data);
+    }
+  });
+};
+
 exports.update = function (req, res) {
   var user = req.user;
 

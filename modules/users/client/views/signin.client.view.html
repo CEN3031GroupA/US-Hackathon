@@ -1,5 +1,6 @@
 <div class="authpage" ng-controller="AuthenticationController">
   <div class="alert alert-danger" ng-if="error">{{error}}</div>
+
   <div class="col-md-offset-2 col-md-8">
     <form ng-submit="signin()">
       <div class="form-group">
@@ -15,5 +16,12 @@
             <input type="submit" value="Login" class="btn btn-primary">
           </div>
     </form>
+    <div class="welcome-screen">
+    <a ui-sref = "user.splash()">
+    First time using the app?  Click Here!
+    </a>
+    </div>
   </div>
+
+
 </div>

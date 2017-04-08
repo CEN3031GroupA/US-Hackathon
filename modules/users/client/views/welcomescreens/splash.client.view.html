@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>welcome</title>
+    <link rel="stylesheet" href="modules/users/client/css/users.css">
+    <script src="transitionController.js"></script>
+  </head>
+<section class = "authpage" ng-controller="AuthenticationController">
+      <header style = "
+      width:200%;
+      height: 100vh;
+      position:absolute;
+      top:0;
+      background-image: url(modules/users/client/img/pexels-photo.jpg);
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 50px;
+      margin-left: -50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;">
+      <div class="container3">
+          <img src='modules/users/client/img/logo.svg'  width="200" />
+        </div>
+        <div class="container4">
+          <a ui-sref="user.welcome()" class="btn btn-primary outline">
+          How to use the app
+          </a>
+        </div>
+
+      </header>
+<div class="container1">
+  <div ui-view>
+  </div>
+</div>
+</section>﻿
+</html>

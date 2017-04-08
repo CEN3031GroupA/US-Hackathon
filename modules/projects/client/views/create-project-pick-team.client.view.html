@@ -1,36 +1,41 @@
-<section ng-controller="ProjectsController">
+<section ng-controller="ProjectsController" ng-init="loadUsers()">
   <div class="col-xs-12">
     <div class="progress">
       <div class="progress-bar" role="progressbar" aria-valuenow="97" aria-valuemin="0" aria-valuemax="100" style="width: 97%;">
         <span class="sr-only">97% Complete</span>
       </div>
     </div>
-    <h2>Add team members</h2>
-    <div class="row">
-      <div class="col-xs-12">
-        <ul class="team-list">
-          <li><i class="glyphicon glyphicon-user"></i></li>
-          <li><i class="glyphicon glyphicon-plus"></i></li>
-        </ul>
-      </div>
+    <h4>Current team</h4>
+
+    <div class="tableWrapper">
+      <table class="table table-hover">
+        <tr>
+          <td><i class="glyphicon glyphicon-user"></i></td>
+          <td><span ng-bind="owner.firstName"></span> <span ng-bind="owner.lastName"></span></td>
+          <td><span ng-bind="owner.email"></span></td>
+          <td>Owner</td>
+        </tr>
+        <tr ng-repeat="member in team">
+          <td><i class="glyphicon glyphicon-user"></i></td>
+          <td>{{member.firstName}} {{member.lastName}}</td>
+          <td>{{member.email}}</td>
+          <td class="text-right"><button class="btn btn-xs" ng-click="removeMember(member)"><i class="glyphicon glyphicon-trash"></i></button></td>
+        </tr>
+      </table>
     </div>
 
-    <div ng-show="error" class="text-danger">
-      <strong ng-bind="error"></strong>
-    </div>
-    <div ng-show="success" class="text-success">
-      <strong ng-bind="success"></strong>
-    </div>
+    <h4>Add members</h4>
     <div class="input-group" id="searchBar">
       <span class="input-group-addon" id="sizing-addon"><span class="glyphicon glyphicon-search"></span></span>
       <input type="text" class="form-control" placeholder="Search" ng-model="query">
     </div>
     <div class="tableWrapper">
       <table class="table table-hover">
-        <tr ng-repeat="teamuser in teamusers | filter: query" ui-sref="addteammember">
+        <tr ng-repeat="user in users | filter: query">
           <td><i class="glyphicon glyphicon-user"></i></td>
-          <td>{{teamuser.name}}</td>
-          <td class="text-right"><button class="btn"><i class="glyphicon glyphicon-plus"></i> Add</button></td>
+          <td>{{user.firstName}} {{user.lastName}}</td>
+          <td>{{user.email}}</td>
+          <td class="text-right"><button class="btn btn-xs" ng-click="addMember(user)"><i class="glyphicon glyphicon-plus"></i> Add</button></td>
         </tr>
       </table>
     </div>

@@ -1,37 +1,25 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent) {
     $scope.authentication = Authentication;
-    $scope.user = $scope.authentication.user;
+    $scope.user = $scope.owner = $scope.authentication.user;
 
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
-        description: {}
+        description: {},
+        owner: $scope.user,
+        team: []
       };
     }
 
-    // TODO: We'll need to populate this dynamically later
-    $scope.categories = [
-      {
-        id: 0,
-        title: 'Category 1',
-        description: 'Hey there, this is the category description...'
-      },
-      {
-        id: 1,
-        title: 'Category 2',
-        description: 'Hi there, this is the category description...'
-      },
-      {
-        id: 2,
-        title: 'Category 3',
-        description: 'Hello there, this is the category description...'
-      }
-    ];
+    ActiveEvent.get().then(function(activeEvent) {
+      $scope.activeEvent = activeEvent;
+      $scope.activeCategory = $scope.activeEvent.categories[0];
+    });
 
-    $scope.activeCategory = $scope.categories[0];
+    $scope.team = $rootScope.activeProject.team;
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
@@ -53,6 +41,8 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.create = function (isValid) {
       $scope.error = null;
+
+      $rootScope.activeProject.event = $scope.activeEvent;
 
       // Create new Project object
       var project = new Projects($rootScope.activeProject);
@@ -150,18 +140,38 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
-    // Fake data for now
-    $scope.teamusers = [
-      {
-        name: 'Jim'
-      },
-      {
-        name: 'Jimbo'
-      },
-      {
-        name: 'Dabo'
+    $scope.loadUsers = function() {
+      $scope.users = Users.query(function (users) {
+        $scope.users = users;
+
+        // Remove owner from being able to be added
+        for (var i = 0; i < $scope.users.length; i++) {
+          if ($scope.owner._id === $scope.users[i]._id) {
+            $scope.users.splice(i, 1);
+          }
+        }
+      });
+    };
+
+    $scope.addMember = function(user) {
+      $rootScope.activeProject.team.push(user);
+
+      for (var i = 0; i < $scope.users.length; i++) {
+        if (user._id === $scope.users[i]._id) {
+          $scope.users.splice(i, 1);
+        }
       }
-    ];
+    };
+
+    $scope.removeMember = function(user) {
+      $scope.users.push(user);
+
+      for (var i = 0; i < $rootScope.activeProject.team.length; i++) {
+        if (user._id === $rootScope.activeProject.team[i]._id) {
+          $rootScope.activeProject.team.splice(i, 1);
+        }
+      }
+    };
 
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;
