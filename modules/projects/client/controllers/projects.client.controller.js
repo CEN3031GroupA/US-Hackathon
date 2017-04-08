@@ -135,7 +135,7 @@ angular.module('projects')
     $scope.vote = function (project) {
       $http.put('/api/projects/' + project._id + '/vote')
         .success(function() {
-         $scope.hasVoted = true;
+          $scope.hasVoted = true;
         })
         .error(function () {
           console.log('data error');
