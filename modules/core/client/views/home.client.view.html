@@ -7,15 +7,15 @@
       <h4 ng-if="activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> hrs remaining</h4>
       <h4 ng-if="!activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> till event</h4>
     </div>
-    <div class="add-project" ui-sref="projects.create()">
+    <div class="create" ui-sref="projects.create()">
         <h3 class="title">Submit a project</h3>
         <p class="description">Have a solid idea? Submit your project now!</p>
         <p class="sub-title">Start now</p>
     </div>
-    <div class="add-idea" ui-sref="ideas.create()">
+    <div class="create" ui-sref="ideas.create()">
       <h3 class="title">Submit a new idea</h3>
       <p class="description">Don't be shy!</p>
       <p class="sub-title">Submit it now!</p>
     </div>
-    
+
 </section>

@@ -1,7 +1,15 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
+angular.module('projects')
+  .config(function ($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',                    // trust all resources from the same origin
+      '*://www.youtube.com/**'   // trust all resources from `www.youtube.com`
+    ]);
+  })
+
+  .controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
   function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
@@ -23,6 +31,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
+      $rootScope.activeProject.youtube = this.youtube;
       $rootScope.activeProject.description.short = this.short;
       $rootScope.activeProject.description.long = this.long;
 
@@ -105,39 +114,32 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({ projectId: $stateParams.projectId });
-
-      /* Initialize voting button */ //TODO: grab user information after signIn
-      for(var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === $stateParams.projectId) {
-          console.log('project has been voted!'); //TODO delete later
-          $scope.hasVoted = true;
-        }
-      }
+      $scope.project = Projects.get({ projectId: $stateParams.projectId },function(project) {
+        $scope.hasVoted = $scope.user.votedProjects.indexOf(project._id) !== -1;
+      });
     };
 
     /* Initialize voting field */
     $scope.hasVoted = false;
 
     $scope.unvote = function (project) {
-      for (var i in $scope.user.votedProjects) {
-        if ($scope.user.votedProjects[i] === project._id) {
-          $scope.user.votedProjects.splice(i, 1);
-          project.votes -= 1;
+      $http.delete('/api/projects/' + project._id + '/vote')
+        .success(function() {
           $scope.hasVoted = false;
-        }
-      }
-      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
-      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
+        })
+        .error(function () {
+          console.log('data error');
+        });
     };
 
     $scope.vote = function (project) {
-      $scope.user.votedProjects.push(project._id);
-      project.votes += 1;
-      $scope.hasVoted = true;
-
-      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
-      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
+      $http.put('/api/projects/' + project._id + '/vote')
+        .success(function() {
+          $scope.hasVoted = true;
+        })
+        .error(function () {
+          console.log('data error');
+        });
     };
 
     $scope.loadUsers = function() {
