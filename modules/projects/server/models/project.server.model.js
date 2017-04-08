@@ -25,6 +25,10 @@ var ProjectSchema = new Schema({
   category: {
     type: String
   },
+  youtube: {
+    type: String,
+    default: null
+  },
   description: {
     short: String,
     long: String

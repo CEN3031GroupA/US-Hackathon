@@ -1,7 +1,15 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent',
+angular.module('projects')
+  .config(function ($sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      'self',                    // trust all resources from the same origin
+      '*://www.youtube.com/**'   // trust all resources from `www.youtube.com`
+    ]);
+  })
+
+  .controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent',
   function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
@@ -23,6 +31,7 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     $scope.saveProjectInfo = function () {
       $rootScope.activeProject.title = this.title;
+      $rootScope.activeProject.youtube = this.youtube;
       $rootScope.activeProject.description.short = this.short;
       $rootScope.activeProject.description.long = this.long;
 

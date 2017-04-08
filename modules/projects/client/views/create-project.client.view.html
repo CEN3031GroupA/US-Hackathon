@@ -14,6 +14,9 @@
             <p class="help-block error-text" ng-message="required">Project title is required</p>
           </div>
         </div>
+        <div class="form-group">
+          <input type="url" class="form-control" ng-model="youtube" placeholder="Embedded YouTube URL">
+        </div>
         <div class="form-group" show-errors>
           <textarea name="short" rows="2" class="form-control" ng-model="short" placeholder="Short description of your project, make it simple and cool..." required></textarea>
           <div ng-messages="projectForm.details.$error" role="alert">
