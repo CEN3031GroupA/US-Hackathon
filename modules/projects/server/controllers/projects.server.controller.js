@@ -44,9 +44,7 @@ exports.read = function(req, res) {
 };
 
 exports.projectById = function(req, res, next, id) {
-  Project.findOne({
-    _id: id
-  },
+  Project.findOne({ _id: id } ,
   function(err, project) {
     if (err) {
       return next(err);
@@ -55,16 +53,18 @@ exports.projectById = function(req, res, next, id) {
       req.project = project;
       next();
     }
-  }
-  );
+  });
 };
 
 exports.update = function (req, res) {
   var project = req.project;
-
-  project.votes = req.body.votes;
+  //TODO: filter which kind of update to do
+  /*
   project.title = req.body.title;
   project.description.long = req.body.description.long;
+  */
+
+  project.votes = req.body.votes;
 
   project.save(function (err) {
     if (err) {

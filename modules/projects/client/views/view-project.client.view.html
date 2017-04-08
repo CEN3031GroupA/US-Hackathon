@@ -5,7 +5,7 @@
     <title>view-project</title>
     <link rel="stylesheet" href="../css/projects.css">
   </head>
-  <section ng-controller="ProjectsController" ng-init="findOne()">
+  <section ng-controller="ProjectsController" ng-init="findOne()" >
     <h1 ng-bind="project.title"></h1>
     <p><small>Category:</small> <strong ng-bind="project.category"></strong></p>
     <div class="pull-right">
@@ -19,7 +19,28 @@
 
     <div class="project-content" ng-bind="project.description.long"></div>
     <div>
-      <button type="button" id="voteButton" ng-click="vote(project);" class="btn btn-md btn-block">Vote</button>
+      <button type="button" ng-click="hasVoted ? unvote(project) : vote(project)"
+              class="btn btn-md btn-block" ng-class="hasVoted ? 'unvoteButton' : 'voteButton'">
+        <span>{{hasVoted ? 'Thanks for Voting!' : 'Vote!'}}</span>
+      </button>
+    </div>
+
+  <!-- TODO: link team members to schema -->
+    <h3 class="project-team">Team members</h3>
+    <div class="row">
+      <div class="col-xs-12">
+        <ul class="team-list">
+          <li><i class="glyphicon glyphicon-user"></i></li>
+        </ul>
+
+        <h3 class="comment">Comments</h3>
+        <div class="form-group" show-errors>
+          <textarea name="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
+        </div>
+        <div class="comments-list" ng-repeat="project.comment in project">
+
+        </div>
+      </div>
     </div>
   </section>
 </html>

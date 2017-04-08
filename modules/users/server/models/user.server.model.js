@@ -6,23 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   crypto = require('crypto'),
-  validator = require('validator'),
-  generatePassword = require('generate-password'),
-  owasp = require('owasp-password-strength-test');
-
-/**
- * A Validation function for local strategy properties
- */
-var validateLocalStrategyProperty = function (property) {
-  return ((this.provider !== 'local' && !this.updated) || property.length);
-};
-
-/**
- * A Validation function for local strategy email
- */
-var validateLocalStrategyEmail = function (email) {
-  return ((this.provider !== 'local' && !this.updated) || validator.isEmail(email));
-};
+  validator = require('validator');
 
 /**
  * User Schema
@@ -31,33 +15,18 @@ var UserSchema = new Schema({
   firstName: {
     type: String,
     trim: true,
-    default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+    default: ''
   },
   lastName: {
     type: String,
     trim: true,
-    default: '',
-    validate: [validateLocalStrategyProperty, 'Please fill in your last name']
-  },
-  displayName: {
-    type: String,
-    trim: true
+    default: ''
   },
   email: {
     type: String,
     unique: true,
-    lowercase: true,
     trim: true,
-    default: '',
-    validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
-  },
-  username: {
-    type: String,
-    unique: 'Username already exists',
-    required: 'Please fill in a username',
-    lowercase: true,
-    trim: true
+    default: ''
   },
   password: {
     type: String,
@@ -66,37 +35,14 @@ var UserSchema = new Schema({
   salt: {
     type: String
   },
-  profileImageURL: {
-    type: String,
-    default: 'modules/users/client/img/profile/default.png'
-  },
-  provider: {
-    type: String,
-
-  },
-  providerData: {},
-  additionalProvidersData: {},
-  roles: {
-    type: [{
-      type: String,
-      enum: ['user', 'admin']
-    }],
-    default: ['user'],
-
-  },
+  isAdmin: Boolean,
   updated: {
     type: Date
   },
+  votedProjects: [String],
   created: {
     type: Date,
     default: Date.now
-  },
-  /* For reset password */
-  resetPasswordToken: {
-    type: String
-  },
-  resetPasswordExpires: {
-    type: Date
   }
 });
 
@@ -107,21 +53,6 @@ UserSchema.pre('save', function (next) {
   if (this.password && this.isModified('password')) {
     this.salt = crypto.randomBytes(16).toString('base64');
     this.password = this.hashPassword(this.password);
-  }
-
-  next();
-});
-
-/**
- * Hook a pre validate method to test the local password
- */
-UserSchema.pre('validate', function (next) {
-  if (this.provider === 'local' && this.password && this.isModified('password')) {
-    var result = owasp.test(this.password);
-    if (result.errors.length) {
-      var error = result.errors.join(' ');
-      this.invalidate('password', error);
-    }
   }
 
   next();
@@ -145,72 +76,119 @@ UserSchema.methods.authenticate = function (password) {
   return this.password === this.hashPassword(password);
 };
 
-/**
- * Find possible not used username
- */
-UserSchema.statics.findUniqueUsername = function (username, suffix, callback) {
-  var _this = this;
-  var possibleUsername = username.toLowerCase() + (suffix || '');
+var User = mongoose.model('User', UserSchema, 'user');
+module.exports = User;
 
-  _this.findOne({
-    username: possibleUsername
-  }, function (err, user) {
-    if (!err) {
-      if (!user) {
-        callback(possibleUsername);
-      } else {
-        return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-      }
+/*
+function seedUsers() {
+  var users = [
+    {
+      firstName: 'Clinton',
+      lastName: 'Andrews',
+      email: 'candrews800@gmail.com',
+      password: '1234',
+      isAdmin: false,
+      votedProjects: []
+    },
+    {
+      firstName: 'Clinton',
+      lastName: 'Andrews',
+      email: 'candrews800+admin@gmail.com',
+      password: '1234',
+      isAdmin: true,
+      votedProjects: []
+    },
+    {
+      firstName: 'George',
+      lastName: '',
+      email: 'george@gmail.com',
+      password: '1234',
+      isAdmin: false,
+      votedProjects: []
+    },
+    {
+      firstName: 'George',
+      lastName: '',
+      email: 'george+admin@gmail.com',
+      password: '1234',
+      isAdmin: true,
+      votedProjects: []
+    },
+    {
+      firstName: 'Amy',
+      lastName: '',
+      email: 'amy@gmail.com',
+      password: '1234',
+      isAdmin: false,
+      votedProjects: []
+    },
+    {
+      firstName: 'Amy',
+      lastName: 'Ly',
+      email: 'amy+admin@gmail.com',
+      password: '1234',
+      isAdmin: true,
+      votedProjects: []
+    },
+    {
+      firstName: 'Travis',
+      lastName: '',
+      email: 'travis@gmail.com',
+      password: '1234',
+      isAdmin: false,
+      votedProjects: []
+    },
+    {
+      firstName: 'Travis',
+      lastName: '',
+      email: 'travis+admin@gmail.com',
+      password: '1234',
+      isAdmin: true,
+      votedProjects: []
+    },
+    {
+      firstName: 'Jason',
+      lastName: '',
+      email: 'jason@gmail.com',
+      password: '1234',
+      isAdmin: false,
+      votedProjects: []
+    },
+    {
+      firstName: 'Jason',
+      lastName: '',
+      email: 'jason+admin@gmail.com',
+      password: '1234',
+      isAdmin: true,
+      votedProjects: []
+    }
+  ];
+
+  for (var i = 0; i < users.length; i++) {
+    users[i] = new User(users[i]);
+    seedUser(users[i]);
+  }
+}
+
+
+function seedUser(user) {
+  user.save(function (err) {
+    if (err) {
+      console.log(err);
     } else {
-      callback(null);
+      console.log('seeded: ' + user.email);
     }
   });
-};
+}
 
-/**
-* Generates a random passphrase that passes the owasp test.
-* Returns a promise that resolves with the generated passphrase, or rejects with an error if something goes wrong.
-* NOTE: Passphrases are only tested against the required owasp strength tests, and not the optional tests.
-*/
-UserSchema.statics.generateRandomPassphrase = function () {
-  return new Promise(function (resolve, reject) {
-    var password = '';
-    var repeatingCharacters = new RegExp('(.)\\1{2,}', 'g');
-
-    // iterate until the we have a valid passphrase.
-    // NOTE: Should rarely iterate more than once, but we need this to ensure no repeating characters are present.
-    while (password.length < 20 || repeatingCharacters.test(password)) {
-      // build the random password
-      password = generatePassword.generate({
-        length: Math.floor(Math.random() * (20)) + 20, // randomize length between 20 and 40 characters
-        numbers: true,
-        symbols: false,
-        uppercase: true,
-        excludeSimilarCharacters: true,
-      });
-
-      // check if we need to remove any repeating characters.
-      password = password.replace(repeatingCharacters, '');
-    }
-
-    // Send the rejection back if the passphrase fails to pass the strength test
-    if (owasp.test(password).errors.length) {
-      reject(new Error('An unexpected problem occured while generating the random passphrase'));
-    } else {
-      // resolve with the validated passphrase
-      resolve(password);
-    }
-  });
-};
-
-var User = mongoose.model('User', UserSchema);
-
-
-var user = new User({
-  firstName: 'Jason',
-  lastName: 'Hackleman',
-  displayName: 'asdf',
-  email: 'clinton.andrews@gmail.com',
-  username: 'asdf',
-  password: '1234'
+User.remove({}, function(err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Removed all users...');
+    seedUsers();
+  }
 });
+
+
+*/

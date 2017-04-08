@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="bower_components/bootstrap/dist/bootstrap.min.css"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bootstrap/dist/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="../css/projects.css">
+</head>
+<body>
+
+<section ng-controller="ProjectsController" ng-init="find()">
+  <div class="col-xs-12">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#all">All Projects</a></li>
+      <li><a data-toggle="tab" href="#category1">Category 1</a></li>
+      <li><a data-toggle="tab" href="#category2">Category 2</a></li>
+      <li><a data-toggle="tab" href="#category3">Category 3</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="all" class="tab-pane fade in active">
+          <div class="tableWrapper">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Project Title</th>
+                  <th>Project Category</th>
+                  <th ng-click="sortReverse = !sortReverse">Votes <span class="glyphicon glyphicon-sort"></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="project in projects|orderBy:'-votes':sortReverse" ui-sref="projects.view({projectId: project._id})">
+                  <td>{{project.title}}</td>
+                  <td>{{project.category}}</td>
+                  <td>{{project.votes}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="category1" class="tab-pane fade">
+          <h3>Category 1 Projects</h3>
+        </div>
+        <div id="category2" class="tab-pane fade">
+          <h3>Category 2 Projects</h3>
+        </div>
+        <div id="category3" class="tab-pane fade">
+          <h3>Category 3 Projects</h3>
+        </div>
+      </div>
+    </div>
+</section>
+</body>
+</html>

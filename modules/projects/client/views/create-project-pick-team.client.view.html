@@ -27,9 +27,9 @@
     </div>
     <div class="tableWrapper">
       <table class="table table-hover">
-        <tr ng-repeat="user in users | filter: query" ui-sref="addteammember">
+        <tr ng-repeat="teamuser in teamusers | filter: query" ui-sref="addteammember">
           <td><i class="glyphicon glyphicon-user"></i></td>
-          <td>{{user.name}}</td>
+          <td>{{teamuser.name}}</td>
           <td class="text-right"><button class="btn"><i class="glyphicon glyphicon-plus"></i> Add</button></td>
         </tr>
       </table>

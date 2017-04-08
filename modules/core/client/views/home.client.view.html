@@ -1,4 +1,12 @@
-<section ng-controller="HomeController">
+<section ng-controller="HomeController" ng-init="init()">
+    <div class="event-countdown" ng-if="activeEvent">
+      <p><span ng-bind="activeEvent.title"></span>
+        <span ng-if="activeEvent.inProgress"> in progress</span>
+        <span ng-if="!activeEvent.inProgress"> upcoming</span>
+      </p>
+      <h4 ng-if="activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> hrs remaining</h4>
+      <h4 ng-if="!activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> till event</h4>
+    </div>
     <div class="add-project" ui-sref="projects.create()">
         <h3 class="title">Submit a project</h3>
         <p class="description">Have a solid idea? Submit your project now!</p>

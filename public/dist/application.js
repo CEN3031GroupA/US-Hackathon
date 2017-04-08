@@ -40,25 +40,19 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(["$rootScope"
 
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    if (toState.data && toState.data.roles && toState.data.roles.length > 0) {
-      var allowed = false;
-      toState.data.roles.forEach(function (role) {
-        if (Authentication.user.roles !== undefined && Authentication.user.roles.indexOf(role) !== -1) {
-          allowed = true;
-          return true;
-        }
-      });
+    if (toState.data && toState.data.allowAnon) {
+      return;
+    }
 
-      if (!allowed) {
-        event.preventDefault();
-        if (Authentication.user !== undefined && typeof Authentication.user === 'object') {
-          $state.go('forbidden');
-        } else {
-          $state.go('authentication.signin').then(function () {
-            storePreviousState(toState, toParams);
-          });
-        }
-      }
+    if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
+      event.preventDefault();
+      $state.go('forbidden');
+      return;
+    }
+
+    if (!(Authentication.user !== undefined && typeof Authentication.user === 'object')) {
+      event.preventDefault();
+      $state.go('signin');
     }
   });
 
@@ -129,6 +123,14 @@ ApplicationConfiguration.registerModule('eventCategories');
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('events', ['ui.bootstrap.datetimepicker']);
 
+/**
+ * Created by George on 3/2/2017.
+ */
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('faqs');
+
 'use strict';
 
 ApplicationConfiguration.registerModule('ideas');
@@ -141,10 +143,7 @@ ApplicationConfiguration.registerModule('projects');
 'use strict';
 
 // Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('users', ['core']);
-ApplicationConfiguration.registerModule('users.admin', ['core.admin']);
-ApplicationConfiguration.registerModule('users.admin.routes', ['core.admin.routes']);
-
+ApplicationConfiguration.registerModule('users');
 'use strict';
 
 // Configuring the Articles module
@@ -393,6 +392,9 @@ angular.module('core.admin.routes').config(['$stateProvider',
         abstract: true,
         url: '/admin',
         template: '<ui-view/>',
+        data: {
+          adminOnly: true
+        }
       })
       .state('admin.index', {
         url: '',
@@ -418,19 +420,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
     $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: 'modules/users/client/views/authentication/welcome.client.view.html'
-    })
-
-    .state('login', {
-      url: '/login',
-      templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
-    })
-
-    .state('global', {
-      url: '/home',
       templateUrl: 'modules/core/client/views/home.client.view.html'
     })
-
     .state('not-found', {
       url: '/not-found',
       templateUrl: 'modules/core/client/views/404.client.view.html',
@@ -457,8 +448,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location',
-  function ($scope, $state, Authentication, $location) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location', '$http',
+  function ($scope, $state, Authentication, $location, $http) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -478,40 +469,46 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       }
     };
 
+    $scope.logout = function () {
+      $http.post('/logout').success(function () {
+        delete $scope.authentication.user;
+
+        $state.go('signin', $state.previous.params);
+      }).error(function (response) {
+        $scope.error = response.message;
+      });
+    };
+
     $scope.$on('$stateChangeSuccess', function () {
+      $scope.loggedIn = Authentication.user !== undefined && typeof Authentication.user === 'object';
+
       // Collapsing the menu after navigation
       $scope.closeMenu();
 
-      // Populate menu items based on location
-      var path = $location.path();
-
-      var defaultMenu = [
+      $scope.activeMenu = [
         {
           title: 'Home',
-          'ui-sref': 'global()'
+          'ui-sref': 'home()'
         },
         {
           title: 'Projects',
           'ui-sref': 'projects.list()'
-        }
-      ];
-
-      var adminMenu = [
-        {
-          title: 'Home',
-          'ui-sref': 'global()'
         },
         {
-          title: 'Admin Home',
-          'ui-sref': 'admin.index()'
+          title: 'Ideas',
+          'ui-sref': 'ideas.list()'
+        },
+        {
+          title: 'FAQs',
+          'ui-sref': 'faqs.list()'
         }
       ];
 
-      // TODO: Replace this with role/Check if user is admin
-      if (path.indexOf('admin') !== -1) {
-        $scope.activeMenu = adminMenu;
-      } else {
-        $scope.activeMenu = defaultMenu;
+      if ($scope.loggedIn && $scope.authentication.user.isAdmin) {
+        $scope.activeMenu.push({
+          title: 'Admin Home',
+          'ui-sref': 'admin.index()'
+        });
       }
     });
 
@@ -523,10 +520,53 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
 
 'use strict';
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication',
-  function ($scope, Authentication) {
+angular.module('core').controller('HomeController', ['$scope', '$interval', 'Authentication', 'HackathonEvent',
+  function ($scope, $interval, Authentication, HackathonEvent) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
+
+    $scope.init = function() {
+      HackathonEvent.query({}, function(events) {
+        $scope.events = events;
+        $interval($scope.calcEventTime, 1000);
+      });
+    };
+
+    $scope.calcEventTime = function() {
+      var now = new Date();
+      var timeLeft, timeTill;
+      var days, hours, minutes, seconds;
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var startDate = new Date($scope.events[i].start);
+        var endDate = new Date($scope.events[i].end);
+
+        // Event has concluded
+        if (endDate < now) {
+          continue;
+        }
+
+        $scope.activeEvent = $scope.events[i];
+
+        // Event is in progress
+        if (startDate < now) {
+          $scope.activeEvent.inProgress = true;
+          timeLeft = parseInt((endDate - now) / 1000); // Time left in seconds
+          hours = parseInt(timeLeft / (60*60));
+          minutes = parseInt((timeLeft - hours * 60 * 60) / 60);
+          seconds = timeLeft - hours * 60 * 60 - minutes * 60;
+          $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
+        } else {
+          $scope.activeEvent.inProgress = false;
+          timeTill = parseInt((now - startDate) / 1000); // Time till in seconds
+          days = timeTill / (24 * 60 * 60);
+          hours = (timeTill - days * 24 * 60 * 60);
+          minutes = (timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60;
+          $scope.activeEvent.timer = parseInt(days) + ' days, ' + parseInt(hours) + ' hours, ' + parseInt(minutes) + ' minutes';
+        }
+        break;
+      }
+    };
   }
 ]);
 
@@ -854,7 +894,10 @@ angular.module('eventCategories').config(['$stateProvider',
       .state('eventCategories', {
         abstract: true,
         url: '/admin/eventCategories',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          adminOnly: true
+        }
       })
       .state('eventCategories.index', {
         url: '',
@@ -1016,7 +1059,10 @@ angular.module('events').config(['$stateProvider',
       .state('events', {
         abstract: true,
         url: '/admin/events',
-        template: '<ui-view/>'
+        template: '<ui-view/>',
+        data: {
+          adminOnly: true
+        }
       })
       .state('events.index', {
         url: '',
@@ -1169,6 +1215,99 @@ angular.module('events').factory('HackathonEvent', ['$resource',
   }
 ]);
 
+/**
+ * Created by George on 2/26/2017.
+ */
+'use strict';
+
+// Setting up route
+angular.module('faqs').config(['$stateProvider',
+  function ($stateProvider) {
+    $stateProvider
+      .state('faqs', {
+        abstract: true,
+        url: '/faqs',
+        template: '<ui-view/>'
+      })
+      .state('faqs.list', {
+        url: '',
+        templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
+      })
+      .state('faqs.post', {
+        url: '/post',
+        templateUrl: 'modules/faqs/client/views/post-faq.client.view.html',
+      })
+      .state('faqs.respond', {
+        url: '/:faqId',
+        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html'
+      });
+  }
+]);
+
+/**
+ * Created by George on 2/26/2017.
+ */
+'use strict';
+
+// Projects controller
+angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
+  function ($scope, $state, $stateParams, $location, FAQs) {
+
+    $scope.post = function (isValid) {
+      $scope.error = null;
+
+    // Create new FAQ object
+      var faq = new FAQs({
+        question: this.question,
+        // project: this.project,
+        // event: this.event,
+        // answers: null,
+        // solution: this.solution,
+        // solved: false,
+        // user: this.user
+      });
+      // Redirect
+      faq.$save(function (response) {
+        $location.path('faqs');
+
+      }, function (errorResponse){
+        $scope.error = errorResponse.data.message;
+      });
+    };
+    // Find a list of Projects
+    $scope.find = function () {
+      $scope.faqs = FAQs.query();
+    };
+    // Find a faq
+    $scope.findOne = function () {
+      $scope.faq = FAQs.get({
+        faqId: $stateParams.faqId
+      });
+    };
+  }]);
+
+/**
+ * Created by George on 3/1/2017.
+ */
+'use strict';
+
+//Projects service used for communicating with the faqs REST endpoints
+angular.module('faqs').factory('FAQs', ['$resource',
+  function ($resource) {
+    return $resource('api/faqs/:faqId', {
+      projectId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    }, {
+      create: {
+        method: 'POST'
+      }
+    });
+  }
+]);
+
 'use strict';
 
 angular.module('ideas').config(['$stateProvider',
@@ -1219,13 +1358,15 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
 
     $scope.create = function (isValid) {
       $scope.error = null;
+      $rootScope.activeIdea.title = this.title;
+      $rootScope.activeIdea.description.long = this.details;
 
       var idea = new Ideas($rootScope.activeIdea);
 
 
       idea.$save(function (response) {
-        $location.path('ideas/' + response._id);
 
+        $location.path('ideas/success');
 
         $rootScope.activeIdea = null;
       }, function (errorResponse) {
@@ -1262,7 +1403,6 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
         ideaId: $stateParams.ideaId
       });
     };
-
 
 
     function shuffle(array) {
@@ -1339,6 +1479,10 @@ angular.module('projects').config(['$stateProvider',
       .state('projects.edit', {
         url: '/:projectId/edit',
         templateUrl: 'modules/projects/client/views/edit-project.client.view.html',
+      })
+      .state('projects.votes', {
+        url: '/admin/projectsVotes',
+        templateUrl: 'modules/projects/client/views/list-projects-votes.client.view.html',
       });
   }
 ]);
@@ -1346,8 +1490,11 @@ angular.module('projects').config(['$stateProvider',
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', '$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, $rootScope) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
+    $scope.authentication = Authentication;
+    $scope.user = $scope.authentication.user;
+
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
         description: {}
@@ -1383,11 +1530,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       $location.path('projects/category');
     };
 
-    $scope.setActiveCategory = function(category) {
+    $scope.setActiveCategory = function (category) {
       $scope.activeCategory = category;
     };
 
-    $scope.saveProjectCategory = function() {
+    $scope.saveProjectCategory = function () {
       $rootScope.activeProject.category = $scope.activeCategory.title;
 
       $location.path('projects/team');
@@ -1446,39 +1593,54 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find a list of Projects
     $scope.find = function () {
-      $scope.projects = Projects.query(function(projects) {
+      $scope.projects = Projects.query(function (projects) {
+        $scope.projects = projects;
+
+        shuffle(projects);
+
         $scope.projects = projects;
       });
     };
 
-    // Sort projects randomly
-    $scope.randomSort = function() {
-      var projects = $scope.projects;
-      shuffle(projects);
-    };
-
-
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({
-        projectId: $stateParams.projectId
-      });
+      $scope.project = Projects.get({ projectId: $stateParams.projectId });
+
+      /* Initialize voting button */ //TODO: grab user information after signIn
+      for(var i in $scope.user.votedProjects) {
+        if ($scope.user.votedProjects[i] === $stateParams.projectId) {
+          console.log('project has been voted!'); //TODO delete later
+          $scope.hasVoted = true;
+        }
+      }
+    };
+
+    /* Initialize voting field */
+    $scope.hasVoted = false;
+
+    $scope.unvote = function (project) {
+      for (var i in $scope.user.votedProjects) {
+        if ($scope.user.votedProjects[i] === project._id) {
+          $scope.user.votedProjects.splice(i, 1);
+          project.votes -= 1;
+          $scope.hasVoted = false;
+        }
+      }
+      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
+      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
     $scope.vote = function (project) {
+      $scope.user.votedProjects.push(project._id);
       project.votes += 1;
-      document.getElementById('voteButton').style.backgroundColor = '#63666A';
-      document.getElementById('voteButton').innerHTML = 'Voted!';
-      document.getElementById('voteButton').style.color = '#FFFFFF';
-      Projects.update({
-        projectId: $stateParams.projectId
-      },{
-        votes: project.votes
-      });
+      $scope.hasVoted = true;
+
+      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
+      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
     // Fake data for now
-    $scope.users = [
+    $scope.teamusers = [
       {
         name: 'Jim'
       },
@@ -1532,56 +1694,6 @@ angular.module('projects').factory('Projects', ['$resource',
 
 'use strict';
 
-// Configuring the Articles module
-angular.module('users.admin').run(['Menus',
-  function (Menus) {
-    Menus.addSubMenuItem('topbar', 'admin', {
-      title: 'Manage Users',
-      state: 'admin.users'
-    });
-  }
-]);
-
-'use strict';
-
-// Setting up route
-angular.module('users.admin.routes').config(['$stateProvider',
-  function ($stateProvider) {
-    $stateProvider
-      .state('admin.users', {
-        url: '/users',
-        templateUrl: 'modules/users/client/views/admin/list-users.client.view.html',
-        controller: 'UserListController'
-      })
-      .state('admin.user', {
-        url: '/users/:userId',
-        templateUrl: 'modules/users/client/views/admin/view-user.client.view.html',
-        controller: 'UserController',
-        resolve: {
-          userResolve: ['$stateParams', 'Admin', function ($stateParams, Admin) {
-            return Admin.get({
-              userId: $stateParams.userId
-            });
-          }]
-        }
-      })
-      .state('admin.user-edit', {
-        url: '/users/:userId/edit',
-        templateUrl: 'modules/users/client/views/admin/edit-user.client.view.html',
-        controller: 'UserController',
-        resolve: {
-          userResolve: ['$stateParams', 'Admin', function ($stateParams, Admin) {
-            return Admin.get({
-              userId: $stateParams.userId
-            });
-          }]
-        }
-      });
-  }
-]);
-
-'use strict';
-
 // Config HTTP Error Handling
 angular.module('users').config(['$httpProvider',
   function ($httpProvider) {
@@ -1618,170 +1730,45 @@ angular.module('users').config(['$stateProvider',
   function ($stateProvider) {
     // Users state routing
     $stateProvider
-      .state('settings', {
+      .state('user', {
         abstract: true,
-        url: '/settings',
-        templateUrl: 'modules/users/client/views/settings/settings.client.view.html',
-        data: {
-          roles: ['user', 'admin']
-        }
+        url: '/user',
+        template: '<ui-view/>'
       })
-      .state('settings.profile', {
-        url: '/profile',
-        templateUrl: 'modules/users/client/views/settings/edit-profile.client.view.html'
-      })
-      .state('settings.password', {
-        url: '/password',
-        templateUrl: 'modules/users/client/views/settings/change-password.client.view.html'
-      })
-      .state('settings.accounts', {
-        url: '/accounts',
-        templateUrl: 'modules/users/client/views/settings/manage-social-accounts.client.view.html'
-      })
-      .state('settings.picture', {
-        url: '/picture',
-        templateUrl: 'modules/users/client/views/settings/change-profile-picture.client.view.html'
-      })
-      .state('authentication', {
-        abstract: true,
-        url: '/authentication',
-        templateUrl: 'modules/users/client/views/authentication/authentication.client.view.html'
-      })
-      .state('authentication.signup', {
-        url: '/signup',
-        templateUrl: 'modules/users/client/views/authentication/signup.client.view.html'
-      })
-      .state('authentication.signin', {
+      .state('signin', {
         url: '/signin?err',
-        templateUrl: 'modules/users/client/views/authentication/signin.client.view.html'
-      })
-      .state('password', {
-        abstract: true,
-        url: '/password',
-        template: '<ui-view/>'
-      })
-      .state('password.forgot', {
-        url: '/forgot',
-        templateUrl: 'modules/users/client/views/password/forgot-password.client.view.html'
-      })
-      .state('password.reset', {
-        abstract: true,
-        url: '/reset',
-        template: '<ui-view/>'
-      })
-      .state('password.reset.invalid', {
-        url: '/invalid',
-        templateUrl: 'modules/users/client/views/password/reset-password-invalid.client.view.html'
-      })
-      .state('password.reset.success', {
-        url: '/success',
-        templateUrl: 'modules/users/client/views/password/reset-password-success.client.view.html'
-      })
-      .state('password.reset.form', {
-        url: '/:token',
-        templateUrl: 'modules/users/client/views/password/reset-password.client.view.html'
-      });
-  }
-]);
-
-'use strict';
-
-angular.module('users.admin').controller('UserListController', ['$scope', '$filter', 'Admin',
-  function ($scope, $filter, Admin) {
-    Admin.query(function (data) {
-      $scope.users = data;
-      $scope.buildPager();
-    });
-
-    $scope.buildPager = function () {
-      $scope.pagedItems = [];
-      $scope.itemsPerPage = 15;
-      $scope.currentPage = 1;
-      $scope.figureOutItemsToDisplay();
-    };
-
-    $scope.figureOutItemsToDisplay = function () {
-      $scope.filteredItems = $filter('filter')($scope.users, {
-        $: $scope.search
-      });
-      $scope.filterLength = $scope.filteredItems.length;
-      var begin = (($scope.currentPage - 1) * $scope.itemsPerPage);
-      var end = begin + $scope.itemsPerPage;
-      $scope.pagedItems = $scope.filteredItems.slice(begin, end);
-    };
-
-    $scope.pageChanged = function () {
-      $scope.figureOutItemsToDisplay();
-    };
-  }
-]);
-
-'use strict';
-
-angular.module('users.admin').controller('UserController', ['$scope', '$state', 'Authentication', 'userResolve',
-  function ($scope, $state, Authentication, userResolve) {
-    $scope.authentication = Authentication;
-    $scope.user = userResolve;
-
-    $scope.remove = function (user) {
-      if (confirm('Are you sure you want to delete this user?')) {
-        if (user) {
-          user.$remove();
-
-          $scope.users.splice($scope.users.indexOf(user), 1);
-        } else {
-          $scope.user.$remove(function () {
-            $state.go('admin.users');
-          });
+        templateUrl: 'modules/users/client/views/signin.client.view.html',
+        data: {
+          allowAnon: true,
         }
-      }
-    };
-
-    $scope.update = function (isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'userForm');
-
-        return false;
-      }
-
-      var user = $scope.user;
-
-      user.$update(function () {
-        $state.go('admin.user', {
-          userId: user._id
-        });
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+      })
+      .state('user.view', {
+        url: '/:userId',
+        templateUrl: 'modules/users/client/views/view-user.client.view.html'
       });
-    };
   }
 ]);
 
 'use strict';
 
-angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication', 'PasswordValidator',
-  function ($scope, $state, $http, $location, $window, Authentication, PasswordValidator) {
+angular.module('users').controller('AuthenticationController', ['$scope', '$state', '$http', '$location', '$window', 'Authentication',
+  function ($scope, $state, $http, $location, $window, Authentication) {
     $scope.authentication = Authentication;
-    $scope.popoverMsg = PasswordValidator.getPopoverMsg();
-
-    // Get an eventual error defined in the URL query string:
-    $scope.error = $location.search().err;
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
-      $location.path('/home');
+      $location.path('/');
     }
 
-    $scope.signup = function (isValid) {
+    $scope.signin = function (isValid) {
+      var credentials = {
+        email: this.email,
+        password: this.password
+      };
+
       $scope.error = null;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'userForm');
-
-        return false;
-      }
-
-      $http.post('/api/auth/signup', $scope.credentials).success(function (response) {
+      $http.post('/api/auth/signin', credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
 
@@ -1792,224 +1779,12 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
       });
     };
 
-    $scope.signin = function (isValid) {
+    /* Update user */
+    $scope.update = function () {
       $scope.error = null;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'userForm');
-
-        return false;
-      }
-
-      $http.post('/api/auth/signin', $scope.credentials).success(function (response) {
-        // If successful we assign the response to the global user model
-        $scope.authentication.user = response;
-
-        // And redirect to the previous or home page
-        $state.go($state.previous.state.name || 'global', $state.previous.params);
-      }).error(function (response) {
-        $scope.error = response.message;
-      });
-    };
-
-    // OAuth provider request
-    $scope.callOauthProvider = function (url) {
-      if ($state.previous && $state.previous.href) {
-        url += '?redirect_to=' + encodeURIComponent($state.previous.href);
-      }
-
-      // Effectively call OAuth authentication route:
-      $window.location.href = url;
-    };
-  }
-]);
-
-'use strict';
-
-angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication', 'PasswordValidator',
-  function ($scope, $stateParams, $http, $location, Authentication, PasswordValidator) {
-    $scope.authentication = Authentication;
-    $scope.popoverMsg = PasswordValidator.getPopoverMsg();
-
-    //If user is signed in then redirect back home
-    if ($scope.authentication.user) {
-      $location.path('/');
-    }
-
-    // Submit forgotten password account id
-    $scope.askForPasswordReset = function (isValid) {
-      $scope.success = $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'forgotPasswordForm');
-
-        return false;
-      }
-
-      $http.post('/api/auth/forgot', $scope.credentials).success(function (response) {
-        // Show user success message and clear form
-        $scope.credentials = null;
-        $scope.success = response.message;
-
-      }).error(function (response) {
-        // Show user error message and clear form
-        $scope.credentials = null;
-        $scope.error = response.message;
-      });
-    };
-
-    // Change user password
-    $scope.resetUserPassword = function (isValid) {
-      $scope.success = $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'resetPasswordForm');
-
-        return false;
-      }
-
-      $http.post('/api/auth/reset/' + $stateParams.token, $scope.passwordDetails).success(function (response) {
-        // If successful show success message and clear form
-        $scope.passwordDetails = null;
-
-        // Attach user profile
-        Authentication.user = response;
-
-        // And redirect to the index page
-        $location.path('/password/reset/success');
-      }).error(function (response) {
-        $scope.error = response.message;
-      });
-    };
-  }
-]);
-
-'use strict';
-
-angular.module('users').controller('ChangePasswordController', ['$scope', '$http', 'Authentication', 'PasswordValidator',
-  function ($scope, $http, Authentication, PasswordValidator) {
-    $scope.user = Authentication.user;
-    $scope.popoverMsg = PasswordValidator.getPopoverMsg();
-
-    // Change user password
-    $scope.changeUserPassword = function (isValid) {
-      $scope.success = $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'passwordForm');
-
-        return false;
-      }
-
-      $http.post('/api/users/password', $scope.passwordDetails).success(function (response) {
-        // If successful show success message and clear form
-        $scope.$broadcast('show-errors-reset', 'passwordForm');
-        $scope.success = true;
-        $scope.passwordDetails = null;
-      }).error(function (response) {
-        $scope.error = response.message;
-      });
-    };
-  }
-]);
-
-'use strict';
-
-angular.module('users').controller('ChangeProfilePictureController', ['$scope', '$timeout', '$window', 'Authentication', 'FileUploader',
-  function ($scope, $timeout, $window, Authentication, FileUploader) {
-    $scope.user = Authentication.user;
-    $scope.imageURL = $scope.user.profileImageURL;
-
-    // Create file uploader instance
-    $scope.uploader = new FileUploader({
-      url: 'api/users/picture',
-      alias: 'newProfilePicture'
-    });
-
-    // Set file uploader image filter
-    $scope.uploader.filters.push({
-      name: 'imageFilter',
-      fn: function (item, options) {
-        var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-        return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-      }
-    });
-
-    // Called after the user selected a new picture file
-    $scope.uploader.onAfterAddingFile = function (fileItem) {
-      if ($window.FileReader) {
-        var fileReader = new FileReader();
-        fileReader.readAsDataURL(fileItem._file);
-
-        fileReader.onload = function (fileReaderEvent) {
-          $timeout(function () {
-            $scope.imageURL = fileReaderEvent.target.result;
-          }, 0);
-        };
-      }
-    };
-
-    // Called after the user has successfully uploaded a new picture
-    $scope.uploader.onSuccessItem = function (fileItem, response, status, headers) {
-      // Show success message
-      $scope.success = true;
-
-      // Populate user object
-      $scope.user = Authentication.user = response;
-
-      // Clear upload buttons
-      $scope.cancelUpload();
-    };
-
-    // Called after the user has failed to uploaded a new picture
-    $scope.uploader.onErrorItem = function (fileItem, response, status, headers) {
-      // Clear upload buttons
-      $scope.cancelUpload();
-
-      // Show error message
-      $scope.error = response.message;
-    };
-
-    // Change user profile picture
-    $scope.uploadProfilePicture = function () {
-      // Clear messages
-      $scope.success = $scope.error = null;
-
-      // Start upload
-      $scope.uploader.uploadAll();
-    };
-
-    // Cancel the upload process
-    $scope.cancelUpload = function () {
-      $scope.uploader.clearQueue();
-      $scope.imageURL = $scope.user.profileImageURL;
-    };
-  }
-]);
-
-'use strict';
-
-angular.module('users').controller('EditProfileController', ['$scope', '$http', '$location', 'Users', 'Authentication',
-  function ($scope, $http, $location, Users, Authentication) {
-    $scope.user = Authentication.user;
-
-    // Update a user profile
-    $scope.updateUserProfile = function (isValid) {
-      $scope.success = $scope.error = null;
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'userForm');
-
-        return false;
-      }
-
-      var user = new Users($scope.user);
-
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'userForm');
-
-        $scope.success = true;
-        Authentication.user = response;
+      $scope.authentication.user.$update(function () {
+        $http.put('/api/user/' + $scope.authentication.user._id);
       }, function (response) {
         $scope.error = response.data.message;
       });
@@ -2019,179 +1794,20 @@ angular.module('users').controller('EditProfileController', ['$scope', '$http', 
 
 'use strict';
 
-angular.module('users').controller('SocialAccountsController', ['$scope', '$http', 'Authentication',
-  function ($scope, $http, Authentication) {
-    $scope.user = Authentication.user;
-
-    // Check if there are additional accounts
-    $scope.hasConnectedAdditionalSocialAccounts = function (provider) {
-      for (var i in $scope.user.additionalProvidersData) {
-        return true;
-      }
-
-      return false;
-    };
-
-    // Check if provider is already in use with current user
-    $scope.isConnectedSocialAccount = function (provider) {
-      return $scope.user.provider === provider || ($scope.user.additionalProvidersData && $scope.user.additionalProvidersData[provider]);
-    };
-
-    // Remove a user social account
-    $scope.removeUserSocialAccount = function (provider) {
-      $scope.success = $scope.error = null;
-
-      $http.delete('/api/users/accounts', {
-        params: {
-          provider: provider
-        }
-      }).success(function (response) {
-        // If successful show success message and clear form
-        $scope.success = true;
-        $scope.user = Authentication.user = response;
-      }).error(function (response) {
-        $scope.error = response.message;
-      });
-    };
-  }
-]);
-
-'use strict';
-
-angular.module('users').controller('SettingsController', ['$scope', 'Authentication',
-  function ($scope, Authentication) {
-    $scope.user = Authentication.user;
-  }
-]);
-
-'use strict';
-
-angular.module('users')
-  .directive('passwordValidator', ['PasswordValidator', function(PasswordValidator) {
-    return {
-      require: 'ngModel',
-      link: function(scope, element, attrs, ngModel) {
-        ngModel.$validators.requirements = function (password) {
-          var status = true;
-          if (password) {
-            var result = PasswordValidator.getResult(password);
-            var requirementsIdx = 0;
-
-            // Requirements Meter - visual indicator for users
-            var requirementsMeter = [
-              { color: 'danger', progress: '20' },
-              { color: 'warning', progress: '40' },
-              { color: 'info', progress: '60' },
-              { color: 'primary', progress: '80' },
-              { color: 'success', progress: '100' }
-            ];
-
-            if (result.errors.length < requirementsMeter.length) {
-              requirementsIdx = requirementsMeter.length - result.errors.length - 1;
-            }
-
-            scope.requirementsColor = requirementsMeter[requirementsIdx].color;
-            scope.requirementsProgress = requirementsMeter[requirementsIdx].progress;
-
-            if (result.errors.length) {
-              scope.popoverMsg = PasswordValidator.getPopoverMsg();
-              scope.passwordErrors = result.errors;
-              status = false;
-            } else {
-              scope.popoverMsg = '';
-              scope.passwordErrors = [];
-              status = true;
-            }
-          }
-          return status;
-        };
-      }
-    };
-  }]);
-
-'use strict';
-
-angular.module('users')
-  .directive('passwordVerify', [function() {
-    return {
-      require: 'ngModel',
-      scope: {
-        passwordVerify: '='
-      },
-      link: function(scope, element, attrs, ngModel) {
-        var status = true;
-        scope.$watch(function() {
-          var combined;
-          if (scope.passwordVerify || ngModel) {
-            combined = scope.passwordVerify + '_' + ngModel;
-          }
-          return combined;
-        }, function(value) {
-          if (value) {
-            ngModel.$validators.passwordVerify = function (password) {
-              var origin = scope.passwordVerify;
-              return (origin !== password) ? false : true;
-            };
-          }
-        });
-      }
-    };
-  }]);
-
-'use strict';
-
-// Users directive used to force lowercase input
-angular.module('users').directive('lowercase', function () {
-  return {
-    require: 'ngModel',
-    link: function (scope, element, attrs, modelCtrl) {
-      modelCtrl.$parsers.push(function (input) {
-        return input ? input.toLowerCase() : '';
-      });
-      element.css('text-transform', 'lowercase');
-    }
-  };
-});
-
-'use strict';
-
 // Authentication service for user variables
 angular.module('users').factory('Authentication', ['$window',
   function ($window) {
     var auth = {
       user: $window.user
     };
-
     return auth;
   }
 ]);
 
-'use strict';
 
-// PasswordValidator service used for testing the password strength
-angular.module('users').factory('PasswordValidator', ['$window',
-  function ($window) {
-    var owaspPasswordStrengthTest = $window.owaspPasswordStrengthTest;
-
-    return {
-      getResult: function (password) {
-        var result = owaspPasswordStrengthTest.test(password);
-        return result;
-      },
-      getPopoverMsg: function () {
-        var popoverMsg = 'Please enter a passphrase or password with greater than 10 characters, numbers, lowercase, upppercase, and special characters.';
-        return popoverMsg;
-      }
-    };
-  }
-]);
-
-'use strict';
-
-// Users service used for communicating with the users REST endpoint
 angular.module('users').factory('Users', ['$resource',
   function ($resource) {
-    return $resource('api/users', {}, {
+    return $resource('api/user/:userId', { userId: '@_id' }, {
       update: {
         method: 'PUT'
       }
@@ -2199,15 +1815,4 @@ angular.module('users').factory('Users', ['$resource',
   }
 ]);
 
-//TODO this should be Users service
-angular.module('users.admin').factory('Admin', ['$resource',
-  function ($resource) {
-    return $resource('api/users/:userId', {
-      userId: '@_id'
-    }, {
-      update: {
-        method: 'PUT'
-      }
-    });
-  }
-]);
+

@@ -120,8 +120,8 @@ module.exports.start = function start(options) {
     seedOptions.logResults = options.logResults;
   }
 
-  if (_.has(options, 'seedUser')) { 
-    seedOptions.seedUser = options.seedUser; 
+  if (_.has(options, 'seedUser')) {
+    seedOptions.seedUser = options.seedUser;
   }
 
   if (_.has(options, 'seedAdmin')) {

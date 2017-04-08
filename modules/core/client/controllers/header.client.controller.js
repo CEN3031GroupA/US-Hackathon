@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location',
-  function ($scope, $state, Authentication, $location) {
+angular.module('core').controller('HeaderController', ['$scope', '$state', 'Authentication', '$location', '$http',
+  function ($scope, $state, Authentication, $location, $http) {
     // Expose view variables
     $scope.$state = $state;
     $scope.authentication = Authentication;
@@ -21,40 +21,46 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
       }
     };
 
+    $scope.logout = function () {
+      $http.post('/logout').success(function () {
+        delete $scope.authentication.user;
+
+        $state.go('signin', $state.previous.params);
+      }).error(function (response) {
+        $scope.error = response.message;
+      });
+    };
+
     $scope.$on('$stateChangeSuccess', function () {
+      $scope.loggedIn = Authentication.user !== undefined && typeof Authentication.user === 'object';
+
       // Collapsing the menu after navigation
       $scope.closeMenu();
 
-      // Populate menu items based on location
-      var path = $location.path();
-
-      var defaultMenu = [
+      $scope.activeMenu = [
         {
           title: 'Home',
-          'ui-sref': 'global()'
+          'ui-sref': 'home()'
         },
         {
           title: 'Projects',
           'ui-sref': 'projects.list()'
-        }
-      ];
-
-      var adminMenu = [
-        {
-          title: 'Home',
-          'ui-sref': 'global()'
         },
         {
-          title: 'Admin Home',
-          'ui-sref': 'admin.index()'
+          title: 'Ideas',
+          'ui-sref': 'ideas.list()'
+        },
+        {
+          title: 'FAQs',
+          'ui-sref': 'faqs.list()'
         }
       ];
 
-      // TODO: Replace this with role/Check if user is admin
-      if (path.indexOf('admin') !== -1) {
-        $scope.activeMenu = adminMenu;
-      } else {
-        $scope.activeMenu = defaultMenu;
+      if ($scope.loggedIn && $scope.authentication.user.isAdmin) {
+        $scope.activeMenu.push({
+          title: 'Admin Home',
+          'ui-sref': 'admin.index()'
+        });
       }
     });
 

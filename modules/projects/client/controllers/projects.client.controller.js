@@ -1,8 +1,11 @@
 'use strict';
 
 // Projects controller
-angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', '$rootScope',
-  function ($scope, $state, $stateParams, $location, Projects, $rootScope) {
+angular.module('projects').controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope',
+  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope) {
+    $scope.authentication = Authentication;
+    $scope.user = $scope.authentication.user;
+
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
         description: {}
@@ -38,11 +41,11 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
       $location.path('projects/category');
     };
 
-    $scope.setActiveCategory = function(category) {
+    $scope.setActiveCategory = function (category) {
       $scope.activeCategory = category;
     };
 
-    $scope.saveProjectCategory = function() {
+    $scope.saveProjectCategory = function () {
       $rootScope.activeProject.category = $scope.activeCategory.title;
 
       $location.path('projects/team');
@@ -101,39 +104,54 @@ angular.module('projects').controller('ProjectsController', ['$scope', '$state',
 
     // Find a list of Projects
     $scope.find = function () {
-      $scope.projects = Projects.query(function(projects) {
+      $scope.projects = Projects.query(function (projects) {
+        $scope.projects = projects;
+
+        shuffle(projects);
+
         $scope.projects = projects;
       });
     };
 
-    // Sort projects randomly
-    $scope.randomSort = function() {
-      var projects = $scope.projects;
-      shuffle(projects);
-    };
-
-
     // Find existing Project
     $scope.findOne = function () {
-      $scope.project = Projects.get({
-        projectId: $stateParams.projectId
-      });
+      $scope.project = Projects.get({ projectId: $stateParams.projectId });
+
+      /* Initialize voting button */ //TODO: grab user information after signIn
+      for(var i in $scope.user.votedProjects) {
+        if ($scope.user.votedProjects[i] === $stateParams.projectId) {
+          console.log('project has been voted!'); //TODO delete later
+          $scope.hasVoted = true;
+        }
+      }
+    };
+
+    /* Initialize voting field */
+    $scope.hasVoted = false;
+
+    $scope.unvote = function (project) {
+      for (var i in $scope.user.votedProjects) {
+        if ($scope.user.votedProjects[i] === project._id) {
+          $scope.user.votedProjects.splice(i, 1);
+          project.votes -= 1;
+          $scope.hasVoted = false;
+        }
+      }
+      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
+      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
     $scope.vote = function (project) {
+      $scope.user.votedProjects.push(project._id);
       project.votes += 1;
-      document.getElementById('voteButton').style.backgroundColor = '#63666A';
-      document.getElementById('voteButton').innerHTML = 'Voted!';
-      document.getElementById('voteButton').style.color = '#FFFFFF';
-      Projects.update({
-        projectId: $stateParams.projectId
-      },{
-        votes: project.votes
-      });
+      $scope.hasVoted = true;
+
+      Projects.update({ projectId: $stateParams.projectId },{ votes: project.votes });
+      Users.update({ userId: $scope.user._id }, { votedProjects: $scope.user.votedProjects });
     };
 
     // Fake data for now
-    $scope.users = [
+    $scope.teamusers = [
       {
         name: 'Jim'
       },
