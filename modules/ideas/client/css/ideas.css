@@ -58,6 +58,9 @@
   background: white;
   margin-bottom:0;
 }
+.ideaspage .col-xs-6 {
+  margin-right: -10vh;
+}
 .ideaspage .col-xs-11 {
   padding-right:0;
 }

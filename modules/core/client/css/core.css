@@ -100,6 +100,15 @@ a:hover .header-profile-image {
   margin-bottom: 2vh;
 }
 
+.create-idea {
+  background-color: #115e67;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 2vh;
+}
+
 .create h3 {
   margin-top: 5px;
   margin-bottom: 0px;
