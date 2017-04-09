@@ -45,43 +45,30 @@
   padding: 10px;
 }
 
-.add-project {
-  background-color: #509e2f;
-  width: 100%;
-  padding: 10px;
-  color: white;
-  cursor: pointer;
-}
-
-.add-project h3 {
-  margin-top: 5px;
-  margin-bottom: 0px;
-}
-
-.add-project .sub-title {
-  text-transform: uppercase;
-  margin-top: 10px;
-}
-
 ul.team-list {
   list-style-type: none;
   width: 100%;
   padding: 0px;
-  height: 40px;
   margin-bottom: 15px;
+  line-height: 24px;
+  font-size: 16px;
 }
 
 ul.team-list li {
+  margin-top: 8px;
+}
+
+ul.team-list li i {
   float: left;
   background-color: grey;
   border: 3px solid #333333;
   border-radius: 100px;
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   text-align: center;
-  line-height: 40px;
   margin-right: 15px;
-  font-size: 18px;
+  font-size: 12px;
+  line-height: 16px;
 }
 
 .progress-bar {
