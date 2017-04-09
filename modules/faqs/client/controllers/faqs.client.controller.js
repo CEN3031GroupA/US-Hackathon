@@ -6,7 +6,11 @@ var faqsApp = angular.module('faqs');
 
 faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs','$rootScope', '$http',
   function ($scope, $state, $stateParams, $location, FAQs, $rootScope, $http) {
-    this.faqs = FAQs.query();
+
+    $scope.find = function(){
+      $scope.faqs = FAQs.query();
+    }
+
     $scope.findOne = function () {
       $scope.faq = FAQs.get({
         faqId: $stateParams.faqId
@@ -36,14 +40,16 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     $scope.post = function (isValid) {
       $scope.error = null;
 
-      // Create new FAQ object
-      var faq = new FAQs($rootScope.activeFAQ);
+      var faq = new FAQs({
+        question: this.question,
+        date: Date,
+        user: this.user
+      });
+
       // Redirect
       faq.$save(function (response) {
         $scope.faqs.push(response);
         $scope.askme=false;
-        // clear active
-        $rootScope.activeFAQ = null;
       }, function (errorResponse){
         $scope.error = errorResponse.data.message;
       });

@@ -6,16 +6,16 @@
 </head>
 <body>
 <div class="col-lg-12">
-<section data-ng-controller="FAQsController as faqsCtrl">
+<section data-ng-controller="FAQsController" ng-init="find();">
   <div class="page-header">
     <div class="col-lg-12">
     <h1>Frequently Asked Questions</h1>
     <button data-toggle="collapse" class="btn btn-group-lg" ng-click="askme=!askme">Ask a question</button>
-    <div ng-show="askme">
+    <div class="col-lg-12" ng-show="askme">
       <form name="faqForm" class="form-vertical">
         <fieldset>
           <div class="form-group" show-errors>
-            <input type="text" name="question" class="form-control" ng-model="question" placeholder="Ask a question" required>
+            <input type="text" name="question" class="form-control" ng-model="question" placeholder="post a question here" required>
             <div ng-messages="faqForm.question.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Question is required</p>
             </div>
@@ -26,11 +26,9 @@
     </div>
     </div>
   </div>
-  <div class="list-group" id="faqs-list" ng-repeat="faq in faqsCtrl.faqs">
+  <div class="list-group col-lg-12" id="faqs-list" ng-repeat="faq in faqs" ui-sref="faqs.respond({faqId: faq._id})">
     <a  class="list-group-item">
       <h4 class="list-group-item-heading" ng-click="showme=!showme"> {{faq.question}} <button class="btn btn-link glyphicon glyphicon-question-sign"></button></h4>
-      <h6 class="list-group-item-heading" ng-show="showme"> {{faq.solution}} <a ui-sref="faqs.respond({faqId: faq._id})"><button class="btn btn-secondary glyphicon glyphicon-exclamation-sign"></button>Click here to add a solution or edit existing solution</a></h6>
-      <h8 class="list-group-item-text" ng-show="showme"> {{faq.solved}} <div class="glyphicon glyphicon-warning-sign"></div></h8>
     </a>
   </div>
 </section>
