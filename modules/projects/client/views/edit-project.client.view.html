@@ -10,9 +10,18 @@
           </div>
         </div>
         <div class="form-group" show-errors>
+          <input type="url" ng-model="project.youtube" class="form-control" placeholder="Embedded YouTube URL">
+        </div>
+        <div class="form-group" show-errors>
+          <input type="text" ng-model="project.description.short" class="form-control" placeholder="Short Description" required>
+          <div ng-messages="projectForm.title.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Project short description is required</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
           <textarea name="details" rows="5" ng-model="project.description.long" class="form-control" placeholder="Decribe your project, make it simple and cool..." required></textarea>
           <div ng-messages="projectForm.details.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Project details are required</p>
+            <p class="help-block error-text" ng-message="required">Project detailed description is required</p>
           </div>
         </div>
         <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" value="Save" />

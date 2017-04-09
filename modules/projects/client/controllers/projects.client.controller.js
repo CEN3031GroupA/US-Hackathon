@@ -135,7 +135,7 @@ angular.module('projects')
     $scope.vote = function (project) {
       $http.put('/api/projects/' + project._id + '/vote')
         .success(function() {
-         $scope.hasVoted = true;
+          $scope.hasVoted = true;
         })
         .error(function () {
           console.log('data error');
@@ -173,6 +173,27 @@ angular.module('projects')
           $rootScope.activeProject.team.splice(i, 1);
         }
       }
+    };
+
+    $scope.addComment = function() {
+      var comment = this.comment;
+
+      var req = {
+        method: 'POST',
+        url: '/api/projects/' + $scope.project._id + '/addComment',
+        data: {
+          content: comment
+        }
+      };
+
+      this.comment = '';
+
+      $http(req).then(function(response){
+        $scope.project = response.data;
+        console.log($scope.project);
+      }, function(err){
+        console.error(err);
+      });
     };
 
     function shuffle(array) {
