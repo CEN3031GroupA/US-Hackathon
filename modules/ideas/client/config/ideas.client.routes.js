@@ -21,6 +21,10 @@ angular.module('ideas').config(['$stateProvider',
         url:'/success',
         templateUrl: 'modules/ideas/client/views/success.client.view.html',
       })
+      .state('ideas.edit', {
+        url:'/:ideaId/edit',
+        templateUrl: 'modules/ideas/client/views/edit-idea.client.view.html',
+      })
       .state('ideas.view', {
         url:'/:ideaId',
         templateUrl: 'modules/ideas/client/views/view-idea.client.view.html',

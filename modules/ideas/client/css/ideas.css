@@ -26,13 +26,6 @@
   font-weight: 400;
   font-size:32px;
 }
-.ideaspage .col-xs-1 {
-   background: white;
-   margin-bottom:0;
- }
- .ideaspage .col-xs-11 {
-   padding-right:0;
- }
 
  .ideaspage .base-class {
    transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
@@ -44,9 +37,6 @@
    color: red;
  }
 
- .ideaspage .list-group .row {
-   background: white;
- }
 .add-idea .sub-title {
   text-transform: uppercase;
   margin-top: 10px;
@@ -54,16 +44,20 @@
   font-size: 16px;
 }
 
-.ideaspage .col-xs-1 {
-  background: white;
-  margin-bottom:0;
-}
-.ideaspage .col-xs-6 {
-  margin-right: -10vh;
-}
-.ideaspage .col-xs-11 {
+.ideaspage padding-0 {
   padding-right:0;
+  padding-left:0;
 }
+
+.ideaspage padding-left {
+  position: absolute;
+  padding-left:0;
+  margin-left: -10vh;
+}
+.ideaspage padding-1 {
+    display: inline-block;
+}
+
 
 .ideaspage .base-class {
   transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
@@ -75,9 +69,6 @@
   color: red;
 }
 
-.ideaspage .list-group .row {
-  background: white;
-}
 .ideaspage .frontscreen {
     font-family: "Times New Roman", Times, serif;
     margin-bottom: 5vh;
@@ -96,14 +87,20 @@
     font-weight: 500;
     letter-spacing: 1px;
 }
-.ideaspage .list-group {
+
+.ideaspage .idea-list {
   margin: auto;
   padding: 10px;
 }
-.ideaspage .list-group-item {
+.ideaspage .idea-list .row {
+  background: white;
+
+}
+
+.ideaspage .idea-list .item {
   font-family: "Times New Roman", Times, serif;
-  padding: 20px;
   border-color: white;
+  padding: 20px;
 }
 .ideaspage .form-group {
   margin-bottom:3vh;
@@ -116,9 +113,14 @@
     border: 0 none;
     font-weight: 400;
     letter-spacing: 1px;
-
 }
 
+.ideaspage .btn2 {
+    background-color: white;
+    padding: none;
+    border: 0 none;
+    font-family: "Times New Roman", Times, serif;
+}
 
 .ideaspage .btn1 {
    margin-top: 10px;
@@ -154,7 +156,8 @@
     box-shadow: none;
 }
 .ideaspage .btn-danger {
-    background: #d9534f;
-    color: #ffffff;
+    background: none;
+    color: black;
+    border: 0 none;
     display: inline;
 }

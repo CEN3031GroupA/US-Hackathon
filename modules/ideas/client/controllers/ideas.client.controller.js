@@ -50,6 +50,22 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       }
     };
 
+    $scope.update = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'ideaForm');
+
+        return false;
+      }
+
+      $scope.idea.$update(function () {
+        $location.path('ideas/' + $scope.idea._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
     $scope.find = function () {
       $scope.ideas = Ideas.query(function(ideas) {
         shuffle(ideas);
