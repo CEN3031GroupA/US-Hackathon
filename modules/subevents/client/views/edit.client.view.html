@@ -1,0 +1,29 @@
+<section ng-controller="SubEventsController" ng-init="findOne()">
+  <h1>Update SubEvent</h1>
+
+  <form ng-submit="update()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input name="title" type="text" ng-model="subevent.title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" type="text" ng-model="subevent.description" id="description" class="form-control" placeholder="Description"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input name="location" type="text" ng-model="subevent.location" id="location" class="form-control" placeholder="Location">
+    </div>
+    <div class="form-group">
+      <label>Date/Time</label> <br />
+      <datetimepicker ng-model="subevent.datetime"
+                      date-format="dd-MMM-yyyy">
+      </datetimepicker>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Update" class="btn btn-default">
+      <a class="btn btn-danger" ng-click="remove(subevent)">Delete</a>
+    </div>
+  </form>
+</section>

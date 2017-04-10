@@ -1,0 +1,14 @@
+<section ng-controller="SubEventsController" ng-init="find()">
+  <div>
+    <a ui-sref="subevents.create()" class="btn btn-primary">Create New SubEvent</a>
+  </div>
+
+  <div class="event" ng-repeat="subevent in subevents | orderBy: 'start'">
+    <h5>{{subevent.title}}</h5>
+    <div>{{subevent.description}}</div>
+    <div>Location: {{subevent.location}}</div>
+    <div>Date/time: {{subevent.datetime | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+
+    <a class="btn btn-info btn-sm" ui-sref="subevents.edit({subeventId: subevent._id})">Edit</a>
+  </div>
+</section>
