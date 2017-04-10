@@ -125,6 +125,10 @@ angular.module('ideas')
     $scope.addComment = function() {
       var comment = this.comment;
 
+      if (comment.trim() === ''){
+        return;
+      }
+
       var req = {
         method: 'POST',
         url: '/api/ideas/' + $scope.idea._id + '/addComment',
