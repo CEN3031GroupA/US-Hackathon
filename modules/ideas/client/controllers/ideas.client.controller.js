@@ -24,7 +24,6 @@ angular.module('ideas')
       var idea = new Ideas($rootScope.activeIdea);
 
       $rootScope.activeIdea.title = this.title;
-      $rootScope.activeIdea.description.long = this.details;
       $rootScope.activeIdea.youtube = this.youtube;
       $rootScope.activeIdea.description.short = this.short;
       $rootScope.activeIdea.description.long = this.long;
