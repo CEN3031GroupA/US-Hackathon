@@ -1,33 +1,39 @@
 'use strict';
 
+// Ideas controller
+angular.module('ideas')
+  .controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http',
+  function ($scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http) {
+    $scope.authentication = Authentication;
+    $scope.user = $scope.owner = $scope.authentication.user;
 
-angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', '$rootScope',
-  function ($scope, $state, $stateParams, $location, Ideas, $rootScope) {
     if (!$rootScope.activeIdea) {
       $rootScope.activeIdea = {
-        description: {}
+        description: {},
+        owner: $scope.user,
+        team: []
       };
     }
 
-    $scope.saveIdeaInfo = function () {
-      $rootScope.activeIdea.title = this.title;
-      $rootScope.activeIdea.description.long = this.details;
-
-      $location.path('ideas/success');
-    };
+    $scope.team = $rootScope.activeIdea.team;
 
     $scope.create = function (isValid) {
       $scope.error = null;
-      $rootScope.activeIdea.title = this.title;
-      $rootScope.activeIdea.description.long = this.details;
 
+      // Create new Idea object
       var idea = new Ideas($rootScope.activeIdea);
 
+      $rootScope.activeIdea.title = this.title;
+      $rootScope.activeIdea.description.long = this.details;
+      $rootScope.activeIdea.youtube = this.youtube;
+      $rootScope.activeIdea.description.short = this.short;
+      $rootScope.activeIdea.description.long = this.long;
 
-      idea.$save(function (response) {
-
+      // Redirect after save
+      idea.$save(function () {
         $location.path('ideas/success');
 
+        // Clear form fields
         $rootScope.activeIdea = null;
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
@@ -50,8 +56,28 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       }
     };
 
+    // Update existing Idea
+    $scope.update = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'ideaForm');
+
+        return false;
+      }
+
+      $scope.idea.$update(function () {
+        $location.path('ideas/' + $scope.idea._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    // Find a list of Ideas
     $scope.find = function () {
-      $scope.ideas = Ideas.query(function(ideas) {
+      $scope.ideas = Ideas.query(function (ideas) {
+        $scope.ideas = ideas;
+
         shuffle(ideas);
 
         $scope.ideas = ideas;
@@ -64,6 +90,58 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       });
     };
 
+    $scope.loadUsers = function() {
+      $scope.users = Users.query(function (users) {
+        $scope.users = users;
+
+        // Remove owner from being able to be added
+        for (var i = 0; i < $scope.users.length; i++) {
+          if ($scope.owner._id === $scope.users[i]._id) {
+            $scope.users.splice(i, 1);
+          }
+        }
+      });
+    };
+
+    $scope.addMember = function(user) {
+      $rootScope.activeIdea.team.push(user);
+
+      for (var i = 0; i < $scope.users.length; i++) {
+        if (user._id === $scope.users[i]._id) {
+          $scope.users.splice(i, 1);
+        }
+      }
+    };
+
+    $scope.removeMember = function(user) {
+      $scope.users.push(user);
+
+      for (var i = 0; i < $rootScope.activeIdea.team.length; i++) {
+        if (user._id === $rootScope.activeIdea.team[i]._id) {
+          $rootScope.activeIdea.team.splice(i, 1);
+        }
+      }
+    };
+
+    $scope.addComment = function() {
+      var comment = this.comment;
+
+      var req = {
+        method: 'POST',
+        url: '/api/ideas/' + $scope.idea._id + '/addComment',
+        data: {
+          content: comment
+        }
+      };
+
+      this.comment = '';
+
+      $http(req).then(function (response) {
+        $scope.idea = response.data;
+      }, function (err) {
+        console.error(err);
+      });
+    };
 
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;

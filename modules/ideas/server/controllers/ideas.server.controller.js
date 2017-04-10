@@ -2,14 +2,13 @@
 
 var path = require('path'),
   mongoose = require('mongoose'),
-  Idea = require('mongoose').model('Idea'),
+  Idea = mongoose.model('Idea'),
+  User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 exports.create = function(req, res, next) {
   var idea = new Idea(req.body);
   idea.save(function (err) {
-    console.log(req.body);
-    console.log(err);
     if (err) {
       return next(err);
     }
@@ -48,7 +47,7 @@ exports.read = function(req, res) {
 exports.ideaById = function(req, res, next, id) {
   Idea.findOne({
     _id: id
-  },
+  }).populate(['owner', 'team', 'comments.user']).exec(
   function(err, idea) {
     if (err) {
       return next(err);
@@ -57,18 +56,45 @@ exports.ideaById = function(req, res, next, id) {
       req.idea = idea;
       next();
     }
-  }
-);
+  });
 };
 
 exports.update = function (req, res) {
-  req.idea.save(function (err) {
+  var idea = req.idea;
+
+  idea.title = req.body.title;
+  idea.youtube = req.body.youtube;
+  idea.description.short = req.body.description.short;
+  idea.description.long = req.body.description.long;
+
+  idea.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(req.idea);
+      res.json(idea);
+    }
+  });
+};
+
+exports.addComment = function(req, res) {
+  var idea = req.idea;
+
+  idea.comments.push({
+    user: req.session.user,
+    posted: new Date(),
+    content: req.body.content
+  });
+
+  idea.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+    else {
+      res.json(idea);
     }
   });
 };
