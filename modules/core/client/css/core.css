@@ -110,3 +110,25 @@ a:hover .header-profile-image {
   margin-top: 5px;
   margin-bottom: 0px;
 }
+
+/* styling for idea button on home page */
+
+.create-idea {
+  background-color: #115e67;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 2vh;
+}
+
+.create-idea h3 {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.create-idea .sub-title {
+  text-transform: uppercase;
+  margin-top: 5px;
+  margin-bottom: 0px;
+}

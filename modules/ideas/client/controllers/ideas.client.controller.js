@@ -56,6 +56,7 @@ angular.module('ideas')
     };
 
     // Update existing Idea
+
     $scope.update = function (isValid) {
       $scope.error = null;
 
@@ -72,7 +73,9 @@ angular.module('ideas')
       });
     };
 
+
     // Find a list of Ideas
+
     $scope.find = function () {
       $scope.ideas = Ideas.query(function (ideas) {
         $scope.ideas = ideas;

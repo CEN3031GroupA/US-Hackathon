@@ -10,7 +10,7 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     $scope.find = function(){
       $scope.faqs = FAQs.query();
     };
-                  
+
     $scope.findOne = function () {
       $scope.faq = FAQs.get({
         faqId: $stateParams.faqId
