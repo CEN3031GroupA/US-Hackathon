@@ -32,5 +32,18 @@
       </div>
     </div>
 
+    <h3>Comments (<span ng-bind="idea.comments.length"></span>)</h3>
+    <div class="clearfix" style="margin-bottom: 15px">
+      <textarea name="comment" ng-model="comment" rows="5" class="form-control" placeholder="Please provide your feedback..." required></textarea>
+      <button class="btn btn-primary pull-right" ng-click="addComment()">Add Comment</button>
+    </div>
+    <div class="comments-list">
+      <div class="comment" ng-repeat="comment in idea.comments">
+        <h6>{{comment.user.firstName}} {{comment.user.lastName}}</h6>
+        <p>Posted on: {{comment.posted}}</p>
+        <p>{{comment.content}}</p>
+      </div>
+    </div>
+
   </section>
 </html>

@@ -190,7 +190,6 @@ angular.module('projects')
 
       $http(req).then(function(response){
         $scope.project = response.data;
-        console.log($scope.project);
       }, function(err){
         console.error(err);
       });

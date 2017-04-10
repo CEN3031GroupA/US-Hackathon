@@ -40,19 +40,19 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(["$rootScope"
 
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    if (toState.data && toState.data.allowAnon) {
-      return;
-    }
+    console.log(toState);
+    if (!(toState.data && toState.data.allowAnon)) {
+      console.log('t');
+      if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
+        event.preventDefault();
+        $state.go('forbidden');
+        return;
+      }
 
-    if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
-      event.preventDefault();
-      $state.go('forbidden');
-      return;
-    }
-
-    if (!(Authentication.user !== undefined && typeof Authentication.user === 'object')) {
-      event.preventDefault();
-      $state.go('signin');
+      if (!(Authentication.user !== undefined && typeof Authentication.user === 'object')) {
+        event.preventDefault();
+        $state.go('signin');
+      }
     }
   });
 
@@ -139,6 +139,12 @@ ApplicationConfiguration.registerModule('ideas');
 
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('projects', ['ja.qr']);
+
+(function (app) {
+  'use strict';
+
+  app.registerModule('questions');
+}(ApplicationConfiguration));
 
 'use strict';
 
@@ -1239,13 +1245,9 @@ angular.module('faqs').config(['$stateProvider',
         url: '',
         templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
-      .state('faqs.post', {
-        url: '/post',
-        templateUrl: 'modules/faqs/client/views/post-faq.client.view.html',
-      })
       .state('faqs.respond', {
-        url: '/:faqId',
-        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html'
+        url: '/faq/:faqId/Respond',
+        templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
       });
   }
 ]);
@@ -1254,43 +1256,130 @@ angular.module('faqs').config(['$stateProvider',
  * Created by George on 2/26/2017.
  */
 'use strict';
+var faqsApp = angular.module('faqs');
 
-// Projects controller
-angular.module('faqs').controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs',
-  function ($scope, $state, $stateParams, $location, FAQs) {
+faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$location', 'FAQs','$rootScope', '$http',
+  function ($scope, $state, $stateParams, $location, FAQs, $rootScope, $http) {
 
-    $scope.post = function (isValid) {
-      $scope.error = null;
-
-    // Create new FAQ object
-      var faq = new FAQs({
-        question: this.question,
-        // project: this.project,
-        // event: this.event,
-        // answers: null,
-        // solution: this.solution,
-        // solved: false,
-        // user: this.user
-      });
-      // Redirect
-      faq.$save(function (response) {
-        $location.path('faqs');
-
-      }, function (errorResponse){
-        $scope.error = errorResponse.data.message;
-      });
-    };
-    // Find a list of Projects
-    $scope.find = function () {
+    $scope.find = function(){
       $scope.faqs = FAQs.query();
     };
-    // Find a faq
+                  
     $scope.findOne = function () {
       $scope.faq = FAQs.get({
         faqId: $stateParams.faqId
       });
+      console.log($scope.faq);
     };
-  }]);
+
+    $scope.addAnswer = function(){
+      console.log($scope.faq);
+      var answer = this.answer;
+
+      var req = {
+        method: 'POST',
+        url: '/api/faqs/' + $scope.faq._id + '/addAnswer',
+        data: {
+          answer: answer
+        }
+      };
+      this.answer = '';
+      $http(req).then(function(response){
+        $scope.faq = response.data;
+      }, function(err){
+        console.error(err);
+      });
+    };
+
+    $scope.post = function (isValid) {
+      $scope.error = null;
+
+      var faq = new FAQs({
+        question: this.question,
+        date: Date,
+        user: this.user
+      });
+
+      // Redirect
+      faq.$save(function (response) {
+        $scope.faqs.push(response);
+        $scope.askme=false;
+      }, function (errorResponse){
+        $scope.error = errorResponse.data.message;
+      });
+    };
+  }
+]);
+
+// if (!$rootScope.activeFAQ) {
+//   $rootScope.activeFAQ = {
+//     solution: {}
+//   };
+// }
+//
+//
+// $scope.saveQuestion = function (response) {
+//   $rootScope.activeFAQ.question = this.question;
+//
+//   $location.path('faqs');
+// };
+//
+// $scope.post = function (isValid) {
+//   $scope.error = null;
+//
+//   // Create new FAQ object
+//   var faq = new FAQs($rootScope.activeFAQ);
+//   // Redirect
+//   faq.$save(function (response) {
+//     $scope.faqs.push(response);
+//     $scope.askme=false;
+//     // clear active
+//     $rootScope.activeFAQ = null;
+//   }, function (errorResponse){
+//     $scope.error = errorResponse.data.message;
+//   });
+// };
+// // Find a list of faqs
+
+// // Find a faq
+// $scope.findOne = function () {
+//   $scope.faq = FAQs.get({
+//     faqId: $stateParams.faqId
+//   });
+// };
+// // Remove existing Project
+// $scope.remove = function (faq) {
+//   if (faq) {
+//     faq.$remove();
+//
+//     for (var i in $scope.faqs) {
+//       if ($scope.faqs[i] === faq) {
+//         $scope.faqs.splice(i, 1);
+//       }
+//     }
+//   } else {
+//     $scope.faq.$remove(function () {
+//       $location.path('faqs');
+//     });
+//   }
+// };
+//
+// // Update existing faq
+// $scope.update = function (isValid) {
+//   $scope.error = null;
+//
+//   if (!isValid) {
+//     $scope.$broadcast('show-errors-check-validity', 'faqForm');
+//
+//     return false;
+//   }
+//
+//   $scope.faq.$update(function () {
+//     $location.path('faqs/');
+//   }, function (errorResponse) {
+//     $scope.error = errorResponse.data.message;
+//   });
+// };
 
 /**
  * Created by George on 3/1/2017.
@@ -1731,6 +1820,210 @@ angular.module('projects').factory('Projects', ['$resource',
   }
 ]);
 
+(function () {
+  'use strict';
+
+  angular
+    .module('questions')
+    .run(menuConfig);
+
+  menuConfig.$inject = ['Menus'];
+
+  function menuConfig(menuService) {
+    // Set top bar menu items
+    menuService.addMenuItem('topbar', {
+      title: 'Questions',
+      state: 'questions',
+      type: 'dropdown',
+      roles: ['*']
+    });
+
+    // Add the dropdown list item
+    menuService.addSubMenuItem('topbar', 'questions', {
+      title: 'List Questions',
+      state: 'questions.list'
+    });
+
+    // Add the dropdown create item
+    menuService.addSubMenuItem('topbar', 'questions', {
+      title: 'Create Question',
+      state: 'questions.create',
+      roles: ['user']
+    });
+  }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('questions')
+    .config(routeConfig);
+
+  routeConfig.$inject = ['$stateProvider'];
+
+  function routeConfig($stateProvider) {
+    $stateProvider
+      .state('questions', {
+        abstract: true,
+        url: '/questions',
+        template: '<ui-view/>'
+      })
+      .state('questions.list', {
+        url: '',
+        templateUrl: 'modules/questions/client/views/list-questions.client.view.html',
+        controller: 'QuestionsListController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Questions List'
+        }
+      })
+      .state('questions.create', {
+        url: '/create',
+        templateUrl: 'modules/questions/views/form-question.client.view.html',
+        controller: 'QuestionsController',
+        controllerAs: 'vm',
+        resolve: {
+          questionResolve: newQuestion
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Questions Create'
+        }
+      })
+      .state('questions.edit', {
+        url: '/:questionId/edit',
+        templateUrl: 'modules/questions/views/form-question.client.view.html',
+        controller: 'QuestionsController',
+        controllerAs: 'vm',
+        resolve: {
+          questionResolve: getQuestion
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Edit Question {{ questionResolve.name }}'
+        }
+      })
+      .state('questions.view', {
+        url: '/:questionId',
+        templateUrl: 'modules/questions/views/view-question.client.view.html',
+        controller: 'QuestionsController',
+        controllerAs: 'vm',
+        resolve: {
+          questionResolve: getQuestion
+        },
+        data: {
+          pageTitle: 'Question {{ questionResolve.name }}'
+        }
+      });
+  }
+
+  getQuestion.$inject = ['$stateParams', 'QuestionsService'];
+
+  function getQuestion($stateParams, QuestionsService) {
+    return QuestionsService.get({
+      questionId: $stateParams.questionId
+    }).$promise;
+  }
+
+  newQuestion.$inject = ['QuestionsService'];
+
+  function newQuestion(QuestionsService) {
+    return new QuestionsService();
+  }
+}());
+
+(function () {
+  'use strict';
+
+  angular
+    .module('questions')
+    .controller('QuestionsListController', QuestionsListController);
+
+  QuestionsListController.$inject = ['QuestionsService'];
+
+  function QuestionsListController(QuestionsService) {
+    var vm = this;
+
+    vm.questions = QuestionsService.query();
+  }
+}());
+
+(function () {
+  'use strict';
+
+  // Questions controller
+  angular
+    .module('questions')
+    .controller('QuestionsController', QuestionsController);
+
+  QuestionsController.$inject = ['$scope', '$state', '$window', 'questionResolve'];
+
+  function QuestionsController ($scope, $state, $window, question) {
+    var vm = this;
+
+
+    vm.question = question;
+    vm.error = null;
+    vm.form = {};
+    vm.remove = remove;
+    vm.save = save;
+
+    // Remove existing Question
+    function remove() {
+      if ($window.confirm('Are you sure you want to delete?')) {
+        vm.question.$remove($state.go('questions.list'));
+      }
+    }
+
+    // Save Question
+    function save(isValid) {
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'vm.form.questionForm');
+        return false;
+      }
+
+      // TODO: move create/update logic to service
+      if (vm.question._id) {
+        vm.question.$update(successCallback, errorCallback);
+      } else {
+        vm.question.$save(successCallback, errorCallback);
+      }
+
+      function successCallback(res) {
+        $state.go('questions.view', {
+          questionId: res._id
+        });
+      }
+
+      function errorCallback(res) {
+        vm.error = res.data.message;
+      }
+    }
+  }
+}());
+
+// Questions service used to communicate Questions REST endpoints
+(function () {
+  'use strict';
+
+  angular
+    .module('questions')
+    .factory('QuestionsService', QuestionsService);
+
+  QuestionsService.$inject = ['$resource'];
+
+  function QuestionsService($resource) {
+    return $resource('api/questions/:questionId', {
+      questionId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+}());
+
 'use strict';
 
 // Config HTTP Error Handling
@@ -1781,37 +2074,30 @@ angular.module('users').config(['$stateProvider',
           allowAnon: true,
         }
       })
-      .state('user.view', {
-        url: '/:userId',
-        templateUrl: 'modules/users/client/views/view-user.client.view.html'
-      })
-      .state('user.splash', {
-        url: '/welcome',
-        templateUrl: 'modules/users/client/views/welcomescreens/splash.client.view.html',
-        access: {
-          allowAnonymous: true,
-        }
-      })
       .state('user.welcome', {
-        url: '/welcome1',
+        url: '/welcome',
         templateUrl: 'modules/users/client/views/welcomescreens/welcome.client.view.html',
-        access: {
-          allowAnonymous: true,
+        data: {
+          allowAnon: true,
         }
       })
       .state('user.welcome1', {
         url: '/welcome2',
         templateUrl: 'modules/users/client/views/welcomescreens/welcome1.client.view.html',
-        access: {
-          allowAnonymous: true,
+        data: {
+          allowAnon: true,
         }
       })
       .state('user.welcome2', {
         url: '/welcome3',
         templateUrl: 'modules/users/client/views/welcomescreens/welcome2.client.view.html',
-        access: {
-          allowAnonymous: true,
+        data: {
+          allowAnon: true,
         }
+      })
+      .state('user.view', {
+        url: '/:userId',
+        templateUrl: 'modules/users/client/views/view-user.client.view.html'
       });
   }
 ]);
@@ -1824,6 +2110,7 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$stat
 
     // If user is signed in then redirect back home
     if ($scope.authentication.user) {
+      console.log("ASD");
       $location.path('/');
     }
 
