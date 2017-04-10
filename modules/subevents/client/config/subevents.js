@@ -26,4 +26,22 @@ angular.module('subevents').config(['$stateProvider',
         templateUrl: 'modules/subevents/client/views/edit.client.view.html'
       });
   }
+]).config(['$stateProvider',
+  function ($stateProvider) {
+    // SubEvents state routing
+    $stateProvider
+      .state('schedule', {
+        abstract: true,
+        url: '/schedule',
+        template: '<ui-view/>',
+      })
+      .state('schedule.index', {
+        url: '',
+        templateUrl: 'modules/subevents/client/views/schedule.client.view.html'
+      })
+      .state('schedule.view', {
+        url: '/:subeventId/view',
+        templateUrl: 'modules/subevents/client/views/view.client.view.html'
+      });
+  }
 ]);

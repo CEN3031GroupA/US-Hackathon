@@ -1,0 +1,8 @@
+<section ng-controller="SubEventsController" ng-init="find()">
+  <div class="subevent" ng-repeat="subevent in subevents | orderBy: 'start'" ui-sref="schedule.view({subeventId: subevent._id})">
+    <h5>{{subevent.title}}</h5>
+    <div>{{subevent.description}}</div>
+    <div>Location: {{subevent.location}}</div>
+    <div>Date/time: {{subevent.datetime | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+  </div>
+</section>

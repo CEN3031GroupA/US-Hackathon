@@ -2,9 +2,30 @@
 
 // Projects controller
 angular.module('subevents').controller('SubEventsController',
-  ['$scope', '$state', '$stateParams', '$location', 'SubEvent', 'HackathonEvent',
-  function ($scope, $state, $stateParams, $location, SubEvent, HackathonEvent) {
-    $scope.event = HackathonEvent.get({ eventId: $stateParams.eventId });
+  ['$scope', '$state', '$stateParams', '$location', 'SubEvent', 'HackathonEvent', 'ActiveEvent',
+  function ($scope, $state, $stateParams, $location, SubEvent, HackathonEvent, ActiveEvent) {
+    $scope.loadEvent = function(cb) {
+      if ($stateParams.eventId) {
+        HackathonEvent.get({ eventId: $stateParams.eventId }, function(event) {
+          $scope.event = event;
+
+          if (cb) {
+            cb(event);
+          }
+        });
+      } else {
+        $scope.event = ActiveEvent.get().then(function(event) {
+          $scope.event = event;
+
+          if (cb) {
+            cb(event);
+          }
+        });
+      }
+    };
+
+    $scope.loadEvent();
+
 
     $scope.create = function() {
       var subevent = new SubEvent({
@@ -17,7 +38,7 @@ angular.module('subevents').controller('SubEventsController',
 
       // Redirect after save
       subevent.$save({ eventId: $scope.event._id }, function (response) {
-        $location.path('admin/events/' + $scope.event._id + '/subevents');
+        $location.path('admin/events');
 
         // Clear form fields
         $scope.title = '';
@@ -29,14 +50,22 @@ angular.module('subevents').controller('SubEventsController',
     };
 
     $scope.find = function () {
-      $scope.subevents = SubEvent.query({ eventId: $stateParams.eventId });
+      var querySubevents = function (event) {
+        $scope.subevents = SubEvent.query({ eventId: event._id });
+      };
+
+      $scope.loadEvent(querySubevents);
     };
 
     $scope.findOne = function () {
-      $scope.subevent = SubEvent.get({
-        eventId: $stateParams.eventId,
-        subeventId: $stateParams.subeventId
-      });
+      var querySubevent = function (event) {
+        $scope.subevent = SubEvent.get({
+          eventId: event._id,
+          subeventId: $stateParams.subeventId
+        });
+      };
+
+      $scope.loadEvent(querySubevent);
     };
 
     $scope.update = function () {
