@@ -8,6 +8,7 @@ angular.module('core').controller('HomeController', ['$scope', '$interval', 'Aut
     $scope.init = function() {
       ActiveEvent.get().then(function(activeEvent) {
         $scope.activeEvent = activeEvent;
+        $scope.calcEventTime();
         $interval($scope.calcEventTime, 1000);
       });
     };
