@@ -45,6 +45,10 @@ var ProjectSchema = new Schema({
     type: Number,
     default: 0
   },
+  liked: {
+    type: Boolean,
+    default: false
+  },
   comments: [{
     posted: {
       type: Date, default: Date.now

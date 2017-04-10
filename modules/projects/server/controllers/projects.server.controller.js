@@ -2,8 +2,8 @@
 
 var path = require('path'),
   mongoose = require('mongoose'),
-  Project = require('mongoose').model('Project'),
-  User = require('mongoose').model('User'),
+  Project = mongoose.model('Project'),
+  User = mongoose.model('User'),
   eventCtrl = require(path.resolve('./modules/events/server/controllers/events.server.controller')),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
