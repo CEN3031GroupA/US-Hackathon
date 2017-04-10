@@ -18,6 +18,9 @@ module.exports = function(app) {
     .put(faqs.update)
     .delete(faqs.delete);
 
+  app.route('/api/faqs/:faqId/addAnswer')
+    .post(faqs.addAnswer);
+
   app.param('faqId', faqs.faqById);
 };
 

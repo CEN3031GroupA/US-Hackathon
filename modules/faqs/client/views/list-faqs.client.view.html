@@ -5,19 +5,30 @@
   <link rel="stylesheet" href="../css/faqs.css">
 </head>
 <body>
-<div class="col-xs-12">
-<section data-ng-controller="FAQsController" ng-init="find()">
+<div class="col-lg-12">
+<section data-ng-controller="FAQsController" ng-init="find();">
   <div class="page-header">
+    <div class="col-lg-12">
     <h1>Frequently Asked Questions</h1>
-    <div class="btn-group">
-      <button type="btn" class="btn btn-xs pull-right"  ui-sref="faqs.post()"><i class="glyphicon glyphicon-plus"><div class="glyphicon glyphicon-question-sign"></div></i> Ask a question</button>
+    <button data-toggle="collapse" class="btn btn-group-lg" ng-click="askme=!askme">Ask a question</button>
+    <div class="col-lg-12" ng-show="askme">
+      <form name="faqForm" class="form-vertical">
+        <fieldset>
+          <div class="form-group" show-errors>
+            <input type="text" name="question" class="form-control" ng-model="question" placeholder="post a question here" required>
+            <div ng-messages="faqForm.question.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Question is required</p>
+            </div>
+          </div>
+          <input type="submit" color="PMS 362c" class="btn btn-success btn-lg btn-block" ng-click="post()" placeholder="Ask" />
+        </fieldset>
+      </form>
+    </div>
     </div>
   </div>
-  <div class="list-group" ng-repeat="faq in faqs">
+  <div class="list-group col-lg-12" id="faqs-list" ng-repeat="faq in faqs" ui-sref="faqs.respond({faqId: faq._id})">
     <a  class="list-group-item">
       <h4 class="list-group-item-heading" ng-click="showme=!showme"> {{faq.question}} <button class="btn btn-link glyphicon glyphicon-question-sign"></button></h4>
-      <h6 class="list-group-item-heading" ng-show="showme"> {{faq.solution}} <button class="btn btn-secondary glyphicon glyphicon-exclamation-sign" ui-sref="faqs.respond({faqId: faq._id}})"></button></h6>
-      <h8 class="list-group-item-text" ng-show="showme"> {{faq.solved}} <div class="glyphicon glyphicon-warning-sign"></div></h8>
     </a>
   </div>
 </section>

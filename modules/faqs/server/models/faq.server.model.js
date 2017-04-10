@@ -18,21 +18,24 @@ var FAQSchema = new Schema({
     required: 'Question cannot be blank',
     trim: true
   },
-  project: {
-    type: String
-  },
-  event: {
-    type: String
-  },
-  answers: [
-    { body: String }
-  ],
-  solution: {
-    type: String
-  },
-  solved: {
-    type: Boolean
-  },
+  answers: [{
+    user: {
+      type: Schema.ObjectId,
+      ref: 'User'
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    answer: {
+      type: String,
+      default: ''
+    },
+    isSolution: {
+      type: Boolean,
+      default: false
+    }
+  }],
   user: {
     type: Schema.ObjectId,
     ref: 'User'

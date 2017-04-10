@@ -18,7 +18,9 @@ module.exports = {
         'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
         'public/lib/angular-file-upload/angular-file-upload.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-        'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.js'
+        'public/lib/angular-ui-bootstrap-datetimepicker/datetimepicker.js',
+        'public/lib/qrcode/lib/qrcode.min.js',
+        'public/lib/angular-qr/angular-qr.min.js'
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
     },
