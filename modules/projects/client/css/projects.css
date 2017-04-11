@@ -1,14 +1,15 @@
-/*here
+/*
  * projects-list
  */
 .list-group {
   margin: auto;
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
 .list-group-item {
   font-family: "Times New Roman", Times, serif;
-  padding: 20px;
+  padding: 15px;
+  border-radius: 0px !important;
 }
 
 /*
