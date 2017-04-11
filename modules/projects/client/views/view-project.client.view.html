@@ -17,14 +17,14 @@
         </a>
       </div>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12" style="background-color:lightslategray;color:black;padding:30px;">
       <div class="pull-right">
-        <qr text="'project._id'" size="100"></qr>
+        <qr text="qrProjectId" size="100"></qr>
       </div>
-
-      <h1 ng-bind="project.title"></h1>
-      <p><small>Category:</small><strong ng-bind="project.category"></strong></p>
-
+      <h2 ng-bind="project.title"></h2>
+      <p><small>Category: </small><strong ng-bind="project.category"></strong></p>
+    </div>
+    <div class="col-xs-12" style="background-color: white;padding:30px;">
       <div ng-show="project.youtube != null">
         <iframe width="100%" height="300" src="{{project.youtube}}" frameborder="0" allowfullscreen></iframe>
       </div>
