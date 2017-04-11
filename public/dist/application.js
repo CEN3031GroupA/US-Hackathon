@@ -1789,9 +1789,11 @@ angular.module('projects')
     };
 
     // Find existing Project
+    $scope.qrProjectId = null;
     $scope.findOne = function () {
       $scope.project = Projects.get({ projectId: $stateParams.projectId },function(project) {
         $scope.hasVoted = $scope.user.votedProjects.indexOf(project._id) !== -1;
+        $scope.qrProjectId = $scope.project._id;
       });
     };
 
