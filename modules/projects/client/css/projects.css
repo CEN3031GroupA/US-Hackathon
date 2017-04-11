@@ -76,6 +76,11 @@ ul.team-list li i {
   background-color: #115e67;
 }
 
+hr {
+  margin: 10px 0;
+  border: 1px solid black;
+}
+
 .project-content {
   clear: both;
   margin: 15px 0 25px 0;

@@ -6,11 +6,10 @@
         <p class="text-right">Step 3/3&nbsp;&nbsp;</p>
       </div>
     </div>
-    <h2><b>Create Project: </b>Select Team Members</h2>
-
+    <h3 class="text-center">Select Team Members</h3>
+    <hr />
     <h4>Current team</h4>
-
-    <div class="tableWrapper">
+    <div class="table-responsive">
       <table class="table table-hover">
         <tr>
           <td><i class="glyphicon glyphicon-user"></i></td>
@@ -32,7 +31,7 @@
       <span class="input-group-addon" id="sizing-addon"><span class="glyphicon glyphicon-search"></span></span>
       <input type="text" class="form-control" placeholder="Search" ng-model="query">
     </div>
-    <div class="tableWrapper">
+    <div class="table-responsive">
       <table class="table table-hover">
         <tr ng-repeat="user in users | filter: query">
           <td><i class="glyphicon glyphicon-user"></i></td>
