@@ -6,7 +6,7 @@
     <div class="answers">
       <div class="answer" ng-repeat="answer in faq.answers">
         <h6>Posted by {{answer.user.firstName}} {{answer.user.lastName}} </h6>
-        <p>{{answer.date}}</p>
+        <p>{{answer.date | date: 'MM/dd/yyyy hh:mm a'}}</p>
         <div>{{answer.answer}}</div>
       </div>
     </div>

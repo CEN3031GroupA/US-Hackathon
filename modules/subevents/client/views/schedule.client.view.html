@@ -7,7 +7,7 @@
   <div class="schedule-subevent clearfix" ng-repeat="subevent in subevents | orderBy: 'start'" ui-sref="schedule.view({subeventId: subevent._id})">
     <div class="datetime">
       {{subevent.datetime | date: 'MM/dd/yyyy'}} <br />
-      {{subevent.datetime | date: 'hh:mm'}}
+      {{subevent.datetime | date: 'hh:mm a'}}
     </div>
     <div class="info">
       <h5>{{subevent.title}}</h5>
