@@ -18,7 +18,9 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  SubEvent.find().sort('datetime').exec({}, function(err, data) {
+  SubEvent.find({
+    event: req.event._id
+  }).sort('datetime').exec({}, function(err, data) {
     if (err) {
       res.status(400).send(err);
     }

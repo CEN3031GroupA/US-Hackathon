@@ -2,8 +2,8 @@
 
 // Projects controller
 angular.module('subevents').controller('SubEventsController',
-  ['$scope', '$state', '$stateParams', '$location', 'SubEvent', 'HackathonEvent', 'ActiveEvent',
-  function ($scope, $state, $stateParams, $location, SubEvent, HackathonEvent, ActiveEvent) {
+  ['$scope', '$state', '$stateParams', '$location', 'SubEvent', 'HackathonEvent', 'ActiveEvent', '$interval',
+  function ($scope, $state, $stateParams, $location, SubEvent, HackathonEvent, ActiveEvent, $interval) {
     $scope.loadEvent = function(cb) {
       if ($stateParams.eventId) {
         HackathonEvent.get({ eventId: $stateParams.eventId }, function(event) {
@@ -23,9 +23,6 @@ angular.module('subevents').controller('SubEventsController',
         });
       }
     };
-
-    $scope.loadEvent();
-
 
     $scope.create = function() {
       var subevent = new SubEvent({
@@ -52,6 +49,10 @@ angular.module('subevents').controller('SubEventsController',
     $scope.find = function () {
       var querySubevents = function (event) {
         $scope.subevents = SubEvent.query({ eventId: event._id });
+        $scope.activeEvent = event;
+
+        $scope.calcEventTime();
+        $interval($scope.calcEventTime, 1000);
       };
 
       $scope.loadEvent(querySubevents);
@@ -85,6 +86,30 @@ angular.module('subevents').controller('SubEventsController',
         $scope.subevent.$remove(function () {
           $location.path('admin/events/' + $scope.event._id + '/subevents');
         });
+      }
+    };
+
+    $scope.calcEventTime = function() {
+      var now = new Date();
+      var timeLeft, timeTill;
+      var days, hours, minutes, seconds;
+      var startDate = new Date($scope.activeEvent.start);
+      var endDate = new Date($scope.activeEvent.end);
+
+      if (startDate < now) {
+        $scope.activeEvent.inProgress = true;
+        timeLeft = parseInt((endDate - now) / 1000); // Time left in seconds
+        hours = parseInt(timeLeft / (60*60));
+        minutes = parseInt((timeLeft - hours * 60 * 60) / 60);
+        seconds = timeLeft - hours * 60 * 60 - minutes * 60;
+        $scope.activeEvent.timer = hours + ':' + minutes + ':' + seconds;
+      } else {
+        $scope.activeEvent.inProgress = false;
+        timeTill = parseInt((startDate - now) / 1000); // Time till in seconds
+        days = parseInt(timeTill / (24 * 60 * 60));
+        hours = parseInt((timeTill - days * 24 * 60 * 60) / 60 / 60);
+        minutes = parseInt((timeTill - days * 24 * 60 * 60 - hours * 60 * 60) / 60);
+        $scope.activeEvent.timer = days + ' days, ' + hours + ' hours, ' + minutes + ' minutes';
       }
     };
 

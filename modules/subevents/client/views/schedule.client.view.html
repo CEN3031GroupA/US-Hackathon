@@ -1,8 +1,22 @@
 <section ng-controller="SubEventsController" ng-init="find()">
-  <div class="subevent" ng-repeat="subevent in subevents | orderBy: 'start'" ui-sref="schedule.view({subeventId: subevent._id})">
-    <h5>{{subevent.title}}</h5>
-    <div>{{subevent.description}}</div>
-    <div>Location: {{subevent.location}}</div>
-    <div>Date/time: {{subevent.datetime | date: 'MM/dd/yyyy @ h:mm a Z'}}</div>
+  <h3><span ng-bind="event.title"></span> Schedule</h3>
+  <div class="schedule-secondary-menu">
+    <h5 ng-if="activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> hrs remaining</h5>
+    <h5 ng-if="!activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> till event</h5>
+  </div>
+  <div class="schedule-subevent clearfix" ng-repeat="subevent in subevents | orderBy: 'start'" ui-sref="schedule.view({subeventId: subevent._id})">
+    <div class="datetime">
+      {{subevent.datetime | date: 'MM/dd/yyyy'}} <br />
+      {{subevent.datetime | date: 'hh:mm'}}
+    </div>
+    <div class="info">
+      <h5>{{subevent.title}}</h5>
+      {{subevent.location}}
+    </div>
+    <div class="pin">
+      <div class="pin-outer active">
+        <i class="glyphicon glyphicon-pushpin"></i>
+      </div>
+    </div>
   </div>
 </section>

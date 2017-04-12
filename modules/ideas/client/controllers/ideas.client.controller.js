@@ -2,8 +2,8 @@
 
 // Ideas controller
 angular.module('ideas')
-  .controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http',
-  function ($scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http) {
+  .controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http', 'ActiveEvent',
+  function ($scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http, ActiveEvent) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
 
@@ -14,6 +14,10 @@ angular.module('ideas')
         team: []
       };
     }
+
+    ActiveEvent.get().then(function(activeEvent) {
+      $scope.activeEvent = activeEvent;
+    });
 
     $scope.team = $rootScope.activeIdea.team;
 
