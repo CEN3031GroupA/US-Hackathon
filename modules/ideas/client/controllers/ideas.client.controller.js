@@ -2,8 +2,23 @@
 
 // Ideas controller
 angular.module('ideas')
-  .controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http',
-  function ($scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http) {
+  .service('sharedInputFields', [ '$rootScope', function($rootScope) {
+    return {
+      formData: [],
+      add: function(item) {
+        this.formData.push(item);
+      },
+      set: function() {
+        return this.formData;
+      },
+      clear: function() {
+        this.formData = [];
+      }
+    };
+
+  }])
+  .controller('IdeasController', ['sharedInputFields', '$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http',
+  function (sharedInputFields, $scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
 
@@ -23,10 +38,10 @@ angular.module('ideas')
       // Create new Idea object
       var idea = new Ideas($rootScope.activeIdea);
 
-      $rootScope.activeIdea.title = this.title;
-      $rootScope.activeIdea.youtube = this.youtube;
-      $rootScope.activeIdea.description.short = this.short;
-      $rootScope.activeIdea.description.long = this.long;
+      $rootScope.activeIdea.title = $scope.idea.title;
+      $rootScope.activeIdea.youtube = $scope.idea.youtube;
+      $rootScope.activeIdea.description.short = $scope.idea.short;
+      $rootScope.activeIdea.description.long = $scope.idea.long;
 
       // Redirect after save
       idea.$save(function () {
@@ -37,6 +52,16 @@ angular.module('ideas')
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
+    };
+
+    $scope.ideaToProject = function() {
+      sharedInputFields.add($scope.idea.title);
+      sharedInputFields.add($scope.idea.short);
+      sharedInputFields.add($scope.idea.long);
+      $scope.remove($scope.idea);
+
+
+      $location.path('projects/category');
     };
 
     $scope.remove = function (idea) {
