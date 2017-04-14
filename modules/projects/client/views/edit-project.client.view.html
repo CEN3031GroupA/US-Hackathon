@@ -1,25 +1,29 @@
 <section ng-controller="ProjectsController" ng-init="findOne()">
   <div class="col-xs-12">
-    <h2>Edit project</small></h2>
+    <h2>Edit Project</small></h2>
     <form name="projectForm" class="form-vertical" ng-submit="update(projectForm.$valid)">
       <fieldset>
         <div class="form-group" show-errors>
-          <input type="text" ng-model="project.title" name="title" class="form-control" placeholder="Title" required>
+          Title
+          <input type="text" ng-model="project.title" name="title" class="form-control" required>
           <div ng-messages="projectForm.title.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Project title is required</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <input type="url" ng-model="project.youtube" class="form-control" placeholder="Embedded YouTube URL">
+          Embedded YouTube URL
+          <input type="url" ng-model="project.youtube" class="form-control">
         </div>
         <div class="form-group" show-errors>
-          <input type="text" ng-model="project.description.short" class="form-control" placeholder="Short Description" required>
+          Short Project Description
+          <input type="text" ng-model="project.description.short" class="form-control" required>
           <div ng-messages="projectForm.title.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Project short description is required</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <textarea name="details" rows="5" ng-model="project.description.long" class="form-control" placeholder="Decribe your project, make it simple and cool..." required></textarea>
+          Detailed Project Description
+          <textarea name="details" rows="5" ng-model="project.description.long" class="form-control" required></textarea>
           <div ng-messages="projectForm.details.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Project detailed description is required</p>
           </div>

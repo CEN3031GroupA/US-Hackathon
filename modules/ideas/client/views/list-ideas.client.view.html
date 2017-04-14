@@ -6,6 +6,7 @@
 </head>
 <body>
 <section class="ideaspage" ng-controller="IdeasController" ng-init="find()">
+  <h3><span ng-bind="activeEvent.title"></span> Ideas</h3>
   <div class = "idea-list" ng-repeat="idea in ideas">
     <div class="row item">
 

@@ -16,9 +16,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(function ($ro
 
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    console.log(toState);
     if (!(toState.data && toState.data.allowAnon)) {
-      console.log('t');
       if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
         event.preventDefault();
         $state.go('forbidden');

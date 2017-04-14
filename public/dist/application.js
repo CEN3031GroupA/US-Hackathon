@@ -40,9 +40,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).run(["$rootScope"
 
   // Check authentication before changing state
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    console.log(toState);
     if (!(toState.data && toState.data.allowAnon)) {
-      console.log('t');
       if (toState.data && toState.data.adminOnly && !Authentication.user.isAdmin) {
         event.preventDefault();
         $state.go('forbidden');
@@ -145,6 +143,11 @@ ApplicationConfiguration.registerModule('projects', ['ja.qr']);
 
   app.registerModule('questions');
 }(ApplicationConfiguration));
+
+'use strict';
+
+// Use Applicaion configuration module to register a new module
+ApplicationConfiguration.registerModule('subevents', ['ui.bootstrap.datetimepicker']);
 
 'use strict';
 
@@ -497,6 +500,10 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
           'ui-sref': 'home()'
         },
         {
+          title: 'Schedule',
+          'ui-sref': 'schedule.index()'
+        },
+        {
           title: 'Projects',
           'ui-sref': 'projects.list()'
         },
@@ -534,6 +541,7 @@ angular.module('core').controller('HomeController', ['$scope', '$interval', 'Aut
     $scope.init = function() {
       ActiveEvent.get().then(function(activeEvent) {
         $scope.activeEvent = activeEvent;
+        $scope.calcEventTime();
         $interval($scope.calcEventTime, 1000);
       });
     };
@@ -1264,7 +1272,7 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     $scope.find = function(){
       $scope.faqs = FAQs.query();
     };
-                  
+
     $scope.findOne = function () {
       $scope.faq = FAQs.get({
         faqId: $stateParams.faqId
@@ -1426,6 +1434,10 @@ angular.module('ideas').config(['$stateProvider',
         url:'/success',
         templateUrl: 'modules/ideas/client/views/success.client.view.html',
       })
+      .state('ideas.edit', {
+        url:'/:ideaId/edit',
+        templateUrl: 'modules/ideas/client/views/edit-idea.client.view.html',
+      })
       .state('ideas.view', {
         url:'/:ideaId',
         templateUrl: 'modules/ideas/client/views/view-idea.client.view.html',
@@ -1435,34 +1447,39 @@ angular.module('ideas').config(['$stateProvider',
 
 'use strict';
 
+// Ideas controller
+angular.module('ideas')
+  .controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http',
+  function ($scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http) {
+    $scope.authentication = Authentication;
+    $scope.user = $scope.owner = $scope.authentication.user;
 
-angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', '$rootScope',
-  function ($scope, $state, $stateParams, $location, Ideas, $rootScope) {
     if (!$rootScope.activeIdea) {
       $rootScope.activeIdea = {
-        description: {}
+        description: {},
+        owner: $scope.user,
+        team: []
       };
     }
 
-    $scope.saveIdeaInfo = function () {
-      $rootScope.activeIdea.title = this.title;
-      $rootScope.activeIdea.description.long = this.details;
-
-      $location.path('ideas/success');
-    };
+    $scope.team = $rootScope.activeIdea.team;
 
     $scope.create = function (isValid) {
       $scope.error = null;
-      $rootScope.activeIdea.title = this.title;
-      $rootScope.activeIdea.description.long = this.details;
 
+      // Create new Idea object
       var idea = new Ideas($rootScope.activeIdea);
 
+      $rootScope.activeIdea.title = this.title;
+      $rootScope.activeIdea.youtube = this.youtube;
+      $rootScope.activeIdea.description.short = this.short;
+      $rootScope.activeIdea.description.long = this.long;
 
-      idea.$save(function (response) {
-
+      // Redirect after save
+      idea.$save(function () {
         $location.path('ideas/success');
 
+        // Clear form fields
         $rootScope.activeIdea = null;
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
@@ -1485,8 +1502,31 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       }
     };
 
+    // Update existing Idea
+
+    $scope.update = function (isValid) {
+      $scope.error = null;
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'ideaForm');
+
+        return false;
+      }
+
+      $scope.idea.$update(function () {
+        $location.path('ideas/' + $scope.idea._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+
+    // Find a list of Ideas
+
     $scope.find = function () {
-      $scope.ideas = Ideas.query(function(ideas) {
+      $scope.ideas = Ideas.query(function (ideas) {
+        $scope.ideas = ideas;
+
         shuffle(ideas);
 
         $scope.ideas = ideas;
@@ -1499,6 +1539,58 @@ angular.module('ideas').controller('IdeasController', ['$scope', '$state', '$sta
       });
     };
 
+    $scope.loadUsers = function() {
+      $scope.users = Users.query(function (users) {
+        $scope.users = users;
+
+        // Remove owner from being able to be added
+        for (var i = 0; i < $scope.users.length; i++) {
+          if ($scope.owner._id === $scope.users[i]._id) {
+            $scope.users.splice(i, 1);
+          }
+        }
+      });
+    };
+
+    $scope.addMember = function(user) {
+      $rootScope.activeIdea.team.push(user);
+
+      for (var i = 0; i < $scope.users.length; i++) {
+        if (user._id === $scope.users[i]._id) {
+          $scope.users.splice(i, 1);
+        }
+      }
+    };
+
+    $scope.removeMember = function(user) {
+      $scope.users.push(user);
+
+      for (var i = 0; i < $rootScope.activeIdea.team.length; i++) {
+        if (user._id === $rootScope.activeIdea.team[i]._id) {
+          $rootScope.activeIdea.team.splice(i, 1);
+        }
+      }
+    };
+
+    $scope.addComment = function() {
+      var comment = this.comment;
+
+      var req = {
+        method: 'POST',
+        url: '/api/ideas/' + $scope.idea._id + '/addComment',
+        data: {
+          content: comment
+        }
+      };
+
+      this.comment = '';
+
+      $http(req).then(function (response) {
+        $scope.idea = response.data;
+      }, function (err) {
+        console.error(err);
+      });
+    };
 
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;
@@ -1697,9 +1789,11 @@ angular.module('projects')
     };
 
     // Find existing Project
+    $scope.qrProjectId = null;
     $scope.findOne = function () {
       $scope.project = Projects.get({ projectId: $stateParams.projectId },function(project) {
         $scope.hasVoted = $scope.user.votedProjects.indexOf(project._id) !== -1;
+        $scope.qrProjectId = $scope.project._id;
       });
     };
 
@@ -1774,7 +1868,6 @@ angular.module('projects')
 
       $http(req).then(function(response){
         $scope.project = response.data;
-        console.log($scope.project);
       }, function(err){
         console.error(err);
       });
@@ -2023,6 +2116,166 @@ angular.module('projects').factory('Projects', ['$resource',
     });
   }
 }());
+
+'use strict';
+
+// Setting up route
+angular.module('subevents').config(['$stateProvider',
+  function ($stateProvider) {
+    // SubEvents state routing
+    $stateProvider
+      .state('subevents', {
+        abstract: true,
+        url: '/admin/events/:eventId/subevents',
+        template: '<ui-view/>',
+        data: {
+          adminOnly: true
+        }
+      })
+      .state('subevents.index', {
+        url: '',
+        templateUrl: 'modules/subevents/client/views/list.client.view.html'
+      })
+      .state('subevents.create', {
+        url: '/create',
+        templateUrl: 'modules/subevents/client/views/create.client.view.html'
+      })
+      .state('subevents.edit', {
+        url: '/:subeventId/edit',
+        templateUrl: 'modules/subevents/client/views/edit.client.view.html'
+      });
+  }
+]).config(['$stateProvider',
+  function ($stateProvider) {
+    // SubEvents state routing
+    $stateProvider
+      .state('schedule', {
+        abstract: true,
+        url: '/schedule',
+        template: '<ui-view/>',
+      })
+      .state('schedule.index', {
+        url: '',
+        templateUrl: 'modules/subevents/client/views/schedule.client.view.html'
+      })
+      .state('schedule.view', {
+        url: '/:subeventId/view',
+        templateUrl: 'modules/subevents/client/views/view.client.view.html'
+      });
+  }
+]);
+
+'use strict';
+
+// Projects controller
+angular.module('subevents').controller('SubEventsController',
+  ['$scope', '$state', '$stateParams', '$location', 'SubEvent', 'HackathonEvent', 'ActiveEvent',
+  function ($scope, $state, $stateParams, $location, SubEvent, HackathonEvent, ActiveEvent) {
+    $scope.loadEvent = function(cb) {
+      if ($stateParams.eventId) {
+        HackathonEvent.get({ eventId: $stateParams.eventId }, function(event) {
+          $scope.event = event;
+
+          if (cb) {
+            cb(event);
+          }
+        });
+      } else {
+        $scope.event = ActiveEvent.get().then(function(event) {
+          $scope.event = event;
+
+          if (cb) {
+            cb(event);
+          }
+        });
+      }
+    };
+
+    $scope.loadEvent();
+
+
+    $scope.create = function() {
+      var subevent = new SubEvent({
+        title: this.title,
+        description: this.description,
+        location: this.location,
+        datetime: this.datetime,
+        event: $scope.event
+      });
+
+      // Redirect after save
+      subevent.$save({ eventId: $scope.event._id }, function (response) {
+        $location.path('admin/events');
+
+        // Clear form fields
+        $scope.title = '';
+        $scope.description = '';
+        $scope.location = '';
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.find = function () {
+      var querySubevents = function (event) {
+        $scope.subevents = SubEvent.query({ eventId: event._id });
+      };
+
+      $scope.loadEvent(querySubevents);
+    };
+
+    $scope.findOne = function () {
+      var querySubevent = function (event) {
+        $scope.subevent = SubEvent.get({
+          eventId: event._id,
+          subeventId: $stateParams.subeventId
+        });
+      };
+
+      $scope.loadEvent(querySubevent);
+    };
+
+    $scope.update = function () {
+      $scope.subevent.$update(function () {
+        $location.path('admin/events/' + $scope.event._id + '/subevents');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
+
+    $scope.remove = function (subevent) {
+      if (subevent) {
+        subevent.$remove();
+
+        $location.path('admin/events/' + $scope.event._id + '/subevents');
+      } else {
+        $scope.subevent.$remove(function () {
+          $location.path('admin/events/' + $scope.event._id + '/subevents');
+        });
+      }
+    };
+
+  }]);
+
+'use strict';
+
+angular.module('events')
+  .factory('SubEvent', ['$resource',
+    function ($resource) {
+      return $resource('api/admin/events/:eventId/subevents/:subeventId', {
+        eventId: '@_id',
+        subeventId: '@_id'
+      }, {
+        update: {
+          method: 'PUT'
+        }
+      }, {
+        create: {
+          method: 'POST'
+        }
+      });
+    }
+  ]);
 
 'use strict';
 

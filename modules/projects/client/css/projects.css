@@ -1,14 +1,16 @@
-/*here
+/*
  * projects-list
  */
 .list-group {
   margin: auto;
-  padding: 10px;
+  padding-bottom: 10px;
 }
 
 .list-group-item {
   font-family: "Times New Roman", Times, serif;
-  padding: 20px;
+  padding: 15px;
+  border-radius: 0px !important;
+  cursor: pointer;
 }
 
 /*
@@ -73,6 +75,11 @@ ul.team-list li i {
 
 .progress-bar {
   background-color: #115e67;
+}
+
+hr {
+  margin: 10px 0;
+  border: 1px solid black;
 }
 
 .project-content {

@@ -8,6 +8,7 @@
 
 <section ng-controller="ProjectsController" ng-init="find()">
   <div class="col-xs-12">
+    <h3><span ng-bind="activeEvent.title"></span> Projects</h3>
     <div class="list-group" id="projects-list" ui-sref="projects.view({projectId: project._id})" ng-repeat="project in projects">
       <a  class="list-group-item">
         <h4 class="list-group-item-heading">{{project.title}}</h4>

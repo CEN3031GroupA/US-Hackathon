@@ -43,6 +43,10 @@ angular.module('core').controller('HeaderController', ['$scope', '$state', 'Auth
           'ui-sref': 'home()'
         },
         {
+          title: 'Schedule',
+          'ui-sref': 'schedule.index()'
+        },
+        {
           title: 'Projects',
           'ui-sref': 'projects.list()'
         },
