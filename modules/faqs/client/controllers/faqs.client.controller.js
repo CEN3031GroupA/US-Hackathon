@@ -70,16 +70,10 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
       }
     };
 
-    $scope.update = function (isValid) {
-      $scope.error = null;
+    $scope.markBestSolution = function (faq, answer) {
+      faq.solution = this.answer;
 
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'faqForm');
-
-        return false;
-      }
-
-      $scope.faq.$update(function () {
+      $scope.faq.$markBestSolution(function () {
         $location.path('faqs/');
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;

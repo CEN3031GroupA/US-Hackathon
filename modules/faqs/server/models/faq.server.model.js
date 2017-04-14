@@ -36,6 +36,24 @@ var FAQSchema = new Schema({
       default: false
     }
   }],
+  solution: {
+    user: {
+      type: Schema.ObjectId,
+      ref: 'User'
+    },
+    date: {
+      type: Date,
+      default: Date.now
+    },
+    answer: {
+      type: String,
+      default: ''
+    },
+    isSolution: {
+      type: Boolean,
+      default: false
+    }
+  },
   user: {
     type: Schema.ObjectId,
     ref: 'User'
