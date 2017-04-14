@@ -50,8 +50,6 @@ exports.addAnswer = function(req,res,next){
       res.json(faq);
     }
   });
-
-
 };
 
 exports.deleteFaq = function(req, res, next) {
@@ -100,3 +98,19 @@ exports.update = function (req, res) {
     }
   });
 };
+
+exports.markBestSolution = function (req, res) {
+  var faq = req.faq;
+
+  faq.solution = req.body.solution;
+
+  faq.save(function (err) {
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      res.json(faq);
+    }
+  });
+}
