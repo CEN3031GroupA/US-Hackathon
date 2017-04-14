@@ -69,6 +69,16 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
         });
       }
     };
+
+    $scope.markBestSolution = function (faq, answer) {
+      faq.solution = this.answer;
+
+      $scope.faq.$markBestSolution(function () {
+        $location.path('faqs/');
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
   }
 ]);
 

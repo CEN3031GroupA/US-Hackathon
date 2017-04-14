@@ -30,18 +30,19 @@
         </div>
       </div>
       <h2 class="col-lg-8" ng-bind="faq.question"></h2>
+      <h3 class="col-lg-8" ng-bind="faq.solution"></h3>
     </div>
     <div class="answers">
       <div class="answer" ng-repeat="answer in faq.answers">
         <h6>Posted by {{answer.user.firstName}} {{answer.user.lastName}} </h6>
         <p>{{answer.date | date: 'MM/dd/yyyy hh:mm a'}}</p>
-        <div>{{answer.answer}}</div>
-        <a class="btn btn-primary" ng-click="bestSolution()">
+        <div>{{answer.answer}}<a class="btn btn-primary-1 pull-right" ng-click="bestSolution({faqId: faq._id})">
           <i class="glyphicon glyphicon-check"></i>
         </a>
+        </div>
       </div>
       <textarea name="answer" rows="5" ng-model="answer" class="form-control" placeholder="Add your answer here!" required></textarea>
-    <button class="btn" ng-click="addAnswer()">Post Answer</button>
+    <button class="btn btn-primary-1 col-xs-12 pull-left" ng-click="addAnswer()">Post Answer <span class="glyphicon glyphicon-floppy-save pull-right"></span></button>
     </div>
 </section>
 
