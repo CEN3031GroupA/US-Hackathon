@@ -1,14 +1,16 @@
 <section ng-controller="FAQsController" ng-init="findOne()">
   <div class="col-xs-12">
     <h2 ng-bind="faq.question"></h2>
-
-
+    <a class="btn btn-primary" ng-click="remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
     <div class="answers">
       <div class="answer" ng-repeat="answer in faq.answers">
         <h6>Posted by {{answer.user.firstName}} {{answer.user.lastName}} </h6>
         <p>{{answer.date}}</p>
         <div>{{answer.answer}}</div>
       </div>
+
     </div>
 
     <textarea name="answer" rows="5" ng-model="answer" class="form-control" placeholder="Add your answer here!" required></textarea>

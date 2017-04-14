@@ -38,7 +38,8 @@ exports.addAnswer = function(req,res,next){
   faq.answers.push({
     date: new Date(),
     user: req.session.user,
-    answer: req.body.answer
+    answer: req.body.answer,
+    isSolution: false
   });
 
   faq.save(function (err) {
@@ -53,7 +54,7 @@ exports.addAnswer = function(req,res,next){
 
 };
 
-exports.delete = function(req, res, next) {
+exports.deleteFaq = function(req, res, next) {
   req.faq.remove(function(err) {
     if (err) {
       return next(err);
@@ -70,7 +71,6 @@ exports.read = function(req, res) {
 
 exports.faqById = function(req, res, next, id) {
   FAQ.findOne({
-
     _id: id
   }).populate(['answers.user','user']).exec(
   function(err, faq) {
