@@ -113,4 +113,4 @@ exports.markBestSolution = function (req, res) {
       res.json(faq);
     }
   });
-}
+};
