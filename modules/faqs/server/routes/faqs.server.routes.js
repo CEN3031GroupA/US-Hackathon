@@ -16,7 +16,7 @@ module.exports = function(app) {
   app.route('/api/faqs/:faqId')
     .get(faqs.read)
     .put(faqs.update)
-    .delete(faqs.delete);
+    .delete(faqs.deleteFaq);
 
   app.route('/api/faqs/:faqId/addAnswer')
     .post(faqs.addAnswer);
