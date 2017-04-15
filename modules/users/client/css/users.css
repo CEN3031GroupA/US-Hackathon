@@ -1,6 +1,17 @@
+/*
+ *  Site Main
+ */
+@font-face { font-family: 'Louisiana'; src: url('../../../core/client/fonts/Louisiana.ttf'); }
+@font-face { font-family: 'DIN'; src: url('../../../core/client/fonts/DINRegular.ttf'); }
+@font-face { font-family: 'DINBold'; src: url('../../../core/client/fonts/DINBold.ttf'); }
+
 .authpage {
-  font-family: 'Palatino Linotype';
+  font-family: DIN, Arial;
 }
+
+/*
+ *  Form Styles
+ */
 .userinputfield {
   color: #63666a;
   font-weight: 500;
@@ -12,15 +23,17 @@
   font-size: small;
   margin-top: 10px;
 }
-
 .authpage .container1 {
   text-align: center;
-
   left:0;
   right:0;
   margin-top:100vh;
   padding-bottom:10vh;
   background-color:#ddd;
+}
+.authpage .container2 {
+  text-align: center;
+  margin-bottom:50px;
 }
 .authpage .container3 {
   text-align:center;
@@ -37,63 +50,78 @@
   right:0;
   margin-top: 15vh;
 }
-
-.authpage .container2 {
-  text-align: center;
-  margin-bottom:50px;
-}
-
 .authpage .btn {
-    padding: 14px 24px;
-    border: 0 none;
-    font-weight: 400;
-    letter-spacing: 1px;
-    width:50%;
+  padding: 14px 24px;
+  border: 0 none;
+  font-weight: 400;
+  letter-spacing: 1px;
+  width:50%;
 }
-
 .authpage .btn:focus, .btn:active:focus, .btn.active:focus {
-    outline: 0 none;
+  outline: 0 none;
 }
-
 .authpage .btn-primary {
-    background: #509e2f;
-    color: #ffffff;
-    display:inline;
+  background: #509e2f;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 15px;
+  width: 100%;
+  display:inline;
 }
 .authpage .round {
   border-radius: 8px;
 }
 .authpage .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-    background: #509000;
+  background: #72b158;
 }
-
 .authpage .btn-primary:active, .btn-primary.active {
-    background: #007299;
-    box-shadow: none;
+  background: #63666a;
+  box-shadow: none;
 }
 .authpage .btn.outline {
-    background: none;
-    padding: 12px 22px;
+  background: none;
+  padding: 12px 22px;
 }
 .authpage .btn-primary.outline {
-    margin-top:15px;
-    border: 2px solid #509e2f;
-    color: #509e2f
+  margin-top:15px;
+  border: 2px solid #509e2f;
+  color: #509e2f
 }
-
 .authpage a{
   color: #63666a;
   font-weight: 500;
-  font-family: 'Palatino Linotype';
+  font-family: DIN, Arial;;
 }
 .authpage h3 {
 
-  font-family: 'Palatino Linotype';
+  font-family: DIN, Arial;;
   font-size: 32px;
   font-weight: 600;
 }
 .authpage p {
-  font-family: 'Palatino Linotype';
+  font-family: DIN, Arial;;
   font-size: 16px;
   font-weight: 400;
+}
+.authpage .option {
+  margin-top: 10px;
+}
+.authpage .option-title {
+  color: #509e2f;
+  text-decoration: none;
+}
+.authpage .welcome-screen {
+  margin-top: 30px;
+  text-align: center;
+}
+.authpage .welcome-screen a {
+  font-family: Louisiana, Arial;
+  font-size: 24px;
+  font-weight: 500;
+  color: #007299;
+}
+.authpage .form-group label {
+  font-weight: 600;
+  color: #63666a;
 }
