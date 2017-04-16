@@ -55,7 +55,7 @@
   border: 0 none;
   font-weight: 400;
   letter-spacing: 1px;
-  width:50%;
+
 }
 .authpage .btn:focus, .btn:active:focus, .btn.active:focus {
   outline: 0 none;
@@ -120,6 +120,18 @@
   font-size: 24px;
   font-weight: 500;
   color: #007299;
+}
+.authpage .welcome-screen h3 {
+  font-family: DIN, Arial;
+  text-align: left;
+  font-size: 32px;
+  font-weight: 600;
+  color: #63666a;
+}
+.authpage .welcome-screen p {
+  font-family: DIN, Arial;
+  font-weight: 400;
+  color: #63666a;
 }
 .authpage .form-group label {
   font-weight: 600;

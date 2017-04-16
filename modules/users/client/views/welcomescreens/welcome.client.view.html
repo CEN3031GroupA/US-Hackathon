@@ -6,20 +6,20 @@
     <link rel="stylesheet" href="modules/users/client/css/users.css">
     <script src="transitionController.js"></script>
   </head>
-<section class="authpage" ng-controller="AuthenticationController">
+<div class="authpage" ng-controller="AuthenticationController">
 
-  <div ui-view>
+  <div class="col-md-offset-2 col-md-8">
+
     <form>
-
-      <div style="margin-bottom:10vh">
+      <div class="welcome-screen">
         <h3>Welcome to the Hackathon</h3>
         <p class="text-left">
           Submit an idea, vote on projects, view your event schedule and more in this all-inclusive app.  Brought to you by the UF Student Web Development Team.
         </p>
       </div>
-      <div style="margin-bottom:10vh">
+      <div class="welcome-screen" style="margin-bottom:10vh">
         <h3>Submitting Projects and Ideas</h3>
-        <p>
+        <p class="text-left">
           On the home screen you'll find various buttons used to interface with the app.  The topmost solid green button allows you to submit a project and the one below
           it lets you submit an idea for a potential project.  Clicking on the Project submission button will take you to a three-part project
           creation screen.  The first section will allow you to add a title and description for your project.  The second section will allow you
@@ -29,16 +29,13 @@
           you will be able to specify a title and long description for your potential idea
         </p>
       </div>
-      <div class="container2">
-        <div style="margin-top:50px">
-          &nbsp
-          <a ui-sref="user.welcome1()" class="btn btn-primary outline"> Next </a>
-
-        </div>
-      </div>
     </form>
 
+    <div class="form-group">
+      <a ui-sref="user.welcome1()" class="btn btn-primary">Next</a>
     </div>
 
-</section>﻿
+  </div>
+
+</div>﻿
 </html>
