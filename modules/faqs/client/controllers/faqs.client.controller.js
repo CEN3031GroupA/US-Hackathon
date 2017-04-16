@@ -25,7 +25,8 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
         method: 'POST',
         url: '/api/faqs/' + $scope.faq._id + '/addAnswer',
         data: {
-          answer: answer
+          answer: answer,
+          solution: false
         }
       };
       this.answer = '';
@@ -70,70 +71,29 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
       }
     };
 
-    $scope.markBestSolution = function (faq, answer) {
-      faq.solution = this.answer;
+    $scope.markBestSolution = function (faq, $index) {
+      faq.answers[$index].isSolution = true;
 
-      $scope.faq.$markBestSolution(function () {
-        $location.path('faqs/');
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
+      var req = {
+        method: 'PUT',
+        url: '/api/faqs/' + $scope.faq._id + '/isSolution',
+        data: {
+          answer: answer,
+          solution: true
+        }
+      };
+      this.answer = '';
+      $http(req).then(function(response){
+        $scope.faq = response.data;
+      }, function(err){
+        console.error(err);
       });
     };
+
+    $scope.solutionFound = function(answer, found){
+      return function(answers){
+        return answers[answer] === found;
+      }
+    }
   }
 ]);
-
-// if (!$rootScope.activeFAQ) {
-//   $rootScope.activeFAQ = {
-//     solution: {}
-//   };
-// }
-//
-//
-// $scope.saveQuestion = function (response) {
-//   $rootScope.activeFAQ.question = this.question;
-//
-//   $location.path('faqs');
-// };
-//
-// $scope.post = function (isValid) {
-//   $scope.error = null;
-//
-//   // Create new FAQ object
-//   var faq = new FAQs($rootScope.activeFAQ);
-//   // Redirect
-//   faq.$save(function (response) {
-//     $scope.faqs.push(response);
-//     $scope.askme=false;
-//     // clear active
-//     $rootScope.activeFAQ = null;
-//   }, function (errorResponse){
-//     $scope.error = errorResponse.data.message;
-//   });
-// };
-// // Find a list of faqs
-
-// // Find a faq
-// $scope.findOne = function () {
-//   $scope.faq = FAQs.get({
-//     faqId: $stateParams.faqId
-//   });
-// };
-// Remove existing FAQ
-
-//
-// // Update existing faq
-// $scope.update = function (isValid) {
-//   $scope.error = null;
-//
-//   if (!isValid) {
-//     $scope.$broadcast('show-errors-check-validity', 'faqForm');
-//
-//     return false;
-//   }
-//
-//   $scope.faq.$update(function () {
-//     $location.path('faqs/');
-//   }, function (errorResponse) {
-//     $scope.error = errorResponse.data.message;
-//   });
-// };
