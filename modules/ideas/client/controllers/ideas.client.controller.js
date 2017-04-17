@@ -33,6 +33,7 @@ angular.module('ideas')
     ActiveEvent.get().then(function(activeEvent) {
       $scope.activeEvent = activeEvent;
       $scope.activeCategory = $scope.activeEvent.categories[0];
+
     });
 
     $scope.team = $rootScope.activeIdea.team;
@@ -160,6 +161,10 @@ angular.module('ideas')
 
     $scope.addComment = function() {
       var comment = this.comment;
+
+      if (comment.trim() === ''){
+        return;
+      }
 
       var req = {
         method: 'POST',

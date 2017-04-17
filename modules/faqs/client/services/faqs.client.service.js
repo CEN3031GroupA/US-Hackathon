@@ -7,7 +7,7 @@
 angular.module('faqs').factory('FAQs', ['$resource',
   function ($resource) {
     return $resource('api/faqs/:faqId', {
-      projectId: '@_id'
+      faqId: '@_id'
     }, {
       update: {
         method: 'PUT'

@@ -19,8 +19,11 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     };
 
     $scope.addAnswer = function(){
-      console.log($scope.faq);
       var answer = this.answer;
+
+      if (answer.trim() === ''){
+        return;
+      }
 
       var req = {
         method: 'POST',
@@ -53,6 +56,22 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
       }, function (errorResponse){
         $scope.error = errorResponse.data.message;
       });
+    };
+
+    $scope.remove = function (faq) {
+      if (faq) {
+        faq.$remove();
+
+        for (var i in $scope.faqs) {
+          if ($scope.faqs[i] === faq) {
+            $scope.faqs.splice(i, 1);
+          }
+        }
+      } else {
+        $scope.faq.$remove(function () {
+          $location.path('faqs');
+        });
+      }
     };
   }
 ]);
@@ -93,22 +112,8 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
 //     faqId: $stateParams.faqId
 //   });
 // };
-// // Remove existing Project
-// $scope.remove = function (faq) {
-//   if (faq) {
-//     faq.$remove();
-//
-//     for (var i in $scope.faqs) {
-//       if ($scope.faqs[i] === faq) {
-//         $scope.faqs.splice(i, 1);
-//       }
-//     }
-//   } else {
-//     $scope.faq.$remove(function () {
-//       $location.path('faqs');
-//     });
-//   }
-// };
+// Remove existing FAQ
+
 //
 // // Update existing faq
 // $scope.update = function (isValid) {

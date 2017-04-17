@@ -1,0 +1,21 @@
+.list-group {
+    margin: auto;
+    padding: 10px;
+}
+
+.list-group-item {
+    font-family: "Times New Roman", Times, serif;
+    padding: 20px;
+}
+
+.view-question {
+    margin: auto;
+    width: 500px;
+    padding: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+

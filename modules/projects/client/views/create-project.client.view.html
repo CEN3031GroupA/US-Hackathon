@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <textarea name="long" rows="5" class="form-control" ng-model="long" placeholder="Detailed description of your project" required></textarea>
+          <text-angular ng-model="long"></text-angular>
           <div ng-messages="projectForm.details.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Project details are required</p>
           </div>
