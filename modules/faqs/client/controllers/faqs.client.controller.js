@@ -83,11 +83,5 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
 
       FAQs.update({ faqId: $scope.faq._id }, { answers: $scope.faq.answers });
     };
-
-    $scope.solutionFound = function(isSolution, found){
-      return function(item){
-        return item[isSolution] === found;
-      };
-    };
   }
 ]);

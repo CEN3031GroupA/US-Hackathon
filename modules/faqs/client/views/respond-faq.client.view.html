@@ -32,12 +32,12 @@
       <h2 class="col-lg-8" ng-bind="faq.question"></h2>
     </div>
     <div class="answers">
-      <tr ng-repeat-start="answer in faq.answers | filter: solutionFound('isSolution', true)">
-        <h4>Solution Posted by {{answer.user.firstName}} {{answer.user.lastName}} </h4>
-        <p>{{answer.date | date: 'MM/dd/yyyy hh:mm a'}}</p>
-        <div><h3>{{answer.answer}}</h3></div>
-      </tr>
-      <div class="answer" ng-repeat="answer in faq.answers">
+      <div class="answer list-group" ng-repeat="solution in faq.answers | filter: {isSolution:true}">
+        <h4>Solution Posted by {{solution.user.firstName}} {{solution.user.lastName}} </h4>
+        <p>{{solution.date | date: 'MM/dd/yyyy hh:mm a'}}</p>
+        <div><h3>{{solution.answer}}</h3></div>
+      </div>
+      <div class="answer list-group" ng-repeat="answer in faq.answers| filter: {isSolution:false}">
         <h6>Posted by {{answer.user.firstName}} {{answer.user.lastName}} </h6>
         <p>{{answer.date | date: 'MM/dd/yyyy hh:mm a'}}</p>
         <div>{{answer.answer}}<a ng-model="isSolution" ng-value="true" class="btn btn-primary-1 pull-right" name="isSolution" type="Boolean" ng-click="markBestSolution(answer)">
