@@ -21,6 +21,10 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     $scope.addAnswer = function(){
       var answer = this.answer;
 
+      if (answer.trim() === ''){
+        return;
+      }
+
       var req = {
         method: 'POST',
         url: '/api/faqs/' + $scope.faq._id + '/addAnswer',

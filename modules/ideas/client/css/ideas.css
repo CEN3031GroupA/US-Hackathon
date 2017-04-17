@@ -5,13 +5,11 @@
   padding: 10px;
   color: white;
   cursor: pointer;
-  font-family: "Times New Roman", Times, serif;
   letter-spacing:1px;
 }
 
 .welcome-screen {
   margin-top:6vh;
-  font-family: "Times New Roman", Times, serif;
   letter-spacing: 1px;
 }
 .ideaspage h2 {
@@ -70,19 +68,16 @@
 }
 
 .ideaspage .frontscreen {
-    font-family: "Times New Roman", Times, serif;
     margin-bottom: 5vh;
     font-weight: 500;
     letter-spacing: 1px;
 }
 .ideaspage .idea-content {
-    font-family: "Times New Roman", Times, serif;
     font-weight: 500;
     letter-spacing: 1px;
     margin-bottom: 5vh;
 }
 .ideaspage .backscreen {
-    font-family: "Times New Roman", Times, serif;
     margin-bottom: 10vh;
     font-weight: 500;
     letter-spacing: 1px;
@@ -98,7 +93,6 @@
 }
 
 .ideaspage .idea-list .item {
-  font-family: "Times New Roman", Times, serif;
   border-color: white;
   padding: 20px;
 }
@@ -119,7 +113,6 @@
     background-color: white;
     padding: none;
     border: 0 none;
-    font-family: "Times New Roman", Times, serif;
 }
 
 .ideaspage .btn1 {
