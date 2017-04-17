@@ -72,21 +72,16 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     };
 
     $scope.markBestSolution = function (answer) {
-      $scope.error = null;
-      if($scope.index){
-        $scope.faq.oldIndex = $scope.index;
-      }else{
-        $scope.faq.oldIndex = null;
+      for(var i in $scope.faq.answers) {
+        if($scope.faq.answers[i].isSolution === true) {
+          $scope.faq.answers[i].isSolution = false;
+        }
       }
-      $scope.index = $scope.faq.answers.indexOf(answer);
 
-      $scope.faq.$update(function () {
-        $location.path('faqs/' + $scope.faq._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
+      var index = $scope.faq.answers.indexOf(answer);
+      $scope.faq.answers[index].isSolution = true;
 
-      $scope.faq.oldIndex = $scope.index;
+      FAQs.update({ faqId: $scope.faq._id }, { answers: $scope.faq.answers });
     };
 
     $scope.solutionFound = function(isSolution, found){

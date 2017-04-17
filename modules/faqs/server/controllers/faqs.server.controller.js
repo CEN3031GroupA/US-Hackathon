@@ -8,6 +8,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   FAQ = require('mongoose').model('FAQ'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+
 exports.create = function(req, res, next) {
   var faq = new FAQ(req.body);
   faq.save(function (err) {
@@ -82,14 +83,10 @@ exports.faqById = function(req, res, next, id) {
   });
 };
 
-exports.markBestSolution = function (req, res) {
+exports.update = function (req, res) {
   var faq = req.faq;
-  var oldIndex = faq.oldIndex;
-  var index = faq.index;
-  console.log(req.session.user);
-  faq.answers[oldIndex].isSolution = false;
-  faq.answers[index].isSolution = true;
 
+  faq.answers = req.body.answers;
 
   faq.save(function (err) {
     if (err) {
