@@ -1,8 +1,78 @@
+@font-face { font-family: 'Louisiana'; src: url('../fonts/Louisiana.ttf'); }
+@font-face { font-family: 'DIN'; src: url('../fonts/DINRegular.ttf'); }
+@font-face { font-family: 'DINBold'; src: url('../fonts/DINBold.ttf'); }
+
+/*
+ *  Color Reference
+ *  Primary Colors
+ *  -- #509E2F = PMS 362C      - shade of green
+ *  -- #63666A = COOL GRAY 10C - shade of cyan-blue
+ *  Secondary Colors
+ *  -- #115E67 = PMS 547C      - dark shade of cyan
+ *  -- #003B5C = PMS 302C      - dark shade of cyan-blue
+ *  Accent Colors
+ *  -- #CED9E5 = PMS 650C      - light shade of cyan-blue
+ *  -- #ED8B00 = PMS 144C      - shade of brown
+ *  -- #CEDC00 = PMS 381C      - shade of yellow-green
+ *  -- #7A4183 = PMS 7662C     - medium dark shade of magenta
+ */
+
+/*
+ *  App Header
+ */
+.header {
+  background-color: #509E2F;
+  color: white;
+  text-align: center;
+  height: 70px;
+  line-height:50px;
+  padding: 10px;
+}
+
+#homelogo {
+  position: relative !important;
+  height: 90%;
+  padding: 5px;
+}
+
+.menu-select {
+  color: white;
+  float: left;
+  cursor: pointer;
+  font-size: 24px;
+  overflow: auto;
+}
+
+/*
+ *  App Menu
+ */
+#side-menu {
+  height: 100%;
+  width: 200px;
+  background-color: white;
+  position: fixed !important;
+  z-index: 1;
+  overflow: auto;
+  left: -200px;
+  top: 70px;
+  transition: left 0.25s;
+}
+
+#side-menu a {
+  font-family: DINBold, Arial;
+  display: block;
+  width: 100%;
+  color: #509E2F;
+  text-decoration: none;
+  padding: 15px 10px;
+  border-bottom: 2px solid #63666A;
+}
+
 body {
-  background-color: #ddd;
+  background-color: #ced9e5;
 }
 .content {
-  margin-top: 50px;
+  margin-top: 25px;
 }
 .undecorated-link:hover {
   text-decoration: none;
@@ -15,6 +85,7 @@ body {
 .x-ng-cloak {
   display: none !important;
 }
+
 .header-profile-image {
   opacity: 0.8;
   height: 28px;
@@ -40,58 +111,21 @@ a:hover .header-profile-image {
   display: inline;
 }
 
-#homelogo {
-  height:80%;
-  margin:2px;
-}
-
-#top-menu {
-  background-color: #509E2F;
-  color: white;
-  text-align: center;
-  cursor: pointer;
-  height: 50px;
-  line-height: 50px;
-  padding: 0 10px;
-  font-size: 24px;
-}
-
-#subheader {
-  text-align: center;
-  background-color: #63666A;
-  color: white;
-  height: 40px;
-  line-height: 40px;
-}
-
-#side-menu {
-  height: 100%;
-  width: 200px;
-  background-color: white;
-  position: fixed !important;
-  z-index: 1;
-  overflow: auto;
-  left: -200px;
-  top: 50px;
-  transition: left 0.25s;
-}
-
-#side-menu a {
-  display: block;
-  width: 100%;
-  color: black;
-  text-decoration: none;
-  padding: 15px 10px;
-  border-bottom: 1px solid grey;
-}
-
+/*
+ *  Event Counter
+ */
 .event-countdown {
-  background-color: #eee;
-  padding: 10px;
+  background-color: #ced9e5;
+  color: #63666a;
+  padding: 5px;
   margin-bottom: 2vh;
 }
 
+/*
+ *  Home - Projects Create
+ */
 .create {
+  font-family: DIN, Arial;
   background-color: #509e2f;
   width: 100%;
   padding: 10px;
@@ -106,14 +140,17 @@ a:hover .header-profile-image {
 }
 
 .create .sub-title {
+  font-family: DINBold, Arial;
   text-transform: uppercase;
   margin-top: 5px;
   margin-bottom: 0px;
 }
 
-/* styling for idea button on home page */
-
+/*
+ *  Home - Ideas Create
+ */
 .create-idea {
+  font-family: DIN, Arial;
   background-color: #115e67;
   width: 100%;
   padding: 10px;
@@ -128,6 +165,7 @@ a:hover .header-profile-image {
 }
 
 .create-idea .sub-title {
+  font-family: DINBold, Arial;
   text-transform: uppercase;
   margin-top: 5px;
   margin-bottom: 0px;

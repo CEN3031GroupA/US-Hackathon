@@ -180,6 +180,10 @@ angular.module('projects')
     $scope.addComment = function() {
       var comment = this.comment;
 
+      if (comment.trim() === ''){
+        return;
+      }
+
       var req = {
         method: 'POST',
         url: '/api/projects/' + $scope.project._id + '/addComment',
