@@ -39,6 +39,10 @@ var FAQSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
+  },
+  oldIndex: {
+    type: Integer,
+    default: null
   }
 });
 

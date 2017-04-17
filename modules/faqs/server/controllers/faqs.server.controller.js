@@ -84,17 +84,16 @@ exports.faqById = function(req, res, next, id) {
 
 exports.markBestSolution = function (req, res) {
   var faq = req.faq;
+  var oldIndex = faq.oldIndex;
   console.log(req.session.user);
-  faq.answers.push({
-    date: new Date(),
-    user: req.session.user,
-    answer: req.body.answer,
-    isSolution: true
-  });
+  faq.answers[index].isSolution = true;
+  faq.answers[oldIndex].isSolution = false;
 
   faq.save(function (err) {
     if (err) {
-      return next(err);
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     }
     else {
       res.json(faq);

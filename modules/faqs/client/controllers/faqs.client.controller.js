@@ -71,29 +71,28 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
       }
     };
 
-    $scope.markBestSolution = function (faq, $index) {
-      faq.answers[$index].isSolution = true;
+    $scope.markBestSolution = function (answer) {
+      $scope.error = null;
+      if($scope.index){
+        $scope.faq.oldIndex = $scope.index;
+      }else{
+        $scope.faq.oldIndex = null;
+      }
+      $scope.index = $scope.faq.answers.indexOf(answer);
 
-      var req = {
-        method: 'PUT',
-        url: '/api/faqs/' + $scope.faq._id + '/isSolution',
-        data: {
-          answer: answer,
-          solution: true
-        }
-      };
-      this.answer = '';
-      $http(req).then(function(response){
-        $scope.faq = response.data;
-      }, function(err){
-        console.error(err);
+      $scope.faq.$markBestSolution(function () {
+        $location.path('faqs/' + $scope.faq._id);
+      }, function (errorResponse) {
+        $scope.error = errorResponse.data.message;
       });
+
+      $scope.oldIndex = $scope.index;
     };
 
-    $scope.solutionFound = function(answer, found){
-      return function(answers){
-        return answers[answer] === found;
-      }
-    }
+    $scope.solutionFound = function(isSolution, found){
+      return function(item){
+        return item[isSolution] = found;
+      };
+    };
   }
 ]);
