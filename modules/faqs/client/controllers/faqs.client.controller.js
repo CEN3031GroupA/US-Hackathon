@@ -80,7 +80,7 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
       }
       $scope.index = $scope.faq.answers.indexOf(answer);
 
-      $scope.faq.$markBestSolution(function () {
+      $scope.faq.$update(function () {
         $location.path('faqs/' + $scope.faq._id);
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
