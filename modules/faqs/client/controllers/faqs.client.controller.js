@@ -86,7 +86,7 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
         $scope.error = errorResponse.data.message;
       });
 
-      $scope.oldIndex = $scope.index;
+      $scope.faq.oldIndex = $scope.index;
     };
 
     $scope.solutionFound = function(isSolution, found){
