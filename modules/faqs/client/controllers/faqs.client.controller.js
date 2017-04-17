@@ -91,7 +91,7 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
 
     $scope.solutionFound = function(isSolution, found){
       return function(item){
-        return item[isSolution] = found;
+        return item[isSolution] === found;
       };
     };
   }

@@ -85,6 +85,7 @@ exports.faqById = function(req, res, next, id) {
 exports.markBestSolution = function (req, res) {
   var faq = req.faq;
   var oldIndex = faq.oldIndex;
+  var index = faq.index;
   console.log(req.session.user);
   faq.answers[oldIndex].isSolution = false;
   faq.answers[index].isSolution = true;

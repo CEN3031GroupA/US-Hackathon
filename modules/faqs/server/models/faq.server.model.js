@@ -41,7 +41,11 @@ var FAQSchema = new Schema({
     ref: 'User'
   },
   oldIndex: {
-    type: Integer,
+    type: Number,
+    default: null
+  },
+  index: {
+    type: Number,
     default: null
   }
 });
