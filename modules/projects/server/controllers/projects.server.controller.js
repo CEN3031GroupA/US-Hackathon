@@ -104,14 +104,16 @@ exports.unvote = function (req, res) {
   var project = req.project;
   var user = req.session.user;
 
+  for (var i in user.votedProjects) {
+    if (user.votedProjects[i] == project._id) {
+      user.votedProjects.splice(i, 1);
+    }
+  }
+
   User.findOne({
     _id: user._id
-  },function(err, user) {
-    for (var i in user.votedProjects) {
-      if (user.votedProjects[i] === project._id) {
-        user.votedProjects.splice(i, 1);
-      }
-    }
+  },function(err, data) {
+    data.votedProjects = user.votedProjects;
     project.votes--;
 
     project.save(function (err) {
@@ -120,7 +122,7 @@ exports.unvote = function (req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        user.save(function (err) {
+        data.save(function (err) {
           if (err) {
             return res.status(400).send({
               message: errorHandler.getErrorMessage(err)
