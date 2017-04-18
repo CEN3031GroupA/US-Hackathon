@@ -19,14 +19,16 @@ exports.create = function(req, res, next) {
 };
 
 exports.list = function(req, res) {
-  Idea.find({}, function(err, data) {
-    if (err) {
-      res.status(400).send(err);
-    }
-    else {
-      res.json(data);
-    }
-  });
+  Idea.find({})
+    .populate(['owner', 'team', 'comments.user'])
+    .exec(function(err, data) {
+      if (err) {
+        res.status(400).send(err);
+      }
+      else {
+        res.json(data);
+      }
+    });
 };
 
 exports.delete = function(req, res, next) {
