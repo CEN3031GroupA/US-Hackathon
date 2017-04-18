@@ -1,6 +1,8 @@
 <section class="ideaspage" ng-controller="IdeasController">
-  <div class="col-xs-12">
+  <div class="page-header">
     <h2>Add Idea</h2>
+  </div>
+  <div class="col-xs-12">
     <form name="ideaForm" class="form-vertical">
       <fieldset>
         <div class="form-group" show-errors>
@@ -13,7 +15,7 @@
           <textarea name="details" rows="10" class="form-control" ng-model="long" placeholder="Describe your idea" required></textarea>
         </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
         <button ui-sref="home()" class="btn btn-primary-1 pull-left">
         <span class="glyphicon glyphicon-arrow-left"></span>
         </button>
