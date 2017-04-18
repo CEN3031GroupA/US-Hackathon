@@ -11,6 +11,7 @@ module.exports = function (app) {
     .get(users.list);
 
   app.route('/api/user/:userId')
+    .get(users.read)
     .put(users.update);
 
   app.param('userId', users.userById);
