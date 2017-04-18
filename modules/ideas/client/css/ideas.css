@@ -81,9 +81,10 @@
   margin-top: 10px;
 }
 .ideaspage .backscreen {
-    margin-bottom: 10vh;
-    font-weight: 500;
-    letter-spacing: 1px;
+  font-family:DIN, Arial,sans-serif;
+  margin-bottom: 10vh;
+  color: #63666A;
+  font-size: 32px;
 }
 
 .ideaspage .idea-list {
@@ -92,13 +93,24 @@
 }
 .ideaspage .idea-list .row {
   background: white;
+  cursor: hand;
 
 }
 
-.ideaspage .idea-list .item {
+.ideaspage .idea-list .item-heading {
   font-size: 18px;
-  border-color: white;
-  padding: 20px;
+  text-align: left;
+  color: #63666A;
+}
+.ideaspage .idea-list .item-owner {
+  font-size: 12px;
+  text-align: left;
+  color: #63666A;
+}
+.ideaspage .idea-list .item-desc {
+  font-size: 12px;
+  text-align: left;
+  color: #63666A;
 }
 .ideaspage .form-group {
   margin-bottom:3vh;
@@ -114,16 +126,19 @@
  /* styling for idea pages buttons */
 
 .ideaspage .btn {
-    padding: 14px 24px;
-    border: 0 none;
-    font-weight: 400;
-    letter-spacing: 1px;
+  padding: 14px 24px;
+  border: 0 none;
+  font-weight: 400;
+  letter-spacing: 1px;
+  cursor: hand;
 }
 
 .ideaspage .btn2 {
-    background-color: white;
-    padding: unset;
-    border: 0 none;
+  background-color: white;
+  padding: 10px;
+  border: none;
+  text-align: left;
+  cursor: hand;
 }
 
 .ideaspage .btn1 {
@@ -131,6 +146,7 @@
    background: white;
    border: none;
    font-weight: 400;
+  cursor: hand;
  }
 
 .ideaspage .btn:focus, .btn:active:focus, .btn.active:focus {
@@ -152,26 +168,27 @@
   width: 100%;
   margin-top: 10px;
   margin-bottom: 10px;
+  cursor: hand;
 }
 .ideaspage .btn-primary-2 {
-    background: #63666A;
-    color: #ffffff;
-    margin-right: 10px;
+  background: #63666A;
+  color: #ffffff;
+  margin-right: 10px;
 }
 
 .ideaspage .btn-primary-1:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-    background: #114e67;
+  background: #114e67;
 }
 
 .ideaspage .btn-primary-1:active, .btn-primary.active {
-    background: #63666A;
-    box-shadow: none;
+  background: #63666A;
+  box-shadow: none;
 }
 .ideaspage .btn-danger {
-    background: none;
-    color: #63666A;
-    border: none;
-    display: run-in;
+  background: none;
+  color: #63666A;
+  border: none;
+  display: run-in;
   margin: 5px;
 }
 .ideaspage .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .dropdown-toggle.btn-danger {
@@ -180,4 +197,14 @@
 }
 .ideaspage .btn-danger:active, .btn-danger.active {
   background: #63666A;
+}
+.ideaspage .comments-list {
+  background-color: white !important;
+}
+
+.ideaspage .comment {
+  border-bottom: solid #63666A ;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: transparent !important;
 }

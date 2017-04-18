@@ -60,6 +60,7 @@
 
 #side-menu a {
   font-family: DINBold, Arial,sans-serif;
+  font-size: 18px;
   display: block;
   width: 100%;
   color: #509E2F;
@@ -188,6 +189,31 @@ a:hover .header-profile-image {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.view-article {
+/*
+ * Buttons
+ */
+.btn-primary-admin {
+  font-family: DINBold, Arial,sans-serif;
+  background: #509e2f;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  padding: 15px;
+  width: 100%;
+  margin-top: 30px !important;
+  margin-bottom: 10px !important;
+  text-decoration: none !important;
+}
+.btn-primary-admin:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #115e67 !important;
+  color: white;
+}
 
+.btn-primary-admin:active, .btn-primary.active {
+  background: #63666A !important;
+  color: white;
+}
+.row-item-admin {
+  margin:30px 20px 30px 20px !important;
 }

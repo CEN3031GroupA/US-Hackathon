@@ -12,7 +12,7 @@
       <div class="form-group">
         <section>
           <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary {{ activeCategory._id == category._id ? 'active' : '' }}" ng-click="setActiveCategory(category)" ng-repeat="category in activeEvent.categories">
+            <label class="btn-radio {{ activeCategory._id == category._id ? 'active' : '' }}" ng-click="setActiveCategory(category)" ng-repeat="category in activeEvent.categories">
               <input type="radio" name="options" id="option1" autocomplete="off" checked> {{category.title}}
             </label>
           </div>
@@ -22,7 +22,7 @@
           </div>
         </section>
       </div>
-      <button type="submit" ng-click="saveProjectCategory()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Next ></button>
+      <button type="submit" ng-click="saveProjectCategory()" class="btn-primary">Next ></button>
     </form>
   </div>
 </section>

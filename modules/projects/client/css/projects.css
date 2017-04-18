@@ -2,34 +2,51 @@
  * projects-list
  */
 .list-group {
-  margin: auto;
   padding-bottom: 10px;
+  border: none;
+  color: #63666A !important;
 }
 
 .list-group-item {
-  font-family: "Times New Roman", Times, serif;
+  font-family: DIN, Arial, sans-serif;
+  color: #63666A !important;
   padding: 15px;
-  border-radius: 0px !important;
+  border-radius: 0 !important;
   cursor: pointer;
+  border: none;
 }
 
 /*
  * projects-view
  */
-
+.frontscreen {
+  font-family:DIN, Arial,sans-serif;
+  padding: 50px 10px 50px 20px;
+  margin-top: 0;
+  background-color: #63666A;
+  color: white;
+}
 .voteButton {
+  font-family:DIN, Arial,sans-serif;
   background-color: #509E2F;
+  color: white !important;
  }
+.voteButton:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background-color: #115e67;
+  color: white !important;
+}
 
  .unvoteButton {
+   font-family:DIN, Arial,sans-serif;
    background-color: #63666A;
-   color: white;
+   color: white !important;
  }
 
 /*
  * projects-add
  */
 .view-title {
+  font-family: DINBold, Arial, sans-serif;
   margin: auto;
   width: 500px;
   padding: 10px;
@@ -42,6 +59,7 @@
 }
 
 .view-desc {
+  font-family: DINBold, Arial, sans-serif;
   margin: auto;
   width: 500px;
   padding: 10px;
@@ -50,17 +68,19 @@
 ul.team-list {
   list-style-type: none;
   width: 100%;
-  padding: 0px;
+  padding: 0;
   margin-bottom: 15px;
   line-height: 24px;
   font-size: 16px;
 }
 
 ul.team-list li {
+  font-family: DIN, Arial, sans-serif;
   margin-top: 8px;
 }
 
 ul.team-list li i {
+  font-family: DINBold, Arial, sans-serif;
   float: left;
   background-color: grey;
   border: 3px solid #333333;
@@ -79,7 +99,7 @@ ul.team-list li i {
 
 hr {
   margin: 10px 0;
-  border: 1px solid black;
+  border: 1px #63666A;
 }
 
 .project-content {
@@ -100,10 +120,68 @@ thead {
 tbody {
   background-color: white;
 }
+.comments-list {
+  background-color: white !important;
+}
 
 .comment {
-  border: 1px solid #ccc;
+  border-bottom: solid #63666A ;
   padding: 15px;
   margin-bottom: 10px;
-  background-color: #eee;
+  background-color: transparent !important;
+}
+.btn-primary {
+  font-family: DINBold, Arial, sans-serif;
+  background: #509e2f;
+  color: white;
+  margin-right: 10px;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 15px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #115e67 !important;
+}
+
+.btn-primary:active, .btn-primary.active {
+  background: #63666A !important;
+  box-shadow: none;
+}
+.btn-radio {
+  font-family: DIN, Arial, sans-serif;
+  background: #63666A;
+  color: white;
+  border-radius: 8px;
+  font-size: 12px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: hand;
+  border: none;
+}
+.btn-radio:hover, .btn-radio:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #115e67 !important;
+}
+
+.btn-radio:active, .btn-radio.active, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #509e2f !important;
+  box-shadow: none;
+}
+.btn-danger {
+  background: none;
+  color: #63666A !important;
+  border: none;
+  display: run-in;
+  margin: 5px;
+}
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .dropdown-toggle.btn-danger {
+  background: #115e67 !important;
+  color: white !important;
+}
+.btn-danger:active, .btn-danger.active {
+  background: #63666A !important;
 }

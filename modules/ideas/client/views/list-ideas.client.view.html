@@ -7,16 +7,20 @@
 <body>
 <section class="ideaspage" ng-controller="IdeasController" ng-init="find()">
   <h3><span ng-bind="activeEvent.title"></span> Ideas</h3>
-  <div class = "idea-list" ng-repeat="idea in ideas">
-    <div class="row item">
-
+  <div class="col-md-offset-2 col-md-8">
+    <div class = "idea-list" ng-repeat="idea in ideas">
+      <div class="row item">
         <button ui-sref="ideas.view({ideaId: idea._id})" class="btn2">
-          <a class="item">{{idea.title}}</a>
+          <a class="item-heading">{{idea.title}}</a> <br>
+          <a class="item-owner">by <span ng-bind="idea.owner.firstName"></span> <span ng-bind="idea.owner.lastName"></span></a><br>
+          <a class="item-desc">{{idea.description.short}}</a><br>
         </button>
-        <button ng-click = "liked=!liked" ng-model = "liked" class = "btn2">
+        <button ng-click = "liked=!liked" ng-model = "liked" class = "btn2 pull-right">
           <span class = "base-class glyphicon" ng-class="liked ? 'glyphicon-heart' : 'glyphicon-heart-empty'"></span>
         </button>
+      </div>
     </div>
   </div>
+
 </section>
 </body>
