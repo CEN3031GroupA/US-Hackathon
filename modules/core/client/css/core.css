@@ -174,17 +174,17 @@ a:hover .header-profile-image {
 * Home - Articles
 */
 .create-article {
-  font-family: DINBold, Arial;
+  font-family: DIN, Arial;
   background-color: #63666A;
   width:100%;
   padding: 10px;
   color: white;
   cursor: pointer;
   margin-bottom: 2vh;
+
 }
 .create-article h3 {
-  font-family: DINBold, Arial;
-  font-weight: 500;
-  margin-top: 0;
+  font-family: DIN, Arial;
+  margin-top: 5px;
   margin-bottom: 0px;
 }
