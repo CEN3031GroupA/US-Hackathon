@@ -59,6 +59,7 @@ angular.module('projects')
 
         $location.path('projects/team');
       }
+      $location.path('projects/team');
     };
 
     $scope.create = function (isValid) {
