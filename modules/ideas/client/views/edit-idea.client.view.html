@@ -5,14 +5,14 @@
       <fieldset>
         <div class="form-group" show-errors>
           <input type="text" ng-model="idea.title" name="title" class="form-control" placeholder="Title" required>
-          <div ng-messages="projectForm.title.$error" role="alert">
+          <div ng-messages="ideaForm.title.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Idea Title</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <textarea name="details" rows="5" ng-model="idea.description.long"
             class="form-control" placeholder="Description for Idea" required></textarea>
-          <div ng-messages="projectForm.details.$error" role="alert">
+          <div ng-messages="ideaForm.details.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Idea Description</p>
           </div>
         </div>
