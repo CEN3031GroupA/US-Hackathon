@@ -11,11 +11,12 @@
     <div class="row item">
 
         <button ui-sref="ideas.view({ideaId: idea._id})" class="btn2">
-          <h4 class="item">{{idea.title}}</h4>
+          <a class="item">{{idea.title}}</a>
         </button>
         <button ng-click = "liked=!liked" ng-model = "liked" class = "btn2">
           <span class = "base-class glyphicon" ng-class="liked ? 'glyphicon-heart' : 'glyphicon-heart-empty'"></span>
         </button>
-
-  </section>
+    </div>
+  </div>
+</section>
 </body>

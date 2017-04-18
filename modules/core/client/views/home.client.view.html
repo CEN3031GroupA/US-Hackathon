@@ -1,5 +1,4 @@
 <section ng-controller="HomeController" ng-init="init()">
-
   <div class="event-countdown" ng-if="activeEvent">
     <p><span ng-bind="activeEvent.title"></span>
       <span ng-if="activeEvent.inProgress"> in progress</span>
@@ -8,7 +7,7 @@
       <h4 ng-if="activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> hrs remaining</h4>
       <h4 ng-if="!activeEvent.inProgress"><span ng-bind="activeEvent.timer"></span> till event</h4>
     </div>
-
+  <form class="col-md-offset-2 col-md-8">
     <div class="create-idea" ui-sref="ideas.create()">
       <h3 class="title">Upload an idea</h3>
       <p class="description">The basics, please.  What is your project?  What does it do?</p>
@@ -20,12 +19,6 @@
       <p class="description">Have a solid idea? Submit your project now!</p>
       <p class="sub-title">Start now</p>
     </div>
-
-    <div class="create-article" ui-sref="articles.create()">
-      <h3 class="title">Add an article </h3>
-      <p>
-      </p>
-    </div>
-
+  </form>
 
 </section>
