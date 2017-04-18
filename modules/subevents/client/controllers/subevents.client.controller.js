@@ -24,6 +24,8 @@ angular.module('subevents').controller('SubEventsController',
       }
     };
 
+    $scope.loadEvent();
+
     $scope.create = function() {
       var subevent = new SubEvent({
         title: this.title,

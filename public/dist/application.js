@@ -136,18 +136,12 @@ ApplicationConfiguration.registerModule('ideas');
 'use strict';
 
 // Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('projects', ['ja.qr']);
-
-(function (app) {
-  'use strict';
-
-  app.registerModule('questions');
-}(ApplicationConfiguration));
+ApplicationConfiguration.registerModule('projects', ['ja.qr', 'textAngular']);
 
 'use strict';
 
 // Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('subevents', ['ui.bootstrap.datetimepicker']);
+ApplicationConfiguration.registerModule('subevents', ['ui.bootstrap.datetimepicker', 'textAngular']);
 
 'use strict';
 
@@ -155,38 +149,10 @@ ApplicationConfiguration.registerModule('subevents', ['ui.bootstrap.datetimepick
 ApplicationConfiguration.registerModule('users');
 'use strict';
 
-// Configuring the Articles module
-angular.module('articles').run(['Menus',
-  function (Menus) {
-    // Add the articles dropdown item
-    Menus.addMenuItem('topbar', {
-      title: 'Articles',
-      state: 'articles',
-      type: 'dropdown',
-      roles: ['*']
-    });
 
-    // Add the dropdown list item
-    Menus.addSubMenuItem('topbar', 'articles', {
-      title: 'List Articles',
-      state: 'articles.list'
-    });
-
-    // Add the dropdown create item
-    Menus.addSubMenuItem('topbar', 'articles', {
-      title: 'Create Articles',
-      state: 'articles.create',
-      roles: ['user']
-    });
-  }
-]);
-
-'use strict';
-
-// Setting up route
 angular.module('articles').config(['$stateProvider',
   function ($stateProvider) {
-    // Articles state routing
+
     $stateProvider
       .state('articles', {
         abstract: true,
@@ -200,9 +166,6 @@ angular.module('articles').config(['$stateProvider',
       .state('articles.create', {
         url: '/create',
         templateUrl: 'modules/articles/client/views/create-article.client.view.html',
-        data: {
-          roles: ['user', 'admin']
-        }
       })
       .state('articles.view', {
         url: '/:articleId',
@@ -211,9 +174,6 @@ angular.module('articles').config(['$stateProvider',
       .state('articles.edit', {
         url: '/:articleId/edit',
         templateUrl: 'modules/articles/client/views/edit-article.client.view.html',
-        data: {
-          roles: ['user', 'admin']
-        }
       });
   }
 ]);
@@ -313,6 +273,10 @@ angular.module('articles').factory('Articles', ['$resource',
     }, {
       update: {
         method: 'PUT'
+      }
+    }, {
+      create: {
+        method: 'POST'
       }
     });
   }
@@ -1254,7 +1218,7 @@ angular.module('faqs').config(['$stateProvider',
         templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
       .state('faqs.respond', {
-        url: '/faq/:faqId/Respond',
+        url: '/:faqId',
         templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
       });
   }
@@ -1283,11 +1247,16 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
     $scope.addAnswer = function(){
       var answer = this.answer;
 
+      if (answer.trim() === ''){
+        return;
+      }
+
       var req = {
         method: 'POST',
         url: '/api/faqs/' + $scope.faq._id + '/addAnswer',
         data: {
-          answer: answer
+          answer: answer,
+          solution: false
         }
       };
       this.answer = '';
@@ -1331,64 +1300,21 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
         });
       }
     };
+
+    $scope.markBestSolution = function (answer) {
+      for(var i in $scope.faq.answers) {
+        if($scope.faq.answers[i].isSolution === true) {
+          $scope.faq.answers[i].isSolution = false;
+        }
+      }
+
+      var index = $scope.faq.answers.indexOf(answer);
+      $scope.faq.answers[index].isSolution = true;
+
+      FAQs.update({ faqId: $scope.faq._id }, { answers: $scope.faq.answers });
+    };
   }
 ]);
-
-// if (!$rootScope.activeFAQ) {
-//   $rootScope.activeFAQ = {
-//     solution: {}
-//   };
-// }
-//
-//
-// $scope.saveQuestion = function (response) {
-//   $rootScope.activeFAQ.question = this.question;
-//
-//   $location.path('faqs');
-// };
-//
-// $scope.post = function (isValid) {
-//   $scope.error = null;
-//
-//   // Create new FAQ object
-//   var faq = new FAQs($rootScope.activeFAQ);
-//   // Redirect
-//   faq.$save(function (response) {
-//     $scope.faqs.push(response);
-//     $scope.askme=false;
-//     // clear active
-//     $rootScope.activeFAQ = null;
-//   }, function (errorResponse){
-//     $scope.error = errorResponse.data.message;
-//   });
-// };
-// // Find a list of faqs
-
-// // Find a faq
-// $scope.findOne = function () {
-//   $scope.faq = FAQs.get({
-//     faqId: $stateParams.faqId
-//   });
-// };
-// Remove existing FAQ
-
-//
-// // Update existing faq
-// $scope.update = function (isValid) {
-//   $scope.error = null;
-//
-//   if (!isValid) {
-//     $scope.$broadcast('show-errors-check-validity', 'faqForm');
-//
-//     return false;
-//   }
-//
-//   $scope.faq.$update(function () {
-//     $location.path('faqs/');
-//   }, function (errorResponse) {
-//     $scope.error = errorResponse.data.message;
-//   });
-// };
 
 /**
  * Created by George on 3/1/2017.
@@ -1450,8 +1376,23 @@ angular.module('ideas').config(['$stateProvider',
 
 // Ideas controller
 angular.module('ideas')
-  .controller('IdeasController', ['$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', '$http', 'ActiveEvent',
-  function ($scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, $http, ActiveEvent) {
+  .service('sharedInputFields', [ '$rootScope', function($rootScope) {
+    return {
+      formData: [],
+      add: function(item) {
+        this.formData.push(item);
+      },
+      set: function() {
+        return this.formData;
+      },
+      clear: function() {
+        this.formData = [];
+      }
+    };
+
+  }])
+  .controller('IdeasController', ['sharedInputFields', '$scope', '$state', '$stateParams', '$location', 'Ideas', 'Authentication', 'Users', '$rootScope', 'ActiveEvent', '$http',
+  function (sharedInputFields, $scope, $state, $stateParams, $location, Ideas, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
 
@@ -1465,6 +1406,8 @@ angular.module('ideas')
 
     ActiveEvent.get().then(function(activeEvent) {
       $scope.activeEvent = activeEvent;
+      $scope.activeCategory = $scope.activeEvent.categories[0];
+
     });
 
     $scope.team = $rootScope.activeIdea.team;
@@ -1472,13 +1415,16 @@ angular.module('ideas')
     $scope.create = function (isValid) {
       $scope.error = null;
 
+      $rootScope.activeIdea.event = $scope.activeEvent;
       // Create new Idea object
-      var idea = new Ideas($rootScope.activeIdea);
-
       $rootScope.activeIdea.title = this.title;
       $rootScope.activeIdea.youtube = this.youtube;
       $rootScope.activeIdea.description.short = this.short;
       $rootScope.activeIdea.description.long = this.long;
+
+      var idea = new Ideas($rootScope.activeIdea);
+
+
 
       // Redirect after save
       idea.$save(function () {
@@ -1489,6 +1435,16 @@ angular.module('ideas')
       }, function (errorResponse) {
         $scope.error = errorResponse.data.message;
       });
+    };
+
+    $scope.ideaToProject = function() {
+      sharedInputFields.add($scope.idea.title);
+      sharedInputFields.add($scope.idea.short);
+      sharedInputFields.add($scope.idea.long);
+      $scope.remove($scope.idea);
+
+
+      $location.path('projects/category');
     };
 
     $scope.remove = function (idea) {
@@ -1579,6 +1535,10 @@ angular.module('ideas')
 
     $scope.addComment = function() {
       var comment = this.comment;
+
+      if (comment.trim() === ''){
+        return;
+      }
 
       var req = {
         method: 'POST',
@@ -1690,10 +1650,11 @@ angular.module('projects')
     ]);
   }])
 
-  .controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
+  .controller('ProjectsController', ['sharedInputFields', '$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
+  function (sharedInputFields, $scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
+
 
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
@@ -1725,7 +1686,20 @@ angular.module('projects')
 
     $scope.saveProjectCategory = function () {
       $rootScope.activeProject.category = $scope.activeCategory.title;
+      var inputFields = sharedInputFields.set();
+      console.log(inputFields.length);
+      if (inputFields.length !== 0)
+      {
+        $rootScope.activeProject.title = inputFields[0];
+        $rootScope.activeProject.youtube = '';
+        $rootScope.activeProject.short = inputFields[1];
+        $rootScope.activeProject.long = inputFields[2];
+        $rootScope.activeProject.owner = $scope.user;
+        inputFields = [];
+        sharedInputFields.clear();
 
+        $location.path('projects/team');
+      }
       $location.path('projects/team');
     };
 
@@ -1759,7 +1733,7 @@ angular.module('projects')
           }
         }
       } else {
-        $scope.project.$remove(function () {
+        $scope.project.$delete(function () {
           $location.path('projects');
         });
       }
@@ -1861,6 +1835,10 @@ angular.module('projects')
     $scope.addComment = function() {
       var comment = this.comment;
 
+      if (comment.trim() === ''){
+        return;
+      }
+
       var req = {
         method: 'POST',
         url: '/api/projects/' + $scope.project._id + '/addComment',
@@ -1917,210 +1895,6 @@ angular.module('projects').factory('Projects', ['$resource',
     });
   }
 ]);
-
-(function () {
-  'use strict';
-
-  angular
-    .module('questions')
-    .run(menuConfig);
-
-  menuConfig.$inject = ['Menus'];
-
-  function menuConfig(menuService) {
-    // Set top bar menu items
-    menuService.addMenuItem('topbar', {
-      title: 'Questions',
-      state: 'questions',
-      type: 'dropdown',
-      roles: ['*']
-    });
-
-    // Add the dropdown list item
-    menuService.addSubMenuItem('topbar', 'questions', {
-      title: 'List Questions',
-      state: 'questions.list'
-    });
-
-    // Add the dropdown create item
-    menuService.addSubMenuItem('topbar', 'questions', {
-      title: 'Create Question',
-      state: 'questions.create',
-      roles: ['user']
-    });
-  }
-}());
-
-(function () {
-  'use strict';
-
-  angular
-    .module('questions')
-    .config(routeConfig);
-
-  routeConfig.$inject = ['$stateProvider'];
-
-  function routeConfig($stateProvider) {
-    $stateProvider
-      .state('questions', {
-        abstract: true,
-        url: '/questions',
-        template: '<ui-view/>'
-      })
-      .state('questions.list', {
-        url: '',
-        templateUrl: 'modules/questions/client/views/list-questions.client.view.html',
-        controller: 'QuestionsListController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Questions List'
-        }
-      })
-      .state('questions.create', {
-        url: '/create',
-        templateUrl: 'modules/questions/views/form-question.client.view.html',
-        controller: 'QuestionsController',
-        controllerAs: 'vm',
-        resolve: {
-          questionResolve: newQuestion
-        },
-        data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Questions Create'
-        }
-      })
-      .state('questions.edit', {
-        url: '/:questionId/edit',
-        templateUrl: 'modules/questions/views/form-question.client.view.html',
-        controller: 'QuestionsController',
-        controllerAs: 'vm',
-        resolve: {
-          questionResolve: getQuestion
-        },
-        data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Question {{ questionResolve.name }}'
-        }
-      })
-      .state('questions.view', {
-        url: '/:questionId',
-        templateUrl: 'modules/questions/views/view-question.client.view.html',
-        controller: 'QuestionsController',
-        controllerAs: 'vm',
-        resolve: {
-          questionResolve: getQuestion
-        },
-        data: {
-          pageTitle: 'Question {{ questionResolve.name }}'
-        }
-      });
-  }
-
-  getQuestion.$inject = ['$stateParams', 'QuestionsService'];
-
-  function getQuestion($stateParams, QuestionsService) {
-    return QuestionsService.get({
-      questionId: $stateParams.questionId
-    }).$promise;
-  }
-
-  newQuestion.$inject = ['QuestionsService'];
-
-  function newQuestion(QuestionsService) {
-    return new QuestionsService();
-  }
-}());
-
-(function () {
-  'use strict';
-
-  angular
-    .module('questions')
-    .controller('QuestionsListController', QuestionsListController);
-
-  QuestionsListController.$inject = ['QuestionsService'];
-
-  function QuestionsListController(QuestionsService) {
-    var vm = this;
-
-    vm.questions = QuestionsService.query();
-  }
-}());
-
-(function () {
-  'use strict';
-
-  // Questions controller
-  angular
-    .module('questions')
-    .controller('QuestionsController', QuestionsController);
-
-  QuestionsController.$inject = ['$scope', '$state', '$window', 'questionResolve'];
-
-  function QuestionsController ($scope, $state, $window, question) {
-    var vm = this;
-
-
-    vm.question = question;
-    vm.error = null;
-    vm.form = {};
-    vm.remove = remove;
-    vm.save = save;
-
-    // Remove existing Question
-    function remove() {
-      if ($window.confirm('Are you sure you want to delete?')) {
-        vm.question.$remove($state.go('questions.list'));
-      }
-    }
-
-    // Save Question
-    function save(isValid) {
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.questionForm');
-        return false;
-      }
-
-      // TODO: move create/update logic to service
-      if (vm.question._id) {
-        vm.question.$update(successCallback, errorCallback);
-      } else {
-        vm.question.$save(successCallback, errorCallback);
-      }
-
-      function successCallback(res) {
-        $state.go('questions.view', {
-          questionId: res._id
-        });
-      }
-
-      function errorCallback(res) {
-        vm.error = res.data.message;
-      }
-    }
-  }
-}());
-
-// Questions service used to communicate Questions REST endpoints
-(function () {
-  'use strict';
-
-  angular
-    .module('questions')
-    .factory('QuestionsService', QuestionsService);
-
-  QuestionsService.$inject = ['$resource'];
-
-  function QuestionsService($resource) {
-    return $resource('api/questions/:questionId', {
-      questionId: '@_id'
-    }, {
-      update: {
-        method: 'PUT'
-      }
-    });
-  }
-}());
 
 'use strict';
 
@@ -2195,6 +1969,8 @@ angular.module('subevents').controller('SubEventsController',
         });
       }
     };
+
+    $scope.loadEvent();
 
     $scope.create = function() {
       var subevent = new SubEvent({
