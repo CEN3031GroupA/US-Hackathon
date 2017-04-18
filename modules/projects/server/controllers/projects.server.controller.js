@@ -105,8 +105,9 @@ exports.unvote = function (req, res) {
   var user = req.session.user;
 
   for (var i in user.votedProjects) {
-    if (user.votedProjects[i] == project._id) {
+    if (user.votedProjects[i] === String(project._id)) {
       user.votedProjects.splice(i, 1);
+      console.log("yes!");
     }
   }
 
@@ -128,7 +129,7 @@ exports.unvote = function (req, res) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            req.session.user = user;
+            req.session.user = data;
             res.json(project);
           }
         });
