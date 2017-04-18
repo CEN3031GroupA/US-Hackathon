@@ -107,7 +107,6 @@ exports.unvote = function (req, res) {
   for (var i in user.votedProjects) {
     if (user.votedProjects[i] === String(project._id)) {
       user.votedProjects.splice(i, 1);
-      console.log("yes!");
     }
   }
 
