@@ -189,6 +189,22 @@ a:hover .header-profile-image {
   margin-top: 5px;
   margin-bottom: 10px;
 }
+
+.article {
+  font-family: DIN, Arial,sans-serif;
+  background-color: white;
+  width:100%;
+  padding: 10px;
+  color: black;
+  cursor: pointer;
+  margin-bottom: 2vh;
+
+}
+.article h3 {
+  font-family: DIN, Arial,sans-serif;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
 /*
  * Buttons
  */

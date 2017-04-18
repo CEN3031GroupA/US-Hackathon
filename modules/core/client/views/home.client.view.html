@@ -20,5 +20,13 @@
       <p class="sub-title">Start now</p>
     </div>
   </form>
+</section>
 
+<section ng-controller="ArticlesController" ng-init="find()">
+  <div class="col-md-offset-2 col-md-8">
+    <div class="article" ng-repeat="article in articles" ui-sref="articles.view({articleId: article._id})">
+      <h3 class="title">{{article.title}}</h3>
+      <p class="description">{{article.content}}</p>
+    </div>
+  </div>
 </section>
