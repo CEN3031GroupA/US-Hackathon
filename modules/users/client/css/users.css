@@ -5,9 +5,9 @@
 @font-face { font-family: 'DIN'; src: url('../../../core/client/fonts/DINRegular.ttf'); }
 @font-face { font-family: 'DINBold'; src: url('../../../core/client/fonts/DINBold.ttf'); }
 
-/*.authpage {*/
-  /*font-family: DIN, Arial;*/
-/*}*/
+.authpage {
+  font-family: DIN, Arial,sans-serif;
+}
 
 /*
  *  Form Styles
@@ -50,30 +50,27 @@
   right:0;
   margin-top: 15vh;
 }
-.authpage .btn {
-  padding: 14px 24px;
-  border: 0 none;
-  font-weight: 400;
-  letter-spacing: 1px;
 
-}
 .authpage .btn:focus, .btn:active:focus, .btn.active:focus {
   outline: 0 none;
 }
 .authpage .btn-primary {
+  font-family: DINBold, Arial,sans-serif;
   background: #509e2f;
+  border: none;
+  border-radius: 8px;
   color: white;
-  font-weight: 600;
   font-size: 18px;
   padding: 15px;
   width: 100%;
-  display:inline;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 .authpage .round {
   border-radius: 8px;
 }
 .authpage .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-  background: #72b158;
+  background: #114e67;
 }
 .authpage .btn-primary:active, .btn-primary.active {
   background: #63666a;
@@ -86,21 +83,21 @@
 .authpage .btn-primary.outline {
   margin-top:15px;
   border: 2px solid #509e2f;
-  color: #509e2f
+  color: #509e2f;
 }
 .authpage a{
   color: #63666a;
   font-weight: 500;
-  font-family: DIN, Arial;;
+  font-family: DIN, Arial,sans-serif;
 }
 .authpage h3 {
 
-  font-family: DIN, Arial;;
+  font-family: DIN, Arial,sans-serif;
   font-size: 32px;
   font-weight: 600;
 }
 .authpage p {
-  font-family: DIN, Arial;;
+  font-family: DIN, Arial,sans-serif;
   font-size: 16px;
   font-weight: 400;
 }
@@ -110,26 +107,27 @@
 .authpage .option-title {
   color: #509e2f;
   text-decoration: none;
+  margin-bottom: 30px;
 }
 .authpage .welcome-screen {
-  margin-top: 30px;
   text-align: center;
 }
 .authpage .welcome-screen a {
-  font-family: Louisiana, Arial;
+  font-family: Louisiana, Arial,sans-serif;
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 400;
   color: #007299;
 }
 .authpage .welcome-screen h3 {
-  font-family: DIN, Arial;
+  font-family: DIN, Arial,sans-serif;
   text-align: left;
   font-size: 32px;
   font-weight: 600;
   color: #63666a;
+  margin-bottom: 30px;
 }
 .authpage .welcome-screen p {
-  font-family: DIN, Arial;
+  font-family: DIN, Arial,sans-serif;
   font-weight: 400;
   color: #63666a;
 }

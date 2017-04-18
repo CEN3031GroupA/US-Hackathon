@@ -7,6 +7,9 @@
   cursor: pointer;
   letter-spacing:1px;
 }
+.page-header h3 {
+  font-family: DIN, Arial,sans-serif;
+}
 
 .welcome-screen {
   margin-top:6vh;
@@ -20,7 +23,7 @@
 }
 .add-idea h3 {
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   font-weight: 400;
   font-size:32px;
 }
@@ -42,46 +45,46 @@
   font-size: 16px;
 }
 
-.ideaspage padding-0 {
-  padding-right:0;
-  padding-left:0;
-}
-
-.ideaspage padding-left {
-  position: absolute;
-  padding-left:0;
-  margin-left: -10vh;
-}
-.ideaspage padding-1 {
-    display: inline-block;
-}
-
-
 .ideaspage .base-class {
   transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
   border:0 none;
   color: #ddd;
 }
 
+.ideaspage .base-class.glyphicon.glyphicon-heart-empty {
+  font-size: 18px;
+}
+
 .ideaspage .base-class.glyphicon.glyphicon-heart {
   color: red;
+  font-size: 24px;
 }
 
 .ideaspage .frontscreen {
-    margin-bottom: 5vh;
-    margin-top: 0;
-    font-weight: 500;
-    letter-spacing: 1px;
+  font-family:DIN, Arial,sans-serif;
+  padding: 50px 10px 50px 20px;
+  margin-top: 0;
+  background-color: #63666A;
+  color: white;
 }
 .ideaspage .idea-content {
-    font-weight: 500;
-    letter-spacing: 1px;
-    margin-bottom: 5vh;
+  font-family: DIN, Arial,sans-serif;
+  font-size: 16px;
+  padding: 10px;
+  margin-top: 10px;
+}
+.ideaspage .idea-team h3{
+  font-family: DIN, Arial,sans-serif;
+  color: #63666A;
+  font-size: 16px;
+  padding: 10px;
+  margin-top: 10px;
 }
 .ideaspage .backscreen {
-    margin-bottom: 10vh;
-    font-weight: 500;
-    letter-spacing: 1px;
+  font-family:DIN, Arial,sans-serif;
+  margin-bottom: 10vh;
+  color: #63666A;
+  font-size: 32px;
 }
 
 .ideaspage .idea-list {
@@ -90,72 +93,118 @@
 }
 .ideaspage .idea-list .row {
   background: white;
+  cursor: hand;
 
 }
 
-.ideaspage .idea-list .item {
-  border-color: white;
-  padding: 20px;
+.ideaspage .idea-list .item-heading {
+  font-size: 18px;
+  text-align: left;
+  color: #63666A;
+}
+.ideaspage .idea-list .item-owner {
+  font-size: 12px;
+  text-align: left;
+  color: #63666A;
+}
+.ideaspage .idea-list .item-desc {
+  font-size: 12px;
+  text-align: left;
+  color: #63666A;
 }
 .ideaspage .form-group {
   margin-bottom:3vh;
+}
+.ideaspage .idea-edit h3{
+  font-family: DIN, Arial,sans-serif;
+  color: #63666A;
+  font-size: 32px;
+  padding: 10px;
+  margin-top: 10px;
 }
 
  /* styling for idea pages buttons */
 
 .ideaspage .btn {
-    padding: 14px 24px;
-    border: 0 none;
-    font-weight: 400;
-    letter-spacing: 1px;
+  padding: 14px 24px;
+  border: 0 none;
+  font-weight: 400;
+  letter-spacing: 1px;
+  cursor: hand;
 }
 
 .ideaspage .btn2 {
-    background-color: white;
-    padding: none;
-    border: 0 none;
+  background-color: white;
+  padding: 10px;
+  border: none;
+  text-align: left;
+  cursor: hand;
 }
 
 .ideaspage .btn1 {
    margin-top: 10px;
    background: white;
-   border: 0 none;
+   border: none;
    font-weight: 400;
-   letter-spacing: 1px;
+  cursor: hand;
  }
 
 .ideaspage .btn:focus, .btn:active:focus, .btn.active:focus {
-    outline: 0 none;
+    outline: none;
 }
 .ideaspage .btn-primary {
     background: #509e2f;
-    color: #ffffff;
+    color: white;
 
 }
 .ideaspage .btn-primary-1 {
-    background: #115e67;
-    color: #ffffff;
-    margin-right: 10px;
+  font-family: DINBold, Arial,sans-serif;
+  background: #509e2f;
+  color: white;
+  margin-right: 10px;
+  border-radius: 8px;
+  font-size: 18px;
+  padding: 15px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  cursor: hand;
 }
 .ideaspage .btn-primary-2 {
-    background: #63666A;
-    color: #ffffff;
-    margin-right: 10px;
-}
-.ideaspage .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-    background: #509000;
-}
-.ideaspage .btn-primary-1:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-    background: #114e67;
+  background: #63666A;
+  color: #ffffff;
+  margin-right: 10px;
 }
 
-.ideaspage .btn-primary:active, .btn-primary.active {
-    background: #509e2f;
-    box-shadow: none;
+.ideaspage .btn-primary-1:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #114e67;
+}
+
+.ideaspage .btn-primary-1:active, .btn-primary.active {
+  background: #63666A;
+  box-shadow: none;
 }
 .ideaspage .btn-danger {
-    background: none;
-    color: black;
-    border: 0 none;
-    display: inline;
+  background: none;
+  color: #63666A;
+  border: none;
+  display: run-in;
+  margin: 5px;
+}
+.ideaspage .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .dropdown-toggle.btn-danger {
+  background: #114e67;
+  color: white;
+}
+.ideaspage .btn-danger:active, .btn-danger.active {
+  background: #63666A;
+}
+.ideaspage .comments-list {
+  background-color: white !important;
+}
+
+.ideaspage .comment {
+  border-bottom: solid #63666A ;
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: transparent !important;
 }

@@ -1,5 +1,19 @@
 <section ng-controller="HomeController">
-  <a ui-sref="events.index()" class="btn btn-default">Manage Events</a> <br />
-  <a ui-sref="eventCategories.index()" class="btn btn-default">Manage Event Categories</a> <br />
-  <a ui-sref="projects.votes()" class="btn btn-default">Vote Results</a>
+  <form class="col-md-offset-2 col-md-8">
+    <div class="row-admin">
+      <div class="row-item-admin">
+        <a ui-sref="events.index()" class="btn-primary-admin">Manage Events</a>
+      </div>
+      <div class="row-item-admin">
+        <a ui-sref="eventCategories.index()" class="btn-primary-admin">Manage Event Categories</a>
+      </div>
+      <div class="row-item-admin">
+        <a ui-sref="projects.votes()" class="btn-primary-admin">Vote Results</a>
+      </div>
+      <div class="row-item-admin">
+        <a ui-sref="articles.create()" class="btn-primary-admin">Add an Article</a>
+      </div>
+    </div>
+  </form>
+
 </section>

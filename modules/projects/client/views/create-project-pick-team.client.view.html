@@ -33,14 +33,14 @@
     </div>
     <div class="table-responsive">
       <table class="table table-hover">
-        <tr ng-repeat="user in users | filter: query">
+        <tr style="padding: 1px" ng-repeat="user in users | filter: query">
+          <td class="text-right"><button class="btn btn-xs" ng-click="addMember(user)"><i class="glyphicon glyphicon-plus"></i> Add</button></td>
           <td><i class="glyphicon glyphicon-user"></i></td>
           <td>{{user.firstName}} {{user.lastName}}</td>
           <td>{{user.email}}</td>
-          <td class="text-right"><button class="btn btn-xs" ng-click="addMember(user)"><i class="glyphicon glyphicon-plus"></i> Add</button></td>
         </tr>
       </table>
     </div>
-    <button ng-click="create()" color="PMS 362c" class="btn btn-success btn-lg btn-block">Add Project</button>
+    <button ng-click="create()" class="btn-primary">Add Project</button>
   </div>
 </section>

@@ -59,7 +59,8 @@
 }
 
 #side-menu a {
-  font-family: DINBold, Arial;
+  font-family: DINBold, Arial,sans-serif;
+  font-size: 18px;
   display: block;
   width: 100%;
   color: #509E2F;
@@ -125,7 +126,7 @@ a:hover .header-profile-image {
  *  Home - Projects Create
  */
 .create {
-  font-family: DIN, Arial;
+  font-family: DIN, Arial,sans-serif;
   background-color: #509e2f;
   width: 100%;
   padding: 10px;
@@ -136,21 +137,21 @@ a:hover .header-profile-image {
 
 .create h3 {
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .create .sub-title {
-  font-family: DINBold, Arial;
+  font-family: DINBold, Arial,sans-serif;
   text-transform: uppercase;
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 /*
  *  Home - Ideas Create
  */
 .create-idea {
-  font-family: DIN, Arial;
+  font-family: DIN, Arial,sans-serif;
   background-color: #115e67;
   width: 100%;
   padding: 10px;
@@ -161,20 +162,20 @@ a:hover .header-profile-image {
 
 .create-idea h3 {
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .create-idea .sub-title {
-  font-family: DINBold, Arial;
+  font-family: DINBold, Arial,sans-serif;
   text-transform: uppercase;
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 /*
 * Home - Articles
 */
 .create-article {
-  font-family: DIN, Arial;
+  font-family: DIN, Arial,sans-serif;
   background-color: #63666A;
   width:100%;
   padding: 10px;
@@ -184,7 +185,35 @@ a:hover .header-profile-image {
 
 }
 .create-article h3 {
-  font-family: DIN, Arial;
+  font-family: DIN, Arial,sans-serif;
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
+}
+/*
+ * Buttons
+ */
+.btn-primary-admin {
+  font-family: DINBold, Arial,sans-serif;
+  background: #509e2f;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+  padding: 15px;
+  width: 100%;
+  margin-top: 30px !important;
+  margin-bottom: 10px !important;
+  text-decoration: none !important;
+}
+.btn-primary-admin:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #115e67 !important;
+  color: white;
+}
+
+.btn-primary-admin:active, .btn-primary.active {
+  background: #63666A !important;
+  color: white;
+}
+.row-item-admin {
+  margin:30px 20px 30px 20px !important;
 }
