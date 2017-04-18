@@ -15,7 +15,7 @@
       Posted on
       <span ng-bind="article.created | date:'mediumDate'"></span>
       by
-      <span ng-bind="article.user.displayName"></span>
+      <span ng-bind="article.user.firstName"></span> <span ng-bind="article.user.lastName"></span>
     </em>
   </small>
   <p class="lead" ng-bind="article.content"></p>
