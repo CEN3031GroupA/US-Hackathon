@@ -32,7 +32,7 @@
             </button>
           </div>
         </div>
-        <div ng-show="project.youtube != null">
+        <div ng-show="project.youtube != null && project.youtube != ''">
           <iframe width="100%" height="300" src="{{project.youtube}}" frameborder="0" allowfullscreen></iframe>
         </div>
         <div ta-bind ng-model="project.description.long"></div>
