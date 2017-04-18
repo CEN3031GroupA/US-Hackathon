@@ -5,9 +5,9 @@
 @font-face { font-family: 'DIN'; src: url('../../../core/client/fonts/DINRegular.ttf'); }
 @font-face { font-family: 'DINBold'; src: url('../../../core/client/fonts/DINBold.ttf'); }
 
-.authpage {
-  font-family: DIN, Arial;
-}
+/*.authpage {*/
+  /*font-family: DIN, Arial;*/
+/*}*/
 
 /*
  *  Form Styles

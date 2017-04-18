@@ -1,8 +1,11 @@
 <section ng-controller="SubEventsController" ng-init="findOne()">
-  <h2 ng-bind="subevent.title">Update SubEvent</h2>
+  <div class="subevent-header">
+    <h3 ng-bind="subevent.title"></h3>
 
-  <p>Date/Time: <span ng-bind="subevent.datetime"></span></p>
-  <p>Location: <span ng-bind="subevent.location"></span></p>
+    <p ng-bind="subevent.datetime | date: 'MM/dd/yyyy @ h:mm a'"></p>
+    <p ng-bind="subevent.location"></p>
+  </div>
+
 
   <div ta-bind ng-model="subevent.description"></div>
 </section>
