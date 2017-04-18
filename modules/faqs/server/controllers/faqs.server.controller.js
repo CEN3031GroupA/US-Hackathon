@@ -8,6 +8,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   FAQ = require('mongoose').model('FAQ'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+
 exports.create = function(req, res, next) {
   var faq = new FAQ(req.body);
   faq.save(function (err) {
@@ -85,31 +86,15 @@ exports.faqById = function(req, res, next, id) {
 exports.update = function (req, res) {
   var faq = req.faq;
 
-  faq.question = req.body.question;
-  faq.solution = req.body.solution;
+  faq.answers = req.body.answers;
 
   faq.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
-    } else {
-      res.json(faq);
     }
-  });
-};
-
-exports.markBestSolution = function (req, res) {
-  var faq = req.faq;
-
-  faq.solution = req.body.solution;
-
-  faq.save(function (err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
+    else {
       res.json(faq);
     }
   });

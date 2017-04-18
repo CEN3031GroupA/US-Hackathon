@@ -91,7 +91,7 @@ angular.module('projects')
           }
         }
       } else {
-        $scope.project.$remove(function () {
+        $scope.project.$delete(function () {
           $location.path('projects');
         });
       }

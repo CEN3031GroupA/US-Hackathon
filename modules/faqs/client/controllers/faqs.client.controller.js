@@ -29,7 +29,8 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
         method: 'POST',
         url: '/api/faqs/' + $scope.faq._id + '/addAnswer',
         data: {
-          answer: answer
+          answer: answer,
+          solution: false
         }
       };
       this.answer = '';
@@ -73,61 +74,18 @@ faqsApp.controller('FAQsController', ['$scope', '$state', '$stateParams', '$loca
         });
       }
     };
+
+    $scope.markBestSolution = function (answer) {
+      for(var i in $scope.faq.answers) {
+        if($scope.faq.answers[i].isSolution === true) {
+          $scope.faq.answers[i].isSolution = false;
+        }
+      }
+
+      var index = $scope.faq.answers.indexOf(answer);
+      $scope.faq.answers[index].isSolution = true;
+
+      FAQs.update({ faqId: $scope.faq._id }, { answers: $scope.faq.answers });
+    };
   }
 ]);
-
-// if (!$rootScope.activeFAQ) {
-//   $rootScope.activeFAQ = {
-//     solution: {}
-//   };
-// }
-//
-//
-// $scope.saveQuestion = function (response) {
-//   $rootScope.activeFAQ.question = this.question;
-//
-//   $location.path('faqs');
-// };
-//
-// $scope.post = function (isValid) {
-//   $scope.error = null;
-//
-//   // Create new FAQ object
-//   var faq = new FAQs($rootScope.activeFAQ);
-//   // Redirect
-//   faq.$save(function (response) {
-//     $scope.faqs.push(response);
-//     $scope.askme=false;
-//     // clear active
-//     $rootScope.activeFAQ = null;
-//   }, function (errorResponse){
-//     $scope.error = errorResponse.data.message;
-//   });
-// };
-// // Find a list of faqs
-
-// // Find a faq
-// $scope.findOne = function () {
-//   $scope.faq = FAQs.get({
-//     faqId: $stateParams.faqId
-//   });
-// };
-// Remove existing FAQ
-
-//
-// // Update existing faq
-// $scope.update = function (isValid) {
-//   $scope.error = null;
-//
-//   if (!isValid) {
-//     $scope.$broadcast('show-errors-check-validity', 'faqForm');
-//
-//     return false;
-//   }
-//
-//   $scope.faq.$update(function () {
-//     $location.path('faqs/');
-//   }, function (errorResponse) {
-//     $scope.error = errorResponse.data.message;
-//   });
-// };

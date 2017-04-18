@@ -17,7 +17,7 @@ angular.module('faqs').config(['$stateProvider',
         templateUrl: 'modules/faqs/client/views/list-faqs.client.view.html'
       })
       .state('faqs.respond', {
-        url: '/faq/:faqId/Respond',
+        url: '/:faqId',
         templateUrl: 'modules/faqs/client/views/respond-faq.client.view.html',
       });
   }
