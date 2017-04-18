@@ -6,7 +6,7 @@
 </head>
 <body>
 <section class="ideaspage" ng-controller="IdeasController">
-  <div class="col-md-offset-2 col-md-8">
+  <div>
     <form name="ideaForm" class="form-vertical">
       <fieldset>
         <div class="form-group" show-errors>
@@ -19,7 +19,7 @@
           <textarea name="details" rows="10" class="form-control" ng-model="long" placeholder="Describe your idea" required></textarea>
         </div>
       <div class="row">
-        <div class="col-md-offset-2 col-md-8">
+        <div >
           <button type="submit" ng-click="create()" class="btn btn-primary-1">
             Publish idea
           </button>

@@ -7,7 +7,7 @@
 <body>
 <section class="ideaspage" ng-controller="IdeasController" ng-init="find()">
   <h3><span ng-bind="activeEvent.title"></span> Ideas</h3>
-  <div class="col-md-offset-2 col-md-8">
+  <div>
     <div class = "idea-list" ng-repeat="idea in ideas">
       <div class="row item">
         <button ui-sref="ideas.view({ideaId: idea._id})" class="btn2">
