@@ -69,6 +69,7 @@
 
 .ideaspage .frontscreen {
     margin-bottom: 5vh;
+    margin-top: 0;
     font-weight: 500;
     letter-spacing: 1px;
 }
@@ -129,19 +130,23 @@
 .ideaspage .btn-primary {
     background: #509e2f;
     color: #ffffff;
-    display:inline;
+
 }
 .ideaspage .btn-primary-1 {
-    background: #509e2f;
+    background: #115e67;
     color: #ffffff;
-    display:inline;
+    margin-right: 10px;
+}
+.ideaspage .btn-primary-2 {
+    background: #63666A;
+    color: #ffffff;
     margin-right: 10px;
 }
 .ideaspage .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
     background: #509000;
 }
 .ideaspage .btn-primary-1:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-    background: #509000;
+    background: #114e67;
 }
 
 .ideaspage .btn-primary:active, .btn-primary.active {

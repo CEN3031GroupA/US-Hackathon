@@ -9,10 +9,11 @@ angular.module('projects')
     ]);
   })
 
-  .controller('ProjectsController', ['$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
-  function ($scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
+  .controller('ProjectsController', ['sharedInputFields', '$scope', '$state', '$stateParams', '$location', 'Projects', 'Authentication', 'Users','$rootScope', 'ActiveEvent', '$http',
+  function (sharedInputFields, $scope, $state, $stateParams, $location, Projects, Authentication, Users, $rootScope, ActiveEvent, $http) {
     $scope.authentication = Authentication;
     $scope.user = $scope.owner = $scope.authentication.user;
+
 
     if (!$rootScope.activeProject) {
       $rootScope.activeProject = {
@@ -44,8 +45,20 @@ angular.module('projects')
 
     $scope.saveProjectCategory = function () {
       $rootScope.activeProject.category = $scope.activeCategory.title;
+      var inputFields = sharedInputFields.set();
+      console.log(inputFields.length);
+      if (inputFields.length !== 0)
+      {
+        $rootScope.activeProject.title = inputFields[0];
+        $rootScope.activeProject.youtube = '';
+        $rootScope.activeProject.short = inputFields[1];
+        $rootScope.activeProject.long = inputFields[2];
+        $rootScope.activeProject.owner = $scope.user;
+        inputFields = [];
+        sharedInputFields.clear();
 
-      $location.path('projects/team');
+        $location.path('projects/team');
+      }
     };
 
     $scope.create = function (isValid) {
