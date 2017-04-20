@@ -2,10 +2,10 @@
 https://still-eyrie-27550.herokuapp.com/
 
 ## Sources Used:
-MEAN.JS - http://meanjs.org/
-textAngular - https://github.com/textAngular/textAngular
-angular-qr - https://github.com/janantala/angular-qr
-angular-ui-bootstrap-datetimepicker - https://github.com/zhaber/angular-js-bootstrap-datetimepicker
+- MEAN.JS - http://meanjs.org/
+- textAngular - https://github.com/textAngular/textAngular
+- angular-qr - https://github.com/janantala/angular-qr
+- angular-ui-bootstrap-datetimepicker - https://github.com/zhaber/angular-js-bootstrap-datetimepicker
 
 ## Features Implemented:
 
