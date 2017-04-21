@@ -8,11 +8,11 @@ https://still-eyrie-27550.herokuapp.com/
 - angular-ui-bootstrap-datetimepicker - https://github.com/zhaber/angular-js-bootstrap-datetimepicker
 
 ## Features Implemented:
-### Welcome screens: 
+### Welcome screens:   
 introduction to the 48 hr. Hackathon application
-### Basic authentication:
+### Basic authentication: [See Sign-In](https://github.com/CEN3031GroupA/US-Hackathon/wiki/Sign-In-Image)  
 for two user types: users and admins
-### Menu:
+### Menu: [See Menu](https://github.com/CEN3031GroupA/US-Hackathon/blob/master/Readme_Images/WebApp_US-Hackathon%5B3%5D.png)   
 A slide out menu that links to all locations of the application to include:
 - Home
 - Schedule
@@ -21,17 +21,17 @@ A slide out menu that links to all locations of the application to include:
 - FAQs
 - Admin Home (only visible with admin login)
 - Logout
-### Home: 
+### Home: [See Home](https://github.com/CEN3031GroupA/US-Hackathon/blob/master/Readme_Images/WebApp_US-Hackathon%5B2%5D.png)
 contains the links for submitting and idea or a project and allows access to articles created by admins.  Both projects and ideas can be setup with a title and summary.  Projects can add team members and urls to wesites or youtube content.  Ideas have the ability to become projects if desired.  The event timer is displayed at the top of the page which should be ticking down to the next event or ticking down to the end of the current event in progress.
-### Schedule: 
+### Schedule: [See Schedule](https://github.com/CEN3031GroupA/US-Hackathon/blob/master/Readme_Images/WebApp_US-Hackathon%5B32%5D.png)  
 This lists the sub-events of an upcoming Hackathon or sub-events during the current hackathon.  A sub event could be a 	talk, luncheon, or up coming game, etc.
-### Projects: 
+### Projects: [See Projects](https://github.com/CEN3031GroupA/US-Hackathon/wiki/Projects)  
 once a project is created, it will display randomly in a list of projects for users to select from.  Selecting a project takes you to the projects site where you can view active content, see whose on the team, vote for the project, and give feedback in a comment to the team.
-### Ideas: 
+### Ideas: [See Ideas](https://github.com/CEN3031GroupA/US-Hackathon/wiki/Ideas)
 once an idea is created, it will display randomly in a list of ideas for users to select from.  Selecting an idea takes you to the idea's site where you can review the details of the idea, see the owner, select as a favorite, and give feedback in a comment.  an idea can be made into a project by selecting the make it a project button and completing the project information process.
-### FAQs: 
+### FAQs: [See FAQs](https://github.com/CEN3031GroupA/US-Hackathon/wiki/FAQs)
 this area will house questions that are asked about anything pertaining to hackathon events.  Questions can be responded to and responses can be marked as solutions.
-### Admins Home: 
+### Admins Home: [See Admin Home](https://github.com/CEN3031GroupA/US-Hackathon/wiki/Admin)
 the admin has access to creating the hackathon events (tied to the timer, ideas and projects submitted).  The admin can develop categories for the event to submit a project to, develop sub-events for a main event, manage previously created events, and see the tallied votes for projects in the current hackathon.  This site also allows the admins to develop and post articles that will display in the home screen for users to read.
 
 ## Instructions for Running Locally:
