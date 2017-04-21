@@ -9,7 +9,7 @@ https://still-eyrie-27550.herokuapp.com/
 
 ## Features Implemented:
 ### Welcome screens: 
-introcution to the 48 hr. Hackathon application
+introduction to the 48 hr. Hackathon application
 ### Basic authentication:
 for two user types: users and admins
 ### Menu:
